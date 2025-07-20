@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum Roles {
-    ALUNO("aluno");
+    ALUNO("user");
 
     private String role;
 

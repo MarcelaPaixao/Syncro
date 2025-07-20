@@ -51,11 +51,11 @@ public class Aluno implements UserDetails{
 
     @Override
     public String getPassword() {
-        throw new UnsupportedOperationException("Not supported yet.");
+       return senha;
     }
 
     @Override
     public String getUsername() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return email;
     }
 }

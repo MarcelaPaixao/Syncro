@@ -35,6 +35,9 @@ public class SecurityFilter extends OncePerRequestFilter{
 
         if(login!=null){
             Aluno aluno = alunoRepository.findByEmail(login);
+            if(aluno == null){
+                throw new RuntimeException("Email inexistente");
+            }
             var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
             var authentication = new UsernamePasswordAuthenticationToken(aluno, null, authorities);
             SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -47,6 +50,6 @@ public class SecurityFilter extends OncePerRequestFilter{
         var authHeader = request.getHeader("Authorization");
         if(authHeader == null) return null;
 
-        return authHeader.replace("Bearer", "");
+        return authHeader.replace("Bearer ", "");
     }
 }
