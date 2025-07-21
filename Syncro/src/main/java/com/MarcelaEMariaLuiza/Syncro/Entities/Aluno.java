@@ -2,6 +2,7 @@ package com.MarcelaEMariaLuiza.Syncro.Entities;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -14,6 +15,9 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -44,6 +48,12 @@ public class Aluno implements UserDetails{
     @Column(nullable = false)
     private Roles role = Roles.ALUNO;
     
+    @ManyToMany
+    @JoinTable(name ="alunosXgrupos", 
+    joinColumns=@JoinColumn(name="id_aluno"),
+    inverseJoinColumns = @JoinColumn(name = "id_grupo"))
+    List <Grupo> grupos;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));
