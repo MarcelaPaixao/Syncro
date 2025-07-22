@@ -1,5 +1,6 @@
 package com.MarcelaEMariaLuiza.Syncro.Services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ public class GrupoService {
     private final AlunoRepository alunoRepository;
     
     public Grupo criaGrupo(@RequestBody CreateGrupoDTO createGrupoDTO, Object criador){
+        
         Aluno criador1 = (Aluno)criador;
         if(createGrupoDTO.getNome().isEmpty() || createGrupoDTO.getNome() == null ||
         createGrupoDTO.getProfessor().isEmpty() || createGrupoDTO.getProfessor() == null ||
@@ -37,20 +39,21 @@ public class GrupoService {
             
             throw new CampoNaoPreenchidoException("Campo(s) não foram preenchidos");
         }
-        List <Aluno> alunos = null;
-        alunos.add(criador1);
-        for(String email: createGrupoDTO.getMembros()){
-            
-            Aluno aluno = alunoRepository.findByEmail(email);
-            if(aluno!=null) alunos.add(aluno);
-        }
+
         Grupo novoGrupo = new Grupo(createGrupoDTO.getNome(), createGrupoDTO.getProfessor(), createGrupoDTO.getMateria(), createGrupoDTO.getPrazo(),
-        createGrupoDTO.getDescricao(), alunos);
-
+        createGrupoDTO.getDescricao());
+        List <Aluno> alunos = new ArrayList<>();
         grupoRepository.save(novoGrupo);
-        return novoGrupo;
-        
+        criador1.adicionaGrupo(novoGrupo);
+        alunoRepository.save(criador1);
+        for(String email: createGrupoDTO.getMembros()){
+            Aluno aluno = alunoRepository.findByEmail(email);
+            if(aluno==null) continue;
+            aluno.adicionaGrupo(novoGrupo);
+            alunoRepository.save(aluno);
 
+        }
+        return novoGrupo;     
     }
     
 }

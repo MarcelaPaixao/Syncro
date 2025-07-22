@@ -1,4 +1,5 @@
 package com.MarcelaEMariaLuiza.Syncro.DTO;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -13,10 +14,10 @@ import lombok.Setter;
 @AllArgsConstructor
 public class CreateGrupoDTO{
   
-private String nome;
+   private String nome;
    private String professor;
    private String materia;
    private String descricao;
-   private LocalDateTime prazo;
+   private LocalDate prazo;
    List <String> membros;
 }

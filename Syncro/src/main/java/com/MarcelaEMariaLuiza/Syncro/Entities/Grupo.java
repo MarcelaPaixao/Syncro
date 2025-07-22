@@ -1,7 +1,11 @@
 package com.MarcelaEMariaLuiza.Syncro.Entities;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -36,7 +40,9 @@ public class Grupo {
     @Column(nullable = false)
     private String materia;
     
-    private LocalDateTime prazo;
+    @Column(nullable = true)
+     @JsonFormat(pattern="yyyy-MM-dd")
+    private LocalDate prazo;
 
     private LocalDateTime modificadoEm;
    
@@ -44,15 +50,13 @@ public class Grupo {
     private String descricao;
 
     @ManyToMany(mappedBy="grupos")
-    List <Aluno> alunos;
-    public Grupo( String nome,  String professor, String materia,LocalDateTime prazo, String descricao, List <Aluno>membros){
+    List <Aluno> alunos = new ArrayList<>();
+    public Grupo( String nome,  String professor, String materia,LocalDate prazo, String descricao){
         this.nome = nome;
         this.professor = professor;
         this.materia = materia;
         this.prazo = prazo;
         this.descricao = descricao;
-        this.alunos= membros;
-
     }
     @PrePersist
     private void prePersist(){
