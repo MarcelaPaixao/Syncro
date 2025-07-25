@@ -3,7 +3,6 @@ package com.MarcelaEMariaLuiza.Syncro.Entities;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -56,6 +55,7 @@ public class Aluno implements UserDetails{
     joinColumns=@JoinColumn(name="id_aluno"),
     inverseJoinColumns = @JoinColumn(name = "id_grupo"))
     private List <Grupo> grupos = new ArrayList<>() ;
+    
     public void adicionaGrupo(Grupo grupo){
         this.grupos.add(grupo);
     }
