@@ -67,4 +67,8 @@ public class Grupo {
     private void prePersist(){
         this.modificadoEm = LocalDateTime.now();
     }
+
+    public void adicionaNovaTarefa(Tarefa tarefa){
+        this.tarefas.add(tarefa);
+    }
 }

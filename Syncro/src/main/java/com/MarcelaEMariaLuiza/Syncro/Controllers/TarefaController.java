@@ -1,5 +1,7 @@
 package com.MarcelaEMariaLuiza.Syncro.Controllers;
 
+import com.MarcelaEMariaLuiza.Syncro.Errors.GrupoInexistenteException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +17,7 @@ import com.MarcelaEMariaLuiza.Syncro.Services.TarefaService;
 @RestController
 @RequestMapping("/tarefa")
 public class TarefaController {
-    
+    @Autowired
     private TarefaService tarefaService;
     
     @PostMapping("/create")
@@ -24,7 +26,7 @@ public class TarefaController {
         Tarefa tarefa = tarefaService.createTarefa(createTarefaDTO);
         return ResponseEntity.ok("Tarefa gerada com sucesso");
 
-       }catch(CampoNaoPreenchidoException e){
+       }catch(CampoNaoPreenchidoException |  GrupoInexistenteException e){
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
        }
        catch(Exception e){
