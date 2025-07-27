@@ -57,7 +57,7 @@ public class Aluno implements UserDetails{
     private List <Grupo> grupos = new ArrayList<>() ;
     
     public void adicionaGrupo(Grupo grupo){
-        this.grupos.add(grupo);
+        if(!this.grupos.contains(grupo)) this.grupos.add(grupo);
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
