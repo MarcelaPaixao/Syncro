@@ -13,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateGrupoDTO{
-  
+   private Long Id;
    private String nome;
    private String professor;
    private String materia;

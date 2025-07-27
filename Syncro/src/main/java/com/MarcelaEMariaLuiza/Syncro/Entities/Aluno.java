@@ -3,7 +3,6 @@ package com.MarcelaEMariaLuiza.Syncro.Entities;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -51,13 +50,14 @@ public class Aluno implements UserDetails{
     @Column(nullable = false)
     private Roles role = Roles.ALUNO;
     
-    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
     @JoinTable(name ="alunosXgrupos", 
     joinColumns=@JoinColumn(name="id_aluno"),
     inverseJoinColumns = @JoinColumn(name = "id_grupo"))
     private List <Grupo> grupos = new ArrayList<>() ;
+    
     public void adicionaGrupo(Grupo grupo){
-        this.grupos.add(grupo);
+        if(!this.grupos.contains(grupo)) this.grupos.add(grupo);
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
