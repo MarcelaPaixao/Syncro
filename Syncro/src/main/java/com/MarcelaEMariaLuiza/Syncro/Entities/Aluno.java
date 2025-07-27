@@ -50,7 +50,7 @@ public class Aluno implements UserDetails{
     @Column(nullable = false)
     private Roles role = Roles.ALUNO;
     
-    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
     @JoinTable(name ="alunosXgrupos", 
     joinColumns=@JoinColumn(name="id_aluno"),
     inverseJoinColumns = @JoinColumn(name = "id_grupo"))

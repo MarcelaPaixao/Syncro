@@ -13,6 +13,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CreateTarefaDTO {
     
+    private Long Id;
+
     private String titulo;
 
     private String descricao;
@@ -24,6 +26,8 @@ public class CreateTarefaDTO {
     private String linkExtra;
 
     private Long grupoId;
+
+    private Long alunoId;
 
 
 }
