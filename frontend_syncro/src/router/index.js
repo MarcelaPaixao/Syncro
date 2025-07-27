@@ -1,5 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
+import LoginView from "../views/LoginView.vue";
+import CadastroView from "../views/CadastroView.vue";
+import EsqueceuSuaSenhaView from "../views/EsqueceuSuaSenhaView.vue";
 
 const routes = [
   {
@@ -16,6 +19,22 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
   },
+  {
+    path: "/login",
+    name: "login",
+    component: LoginView,
+  },
+  {
+    path: "/cadastro",
+    name: "cadastro",
+    component: CadastroView,
+  },
+  {
+    path: "/esqueceu-sua-senha",
+    name: "esqueceu-sua-senha",
+    component: EsqueceuSuaSenha,
+  },
+
 ];
 
 const router = createRouter({
