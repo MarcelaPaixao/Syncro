@@ -16,39 +16,74 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Representa uma entidade Tarefa no sistema.
+ * <p>
+ * Esta classe é mapeada para a tabela "tarefas" no banco de dados e contém
+ * todos os detalhes sobre uma tarefa, incluindo sua descrição, prazo e
+ * associações com outras entidades.
+ */
 @Entity
 @Getter
 @Setter
-@Table(name="tarefas")
+@Table(name = "tarefas")
 public class Tarefa {
-   
+
+    /**
+     * Identificador único da tarefa (Chave primária).
+     * Gerado automaticamente pelo banco de dados.
+     */
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    /**
+     * Título da tarefa. Não pode ser nulo.
+     */
     @Column(nullable = false)
     private String titulo;
-    
-    @Column(nullable = true, columnDefinition="TEXT")
+
+    /**
+     * Descrição detalhada da tarefa. Pode ser nulo.
+     */
+    @Column(nullable = true, columnDefinition = "TEXT")
     private String descricao;
 
+    /**
+     * Data limite para a conclusão da tarefa. Pode ser nulo.
+     */
     @Column(nullable = true)
     private LocalDate prazo;
-    
+
+    /**
+     * Lista de feedbacks associados a esta tarefa.
+     */
     @OneToMany(mappedBy = "tarefa")
     private List<Feedback> feedbacks;
 
+    /**
+     * Link do Google Drive com arquivos pertinentes à tarefa.
+     */
     @Column(nullable = true)
     private String linkDrive;
 
+    /**
+     * Link extra para material de apoio ou referência.
+     */
     @Column(nullable = true)
     private String linkExtra;
 
-    
+    /**
+     * O grupo ao qual esta tarefa pertence.
+     * A associação é obrigatória.
+     */
     @ManyToOne
-    @JoinColumn(name = "grupo_id",nullable=false )
+    @JoinColumn(name = "grupo_id", nullable = false)
     private Grupo grupo;
 
+    /**
+     * O aluno designado para realizar esta tarefa.
+     */
     @OneToOne
     private Aluno aluno;
 }

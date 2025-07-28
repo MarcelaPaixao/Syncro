@@ -39,7 +39,7 @@ public class CreateFeedbackDTO {
     private Long tarefaId;
 
     /**
-     * O ID do aluno que está recebendo o feedback.
+     * O ID do aluno que está escrevendo o feedback.
      */
     private Long alunoId;
 }

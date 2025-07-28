@@ -17,37 +17,73 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+/**
+ * Representa uma entidade Feedback no sistema.
+ * <p>
+ * Mapeada para a tabela "feedbacks", esta classe armazena o conteúdo de um
+ * feedback, seu status de aprovação, e as associações com a Tarefa e o Aluno
+ * correspondentes.
+ */
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="feedbacks")
+@Table(name = "feedbacks")
 public class Feedback {
-   
+
+    /**
+     * Identificador único do feedback.
+     * Gerado automaticamente.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id; 
+    private Long id;
 
-    @Column(columnDefinition="TEXT")
+    /**
+     * O conteúdo textual do comentário de feedback.
+     */
+    @Column(columnDefinition = "TEXT")
     private String comentario;
 
-    @Column(nullable=false)
+    /**
+     * Status de aprovação. {@code true} se a tarefa foi aprovada, {@code false}
+     * caso contrário.
+     * Não pode ser nulo.
+     */
+    @Column(nullable = false)
     private Boolean aprovado;
-    
+
+    /**
+     * A tarefa à qual este feedback está associado.
+     * A associação é obrigatória.
+     */
     @ManyToOne
-    @JoinColumn(name="tarefa_id", nullable=false)
+    @JoinColumn(name = "tarefa_id", nullable = false)
     private Tarefa tarefa;
-   
+
+    /**
+     * O aluno autor do feedback.
+     * A anotação {@code @MapsId} mapeia este feedback diretamente ao aluno
+     * correspondente.
+     */
     @MapsId
     @JoinColumn(name = "aluno_id")
     @OneToOne
     private Aluno aluno;
 
+    /**
+     * Data e hora da última modificação do feedback.
+     */
     private LocalDateTime modificadoEm;
 
+    /**
+     * Método de callback do JPA executado antes da primeira persistência.
+     * Define o campo {@code modificadoEm} com a data e hora atuais.
+     */
     @PrePersist
-    private void prePersist(){
+    private void prePersist() {
         this.modificadoEm = LocalDateTime.now();
     }
 
