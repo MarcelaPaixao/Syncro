@@ -32,9 +32,8 @@ const routes = [
   {
     path: "/esqueceu-sua-senha",
     name: "esqueceu-sua-senha",
-    component: EsqueceuSuaSenha,
+    component: EsqueceuSuaSenhaView,
   },
-
 ];
 
 const router = createRouter({

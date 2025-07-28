@@ -9,21 +9,28 @@
           <input type="email" v-model="email" required />
         </div>
 
-        <div class="input-group">
-          <label>Senha</label>
-          <input type="password" v-model="password" required />
+        <div class="password-group">
+          <div class="input-group">
+            <label>Senha</label>
+            <input type="password" v-model="password" required />
+          </div>
+
+          <div class="redireciona-esqueceu-senha">
+            <router-link to="/esqueceu-sua-senha"
+              >Esqueceu sua senha</router-link
+            >
+          </div>
         </div>
 
-        <button>Entrar</button>
+        <button class="button">Entrar</button>
       </form>
 
-      <div class="redireciona-esqueceu-senha">
-        <button @click="redirecionaNovaSenha" id="esqueceuSenha">Esqueceu sua senha?</button>
-      </div>
       <div class="register-redirect">
         <h4>Novo no Syncro?</h4>
 
-        <button @click="redirecionaCadastrar">Cadastre-se</button>
+        <button @click="redirecionaCadastrar" class="button" id="cadastro-btn">
+          Cadastre-se
+        </button>
       </div>
     </div>
   </div>
@@ -50,11 +57,6 @@ export default {
       console.log("redirecionando cadastro...");
       this.$router.push("/cadastro");
     },
-    redirecionaNovaSenha() {
-      console.log("redirecionando esqueceu senha...");
-      this.$router.push("/esqueceu-sua-senha");
-    },
-
   },
 };
 </script>
@@ -65,16 +67,16 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 80vh;
-  background-color: #f4f4f8;
+  height: 100vh;
+  background-image: linear-gradient(160deg, #a7f7dc, #33af90, #0d684c);
 }
 
 .login-box {
   /* justify-content: center; */
   padding: 2rem;
   background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 30px;
+  box-shadow: 10px 10px 6px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 400px;
 }
@@ -112,7 +114,7 @@ input {
   box-sizing: border-box; /* Garante que o padding não aumente a largura total */
 }
 
-button {
+.button {
   width: 100%;
   padding: 0.6rem;
   border: none;
@@ -125,12 +127,33 @@ button {
   transition: background-color 0.3s;
 }
 
-button:hover {
-  background-color: #357abd;
+.button:hover {
+  background-color: #0d8668a2;
 }
 
-#esqueceuSenha {
-  background-color: none;
+#cadastro-btn {
+  background-color: #508f8a;
 }
 
+#cadastro-btn:hover {
+  background-color: rgba(8, 114, 105, 0.61);
+}
+
+.redireciona-esqueceu-senha {
+  text-align: left;
+  margin-top: -0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.redireciona-esqueceu-senha a {
+  color: #0d8668;
+  padding: 0;
+  font-size: 0.97em;
+  text-decoration: underline;
+}
+
+.redireciona-esqueceu-senha a:hover {
+  color: #0d8668a2;
+  text-decoration: none;
+}
 </style>
