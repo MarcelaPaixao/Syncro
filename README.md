@@ -16,6 +16,7 @@ Para a implementação deste projeto, foram utilizados:
 * **Gerenciador de Pacotes:** npm
 * **Versionamento:** Git (GitHub)
 * **Banco de Dados:** PostgreSQLL
+* **Testes:** JUNIT (java)
 
 ## Como Executar o Sistema
 

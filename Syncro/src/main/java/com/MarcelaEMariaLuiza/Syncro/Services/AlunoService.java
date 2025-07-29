@@ -23,7 +23,7 @@ import com.MarcelaEMariaLuiza.Syncro.Repositories.AlunoRepository;
  * negócio como a criação de novos alunos e a lógica de login.
  * </p>
  *
- * @author Marcela & Maria Luiza
+ * @author Marcela, Maria Luiza
  * @version 1.0
  * @since 2025-07-28
  */

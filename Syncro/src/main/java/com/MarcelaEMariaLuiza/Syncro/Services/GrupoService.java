@@ -26,7 +26,7 @@ import lombok.AllArgsConstructor;
  * de Grupo e Aluno.
  * </p>
  *
- * @author Marcela & Maria Luiza
+ * @author Marcela,Maria Luiza
  * @version 1.0
  * @since 2025-07-28
  */

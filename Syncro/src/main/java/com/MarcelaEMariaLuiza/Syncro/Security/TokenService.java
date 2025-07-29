@@ -21,7 +21,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
  * para proteger os endpoints da aplicação.
  * </p>
  *
- * @author Marcela & Maria Luiza
+ * @author Marcela, Maria Luiza
  * @version 1.0
  * @since 2025-07-28
  */

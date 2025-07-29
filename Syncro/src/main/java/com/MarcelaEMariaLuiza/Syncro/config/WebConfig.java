@@ -11,7 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * Cross-Origin Resource Sharing (CORS).
  * </p>
  *
- * @author Marcela & Maria Luiza
+ * @author Marcela, Maria Luiza
  * @version 1.0
  * @since 2025-07-28
  */

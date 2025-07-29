@@ -28,7 +28,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * apenas uma vez por requisição.
  * </p>
  *
- * @author Marcela & Maria Luiza
+ * @author Marcela, Maria Luiza
  * @version 1.0
  * @since 2025-07-28
  */

@@ -27,7 +27,7 @@ import lombok.RequiredArgsConstructor;
  * de alunos no sistema.
  * </p>
  *
- * @author Marcela & Maria Luiza
+ * @author Marcela, Maria Luiza
  * @version 1.0
  * @since 2025-07-28
  */

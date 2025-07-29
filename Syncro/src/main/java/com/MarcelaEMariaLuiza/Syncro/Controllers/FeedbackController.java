@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  * a lógica de negócio para o {@link FeedbackService}.
  * </p>
  *
- * @author Marcela & Maria Luiza
+ * @author Marcela, Maria Luiza
  * @version 1.0
  * @since 2025-07-28
  */

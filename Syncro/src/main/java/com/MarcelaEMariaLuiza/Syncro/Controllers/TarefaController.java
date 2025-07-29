@@ -26,7 +26,7 @@ import com.MarcelaEMariaLuiza.Syncro.Services.TarefaService;
  * consultar tarefas existentes, seja por grupo ou por aluno.
  * </p>
  *
- * @author Marcela & Maria Luiza
+ * @author Marcela, Maria Luiza
  * @version 1.0
  * @since 2025-07-28
  */

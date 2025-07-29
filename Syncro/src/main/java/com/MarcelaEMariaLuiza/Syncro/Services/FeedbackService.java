@@ -24,7 +24,7 @@ import java.util.Optional;
  * e orquestrando a persistência através dos repositórios necessários.
  * </p>
  *
- * @author Marcela & Maria Luiza
+ * @author Marcela, Maria Luiza
  * @version 1.0
  * @since 2025-07-28
  */
