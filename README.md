@@ -76,7 +76,7 @@ Siga os passos abaixo para executar a aplicação em seu ambiente local.
 
 ## Geração da Documentação
 
-Para gerar a documentação Javadoc, siga os passos:
+Para gerar a documentação com Javadoc, siga os passos:
 
 1.  **Navegue até a pasta do projeto:**
     * No terminal, acesse o diretório que contém o arquivo `pom.xml`:
@@ -91,4 +91,4 @@ Para gerar a documentação Javadoc, siga os passos:
 
 3.  **Visualize a documentação:**
     * Para visualizar a documentação, abra o arquivo `index.html` em seu navegador. Ele estará no seguinte diretório:
-      `Syncro/Syncro/target/site/apidocs`
+      `Syncro/Syncro/target/reports/apidocs`
