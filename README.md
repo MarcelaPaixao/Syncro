@@ -97,4 +97,4 @@ Para gerar a documentação com Javadoc, siga os passos:
 ## Diagrama de Classes UML
 
 **Link:** https://lucid.app/lucidchart/874c1594-7bd9-42cc-8837-99c72f2f295b/edit?page=HWEp-vi-RSFO&invitationId=inv_6a5cd339-c263-4ba3-af8c-0cd5ed343ec4#
-![Diagrama UML](https://github.com/MarcelaPaixao/Syncro/blob/main/Classe%20UML.png)
+![Diagrama UML](https://github.com/MarcelaPaixao/Syncro/blob/main/DiagramaUML.png)
