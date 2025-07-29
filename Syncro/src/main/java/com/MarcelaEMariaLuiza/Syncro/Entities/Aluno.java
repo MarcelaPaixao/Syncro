@@ -81,7 +81,7 @@ public class Aluno implements UserDetails {
      * Lista de grupos dos quais o aluno participa.
      * A relação é Many-to-many e utiliza a tabela "alunosXgrupos".
      */
-    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.EAGER)
     @JoinTable(name = "alunosXgrupos", joinColumns = @JoinColumn(name = "id_aluno"), inverseJoinColumns = @JoinColumn(name = "id_grupo"))
     private List<Grupo> grupos = new ArrayList<>();
 

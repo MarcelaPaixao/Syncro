@@ -17,6 +17,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Optional;
 
+/**
+ * Classe de serviço responsável pela lógica de negócio relacionada a Feedbacks.
+ * <p>
+ * Gerencia a criação de novos feedbacks para as tarefas, validando os dados
+ * e orquestrando a persistência através dos repositórios necessários.
+ * </p>
+ *
+ * @author Marcela & Maria Luiza
+ * @version 1.0
+ * @since 2025-07-28
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Service
@@ -28,7 +39,18 @@ public class FeedbackService {
     @Autowired
     private  AlunoRepository alunoRepository;
 
-
+    /**
+     * Cria um novo feedback para uma tarefa, associado a um aluno.
+     * <p>
+     * Este método valida os dados do DTO, busca as entidades {@link Tarefa} e {@link Aluno}
+     * correspondentes, constrói a nova entidade {@link Feedback} e a salva no banco de dados.
+     * </p>
+     *
+     * @param createFeedbackDTO O DTO que contém os dados para a criação do feedback.
+     * @return A entidade {@link Feedback} recém-criada e salva.
+     * @throws CampoNaoPreenchidoException Se algum dos campos obrigatórios no DTO estiver vazio ou nulo.
+     * @throws GrupoInexistenteException Se a tarefa ou o aluno associado não forem encontrados no banco de dados.
+     */
     public Feedback createFeedback(@RequestBody CreateFeedbackDTO createFeedbackDTO){
         if(createFeedbackDTO.getComentario().isEmpty() || createFeedbackDTO.getComentario() == null ||
                 createFeedbackDTO.getAprovado() == null || createFeedbackDTO.getAlunoId() == null

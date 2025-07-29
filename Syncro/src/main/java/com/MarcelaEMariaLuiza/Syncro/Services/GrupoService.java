@@ -18,6 +18,18 @@ import com.MarcelaEMariaLuiza.Syncro.Repositories.GrupoRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 
+/**
+ * Classe de serviço para gerenciar a lógica de negócio relacionada a Grupos.
+ * <p>
+ * Responsável por operações como criação de novos grupos, associação de membros
+ * e consulta de grupos por aluno, orquestrando as interações com os repositórios
+ * de Grupo e Aluno.
+ * </p>
+ *
+ * @author Marcela & Maria Luiza
+ * @version 1.0
+ * @since 2025-07-28
+ */
 @AllArgsConstructor
 
 @Service
@@ -28,7 +40,20 @@ public class GrupoService {
 
     @Autowired
     private final AlunoRepository alunoRepository;
-    
+
+    /**
+     * Cria um novo grupo, associa o criador e adiciona os membros convidados.
+     * <p>
+     * A operação é executada dentro de uma única transação. O método valida os
+     * dados de entrada, persiste o novo grupo, e em seguida, vincula o criador
+     * e os demais membros (identificados por e-mail) ao grupo recém-criado.
+     * </p>
+     *
+     * @param createGrupoDTO DTO com os dados para a criação do grupo, incluindo a lista de e-mails dos membros.
+     * @param criador O objeto do aluno autenticado (principal) que está criando o grupo.
+     * @return A entidade {@link Grupo} recém-criada e persistida.
+     * @throws CampoNaoPreenchidoException Se campos essenciais como nome, professor, matéria ou a lista de membros não forem fornecidos.
+     */
     @Transactional
     public Grupo criaGrupo(@RequestBody CreateGrupoDTO createGrupoDTO, Object criador){
         
@@ -57,7 +82,13 @@ public class GrupoService {
         }
         return novoGrupo;     
     }
-   
+    /**
+     * Busca e retorna todos os grupos dos quais um aluno específico faz parte.
+     *
+     * @param alunoId O ID do aluno para o qual os grupos serão consultados.
+     * @return Uma lista de DTOs ({@link CreateGrupoDTO}), cada um representando um grupo ao qual o aluno pertence.
+     * @throws RuntimeException Se o ID do aluno fornecido não corresponder a um aluno existente.
+     */
     public List<CreateGrupoDTO> getGruposAluno(Long alunoId){
        Optional <Aluno> aluno = alunoRepository.findById(alunoId);
        if(!aluno.isPresent()) throw new RuntimeException("Usuário invalido");

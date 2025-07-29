@@ -18,6 +18,18 @@ import com.MarcelaEMariaLuiza.Syncro.Repositories.AlunoRepository;
 import com.MarcelaEMariaLuiza.Syncro.Repositories.GrupoRepository;
 import com.MarcelaEMariaLuiza.Syncro.Repositories.TarefaRepository;
 
+/**
+ * Classe de serviço responsável pela lógica de negócio das tarefas.
+ * <p>
+ * Centraliza as operações de criação e consulta de tarefas, interagindo
+ * com os repositórios de Tarefa, Grupo e Aluno para realizar as operações
+ * necessárias no banco de dados.
+ * </p>
+ *
+ * @author Marcela & Maria Luiza
+ * @version 1.0
+ * @since 2025-07-28
+ */
 @Service
 public class TarefaService{
     @Autowired
@@ -28,6 +40,19 @@ public class TarefaService{
     @Autowired
     private AlunoRepository alunoRepository;
 
+    /**
+     * Cria uma nova tarefa e a associa a um grupo e a um aluno.
+     * <p>
+     * Valida os dados de entrada, mapeia o DTO para uma entidade Tarefa,
+     * associa ao grupo e aluno correspondentes e persiste a nova tarefa
+     * no banco de dados.
+     * </p>
+     *
+     * @param createTarefaDTO DTO contendo os dados para a criação da tarefa.
+     * @return A entidade {@link Tarefa} recém-criada e salva.
+     * @throws CampoNaoPreenchidoException Se campos obrigatórios como título ou ID do grupo não forem fornecidos.
+     * @throws GrupoInexistenteException   Se o ID do grupo fornecido no DTO não corresponder a um grupo existente.
+     */
     public Tarefa createTarefa(@RequestBody CreateTarefaDTO createTarefaDTO){
        
         if(createTarefaDTO.getTitulo().isEmpty() || createTarefaDTO.getTitulo() == null 
@@ -62,7 +87,14 @@ public class TarefaService{
         return tarefa;
     
     }
-   
+
+    /**
+     * Busca todas as tarefas associadas a um grupo específico.
+     *
+     * @param grupoId O ID do grupo para o qual as tarefas serão buscadas.
+     * @return Uma lista de DTOs ({@link CreateTarefaDTO}) representando as tarefas do grupo.
+     * @throws RuntimeException Se o ID do grupo fornecido for inválido ou não existir.
+     */
     public List<CreateTarefaDTO> getTarefasPorGrupo(Long grupoId){
        Optional <Grupo> grupo = grupoRepository.findById(grupoId);
        if(!grupo.isPresent()) throw new RuntimeException("Grupo invalido");
@@ -85,6 +117,13 @@ public class TarefaService{
       return tarefasFiltradas;
     }
 
+    /**
+     * Busca todas as tarefas associadas a um aluno específico.
+     *
+     * @param alunoId O ID do aluno para o qual as tarefas serão buscadas.
+     * @return Uma lista de DTOs ({@link CreateTarefaDTO}) representando as tarefas do aluno.
+     * @throws RuntimeException Se o ID do aluno fornecido for inválido ou não existir.
+     */
     public List<CreateTarefaDTO> getTarefasPorAluno(Long alunoId){
         Optional <Aluno> aluno = alunoRepository.findById(alunoId);
         if(!aluno.isPresent()) throw new RuntimeException("Aluno invalido");

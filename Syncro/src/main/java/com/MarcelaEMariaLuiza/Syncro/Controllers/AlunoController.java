@@ -19,15 +19,37 @@ import com.MarcelaEMariaLuiza.Syncro.Services.AlunoService;
 
 import jakarta.annotation.security.PermitAll;
 import lombok.RequiredArgsConstructor;
+
+/**
+ * Controlador REST para gerenciar as operações relacionadas a Alunos.
+ * <p>
+ * Expõe os endpoints HTTP para o registro (criação) e autenticação (login)
+ * de alunos no sistema.
+ * </p>
+ *
+ * @author Marcela & Maria Luiza
+ * @version 1.0
+ * @since 2025-07-28
+ */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/aluno")
+@RequestMapping("/api/aluno")
 public class AlunoController {
     private final AlunoService alunoService;
 
     private final TokenService tokenService;
 
-    
+    /**
+     * Endpoint para criar um novo aluno no sistema.
+     * <p>
+     * Recebe os dados do aluno no corpo da requisição e utiliza o {@link AlunoService}
+     * para realizar a criação. Trata exceções específicas de negócio, como e-mail
+     * já existente ou campos não preenchidos, retornando os status HTTP apropriados.
+     * </p>
+     *
+     * @param aluno A entidade {@link Aluno} com os dados para o cadastro, recebida do corpo da requisição.
+     * @return Um {@link ResponseEntity} com o status da operação e uma mensagem de sucesso ou erro.
+     */
     @PostMapping("/create")
     @PermitAll
     public ResponseEntity<?> createAluno(@RequestBody Aluno aluno){
@@ -43,7 +65,17 @@ public class AlunoController {
         }
         
     }
-
+    /**
+     * Endpoint para autenticar um aluno e gerar um token JWT.
+     * <p>
+     * Recebe as credenciais de login, valida-as através do {@link AlunoService} e,
+     * em caso de sucesso, gera um token de acesso com o {@link TokenService}.
+     * </p>
+     *
+     * @param loginDTO O DTO {@link LoginDTO} com o e-mail e a senha do aluno.
+     * @return Um {@link ResponseEntity} contendo um {@link LoginResponseDTO} com o token e e-mail
+     * em caso de sucesso, ou uma mensagem de erro em caso de falha.
+     */
     @PostMapping("/login")
     @PermitAll
     public ResponseEntity<?> Login(@RequestBody LoginDTO loginDTO){
@@ -58,10 +90,6 @@ public class AlunoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocorreu um erro ao fazer o login");
         }
        
-    }
-    @GetMapping("/test")
-    public String testando(){
-        return "yay";
     }
     
 }

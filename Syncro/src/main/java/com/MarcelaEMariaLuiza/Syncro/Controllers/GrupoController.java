@@ -21,13 +21,37 @@ import com.MarcelaEMariaLuiza.Syncro.Services.GrupoService;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+
+/**
+ * Controlador REST para gerenciar as operações de Grupos.
+ * <p>
+ * Este controlador expõe os endpoints HTTP para a criação de novos grupos
+ * e a consulta de grupos associados a um aluno específico.
+ * </p>
+ *
+ * @author Marcela & Maria Luiza
+ * @version 1.0
+ * @since 2025-07-28
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @RestController
-@RequestMapping("/grupo")
+@RequestMapping("/api/grupo")
 public class GrupoController {
     @Autowired
     private GrupoService grupoService;
+    /**
+     * Endpoint para a criação de um novo grupo.
+     * <p>
+     * Recebe os dados do grupo a ser criado e utiliza o usuário autenticado,
+     * injetado pelo Spring Security, como o criador do grupo. Delega a lógica
+     * de criação para o {@link GrupoService}.
+     * </p>
+     *
+     * @param createGrupoDTO DTO com os dados do grupo a ser criado.
+     * @param authentication Objeto de autenticação injetado, contendo os dados do usuário logado.
+     * @return Um {@link ResponseEntity} com a resposta da operação (sucesso ou erro).
+     */
     @PostMapping("/create")
     public ResponseEntity<?> createGrupo(@RequestBody CreateGrupoDTO createGrupoDTO, Authentication authentication){
         try{
@@ -45,6 +69,12 @@ public class GrupoController {
         
         
     }
+    /**
+     * Endpoint para buscar todos os grupos de um aluno específico.
+     *
+     * @param alunoId O ID do aluno, recebido como uma variável no caminho (path variable).
+     * @return Uma lista de {@link CreateGrupoDTO} representando os grupos do aluno, ou {@code null} em caso de erro.
+     */
     @GetMapping("/get/{alunoId}")
     public List<CreateGrupoDTO> getGruposAluno(@PathVariable Long alunoId){
         try{
