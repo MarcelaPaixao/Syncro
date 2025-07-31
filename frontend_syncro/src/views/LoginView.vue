@@ -125,19 +125,19 @@ input {
   font-weight: bold;
   border-radius: 10px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.2s;
 }
 
 .button:hover {
-  background-color: #0d8668a2;
+  background-color: #10a075cb;
 }
 
 #cadastro-btn {
-  background-color: #508f8a;
+  background-color: rgb(101, 165, 146);
 }
 
 #cadastro-btn:hover {
-  background-color: rgba(8, 114, 105, 0.61);
+  background-color: rgba(124, 202, 174, 0.938);
 }
 
 .redireciona-esqueceu-senha {
@@ -149,7 +149,7 @@ input {
 .redireciona-esqueceu-senha a {
   color: #0d8668;
   padding: 0;
-  font-size: 0.9em;
+  font-size: 0.92em;
   text-decoration: none;
 }
 

@@ -6,7 +6,7 @@
       <form @submit.prevent="fazerCadastro">
         <div class="input-group">
           <label>Nome completo</label>
-          <input type="name" v-model="name" required />
+          <input type="text" v-model="name" required />
         </div>
 
         <div class="input-group">
@@ -14,17 +14,13 @@
           <input type="email" v-model="email" required />
         </div>
 
-        <div class="input-group">
-          <label>Senha</label>
-          <input type="password" v-model="password" required />
-        </div>
+        <Senha
+          v-model:password="password"
+          v-model:confirmPassword="confirmPassword"
+          :passwordError="passwordError"
+        />
 
-        <div class="input-group">
-          <label>Confirmar senha</label>
-          <input type="password" v-model="confirmPassword" required />
-        </div>
-
-        <button class="button">Cadastrar</button>
+        <button type="submit" class="button">Cadastrar</button>
       </form>
 
       <div class="login-redirect">
@@ -35,21 +31,41 @@
 </template>
 
 <script>
+import Senha from "@/components/Senha.vue";
 export default {
   name: "CadastroView",
+  components: {
+    Senha,
+  },
   data() {
     return {
       email: "",
       password: "",
+      confirmPassword: "",
       name: "",
+      passwordError: "",
     };
+  },
+  watch: {
+    password() {
+      this.passwordError = "";
+    },
+    confirmPassword() {
+      this.passwordError = "";
+    },
   },
   methods: {
     fazerCadastro() {
+      if (this.password != this.confirmPassword) {
+        this.passwordError = "As senhas são diferentes!";
+        return;
+      }
       // Testando no console do navegador
       console.log("Dados para cadastro:", {
+        name: this.name,
         email: this.email,
         password: this.password,
+        confirmPassword: this.confirmPassword,
       });
     },
   },
@@ -124,7 +140,7 @@ input {
 }
 
 .button:hover {
-  background-color: #0d8668a2;
+  background-color: #10a075cb;
 }
 
 .login-redirect {
@@ -142,5 +158,13 @@ input {
 .login-redirect a:hover {
   color: #0d8668a2;
   text-decoration: underline;
+}
+
+.error-message {
+  text-align: left;
+  font-size: 0.9rem;
+  margin-top: -0.5rem;
+  font-style: italic;
+  color: red;
 }
 </style>

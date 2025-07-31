@@ -1,8 +1,8 @@
 <template>
   <div class="esqueceu-sua-senha">
-    <div class="validacao-box">
-      <h2>texto texto texto</h2>
-    </div>
+    <h2>Redefinir senha</h2>
+    <p>Digite o email associado à sua conta</p>
+    <div class="validacao-box"></div>
   </div>
 </template>
 
