@@ -5,26 +5,26 @@
 
       <form @submit.prevent="fazerCadastro">
         <div class="input-group">
-          <label>Digite seu nome</label>
+          <label>Nome completo</label>
           <input type="name" v-model="name" required />
         </div>
 
         <div class="input-group">
-          <label>Digite um email</label>
+          <label>Email</label>
           <input type="email" v-model="email" required />
         </div>
 
         <div class="input-group">
-          <label>Digite sua senha</label>
-          <input type="password" v-model="password" required />
-        </div>
-        <!-- fazer lógica de verificação de senhas que devem ser iguais -->
-        <div class="input-group">
-          <label>Digite sua senha novamente</label>
+          <label>Senha</label>
           <input type="password" v-model="password" required />
         </div>
 
-        <button>Cadastrar</button>
+        <div class="input-group">
+          <label>Confirmar senha</label>
+          <input type="password" v-model="confirmPassword" required />
+        </div>
+
+        <button class="button">Cadastrar</button>
       </form>
 
       <div class="login-redirect">
@@ -62,16 +62,16 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 80vh;
-  background-color: #f4f4f8;
+  height: 100vh;
+  background-image: linear-gradient(160deg, #a7f7dc, #33af90, #0d684c);
 }
 
 .cadastro-box {
   /* justify-content: center; */
   padding: 2rem;
   background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 30px;
+  box-shadow: 10px 10px 6px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 400px;
 }
@@ -105,11 +105,11 @@ input {
   width: 100%;
   padding: 0.6rem;
   border: 1px solid #ccc;
-  border-radius: 8px;
+  border-radius: 10px;
   box-sizing: border-box; /* Garante que o padding não aumente a largura total */
 }
 
-button {
+.button {
   width: 100%;
   padding: 0.6rem;
   border: none;
@@ -117,30 +117,30 @@ button {
   color: white;
   font-size: 1rem;
   font-weight: bold;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
   transition: background-color 0.3s;
+  margin-top: 1rem;
 }
 
-button:hover {
+.button:hover {
   background-color: #0d8668a2;
 }
 
 .login-redirect {
   text-align: center;
   margin-top: 1.5rem;
-  margin-bottom: 1rem;
 }
 
 .login-redirect a {
   color: #0d8668;
   padding: 0;
   font-size: 0.97em;
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 .login-redirect a:hover {
   color: #0d8668a2;
-  text-decoration: none;
+  text-decoration: underline;
 }
 </style>

@@ -17,7 +17,7 @@
 
           <div class="redireciona-esqueceu-senha">
             <router-link to="/esqueceu-sua-senha"
-              >Esqueceu sua senha</router-link
+              >Esqueceu sua senha?</router-link
             >
           </div>
         </div>
@@ -48,6 +48,7 @@ export default {
   methods: {
     fazerLogin() {
       // Testando no console do navegador
+      // aqui faz chamada para backend
       console.log("Dados para login:", {
         email: this.email,
         password: this.password,
@@ -89,9 +90,9 @@ h2 {
 
 h4 {
   text-align: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   color: #333;
-  font-size: 1rem;
+  font-size: 0.9rem;
 }
 
 .input-group {
@@ -110,7 +111,7 @@ input {
   width: 100%;
   padding: 0.6rem;
   border: 1px solid #ccc;
-  border-radius: 8px;
+  border-radius: 10px;
   box-sizing: border-box; /* Garante que o padding não aumente a largura total */
 }
 
@@ -122,7 +123,7 @@ input {
   color: white;
   font-size: 1rem;
   font-weight: bold;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
@@ -148,12 +149,12 @@ input {
 .redireciona-esqueceu-senha a {
   color: #0d8668;
   padding: 0;
-  font-size: 0.97em;
-  text-decoration: underline;
+  font-size: 0.9em;
+  text-decoration: none;
 }
 
 .redireciona-esqueceu-senha a:hover {
   color: #0d8668a2;
-  text-decoration: none;
+  text-decoration: underline;
 }
 </style>
