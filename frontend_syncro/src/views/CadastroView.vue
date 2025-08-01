@@ -1,13 +1,16 @@
 <template>
-  <div class="cadastro">
+  <div class="bg-padrao">
     <div class="cadastro-box">
-      <h2>Cadastro Syncro</h2>
+      <img
+        alt="Syncro logo"
+        src="../assets/syncro_logo.png"
+        height="65"
+        width="120"
+      />
+      <h2>Crie sua conta</h2>
 
       <form @submit.prevent="fazerCadastro">
-        <div class="input-group">
-          <label>Nome completo</label>
-          <input type="text" v-model="name" required />
-        </div>
+        <InputNome v-model:name="name" />
 
         <InputEmail v-model:email="email" />
 
@@ -18,7 +21,7 @@
           :showConfirmacao="true"
         />
 
-        <button type="submit" class="button">Cadastrar</button>
+        <BotaoCustomizado texto="Cadastrar" type="submit" />
       </form>
 
       <div class="login-redirect">
@@ -31,11 +34,15 @@
 <script>
 import InputSenha from "@/components/InputSenha.vue";
 import InputEmail from "@/components/InputEmail.vue";
+import InputNome from "@/components/InputNome.vue";
+import BotaoCustomizado from "@/components/BotaoCustomizado.vue";
 export default {
   name: "CadastroView",
   components: {
     InputSenha,
     InputEmail,
+    InputNome,
+    BotaoCustomizado,
   },
   data() {
     return {
@@ -74,78 +81,26 @@ export default {
 
 <style scoped>
 /* O "scoped" faz com que este CSS só se aplique a este componente */
-.cadastro {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-image: linear-gradient(160deg, #a7f7dc, #33af90, #0d684c);
-}
 
 .cadastro-box {
-  /* justify-content: center; */
+  justify-content: center;
   padding: 2rem;
   background-color: white;
   border-radius: 30px;
   box-shadow: 10px 10px 6px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 400px;
+  max-height: 480px;
 }
 
-h2 {
-  text-align: center;
-  margin-bottom: 1.5rem;
-  color: #333;
-}
-
-h4 {
-  text-align: center;
-  margin-bottom: 1.5rem;
-  color: #333;
-  font-size: 1rem;
-}
-
-.input-group {
-  margin-bottom: 1rem;
-}
-
-label {
-  text-align: left;
-  display: block;
-  margin-bottom: 0.5rem;
-  color: #555;
-  font-weight: bold;
-}
-
-input {
-  width: 100%;
-  padding: 0.6rem;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  box-sizing: border-box; /* Garante que o padding não aumente a largura total */
-}
-
-.button {
-  width: 100%;
-  padding: 0.6rem;
-  border: none;
-  background-color: #0d8668;
-  color: white;
-  font-size: 1rem;
-  font-weight: bold;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background-color 0.3s;
+/* .button {
   margin-top: 1rem;
-}
-
-.button:hover {
-  background-color: #10a075cb;
-}
+} */
 
 .login-redirect {
   text-align: center;
-  margin-top: 1.5rem;
+  margin-top: 1.2rem;
+  margin-bottom: -0.6rem;
 }
 
 .login-redirect a {
@@ -166,5 +121,10 @@ input {
   margin-top: -0.5rem;
   font-style: italic;
   color: red;
+}
+
+img {
+  margin-top: -0.7rem;
+  margin-bottom: -0.2rem;
 }
 </style>

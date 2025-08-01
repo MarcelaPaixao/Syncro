@@ -1,7 +1,13 @@
 <template>
-  <div class="login">
+  <div class="bg-padrao">
     <div class="login-box">
-      <h2>Login Syncro</h2>
+      <img
+        alt="Syncro logo"
+        src="../assets/syncro_logo.png"
+        height="65"
+        width="120"
+      />
+      <h2>Login</h2>
 
       <form @submit.prevent="fazerLogin">
         <InputEmail v-model:email="email" />
@@ -14,15 +20,17 @@
           >
         </div>
 
-        <button class="button">Entrar</button>
+        <BotaoCustomizado texto="Entrar" type="submit" />
       </form>
 
       <div class="register-redirect">
         <h4>Novo no Syncro?</h4>
 
-        <button @click="redirecionaCadastrar" class="button" id="cadastro-btn">
-          Cadastre-se
-        </button>
+        <BotaoCustomizado
+          texto="Cadastre-se"
+          variante="secundaria"
+          @click="redirecionaCadastrar"
+        />
       </div>
     </div>
   </div>
@@ -31,11 +39,13 @@
 <script>
 import InputSenha from "@/components/InputSenha.vue";
 import InputEmail from "@/components/InputEmail.vue";
+import BotaoCustomizado from "@/components/BotaoCustomizado.vue";
 export default {
   name: "LoginView",
   components: {
     InputSenha,
     InputEmail,
+    BotaoCustomizado,
   },
   data() {
     return {
@@ -62,16 +72,9 @@ export default {
 
 <style scoped>
 /* O "scoped" faz com que este CSS só se aplique a este componente */
-.login {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-image: linear-gradient(160deg, #a7f7dc, #33af90, #0d684c);
-}
 
 .login-box {
-  /* justify-content: center; */
+  justify-content: center;
   padding: 2rem;
   background-color: white;
   border-radius: 30px;
@@ -80,63 +83,16 @@ export default {
   max-width: 400px;
 }
 
-h2 {
-  text-align: center;
-  margin-bottom: 1.5rem;
-  color: #333;
-}
-
 h4 {
   text-align: center;
   margin-bottom: 1rem;
   color: #333;
-  font-size: 0.9rem;
+  font-size: 0.94rem;
 }
 
-.input-group {
-  margin-bottom: 1rem;
-}
+/* .button {
 
-label {
-  text-align: left;
-  display: block;
-  margin-bottom: 0.5rem;
-  color: #555;
-  font-weight: bold;
-}
-
-input {
-  width: 100%;
-  padding: 0.6rem;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  box-sizing: border-box; /* Garante que o padding não aumente a largura total */
-}
-
-.button {
-  width: 100%;
-  padding: 0.6rem;
-  border: none;
-  background-color: #0d8668;
-  color: white;
-  font-size: 1rem;
-  font-weight: bold;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.button:hover {
-  background-color: #10a075cb;
-}
-
-#cadastro-btn {
-  background-color: rgb(101, 165, 146);
-}
-
-#cadastro-btn:hover {
-  background-color: rgba(124, 202, 174, 0.938);
-}
+} */
 
 .redireciona-esqueceu-senha {
   text-align: left;
@@ -154,5 +110,10 @@ input {
 .redireciona-esqueceu-senha a:hover {
   color: #0d8668a2;
   text-decoration: underline;
+}
+
+img {
+  margin-top: -0.7rem;
+  margin-bottom: -0.2rem;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="redefinir-senha">
+  <div class="bg-padrao">
     <div class="redefinir-senha-box">
       <h2>Redefinir senha</h2>
       <form @submit.prevent="redefineSenha">
@@ -10,7 +10,7 @@
           :showConfirmacao="true"
         />
 
-        <button type="submit" class="button">Redefinir</button>
+        <BotaoCustomizado texto="Redefinir" type="submit" />
       </form>
     </div>
   </div>
@@ -18,10 +18,12 @@
 
 <script>
 import InputSenha from "@/components/InputSenha.vue";
+import BotaoCustomizado from "@/components/BotaoCustomizado.vue";
 export default {
   name: "RedefinirSenhaView",
   components: {
     InputSenha,
+    BotaoCustomizado,
   },
   watch: {
     password() {
@@ -57,39 +59,19 @@ export default {
 </script>
 
 <style scoped>
-.redefinir-senha {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-image: linear-gradient(160deg, #a7f7dc, #33af90, #0d684c);
-}
-
 .redefinir-senha-box {
-  /* justify-content: center; */
+  justify-content: center;
   padding: 2rem;
   background-color: white;
   border-radius: 30px;
   box-shadow: 10px 10px 6px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 400px;
+  max-height: 250px;
 }
 
-.button {
-  width: 100%;
-  padding: 0.6rem;
-  border: none;
-  background-color: #0d8668;
-  color: white;
-  font-size: 1rem;
-  font-weight: bold;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background-color 0.3s;
+/* .button {
   margin-top: 1rem;
-}
-
-.button:hover {
-  background-color: #10a075cb;
-}
+  margin-bottom: 0.5rem;
+} */
 </style>

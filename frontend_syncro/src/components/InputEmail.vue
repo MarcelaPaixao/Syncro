@@ -20,23 +20,7 @@ defineEmits(["update:email"]);
 </script>
 
 <style scoped>
-label {
-  text-align: left;
-  display: block;
-  margin-bottom: 0.5rem;
-  color: #555;
-  font-weight: bold;
-}
-
 .input-group {
-  margin-bottom: 1rem;
-}
-
-input {
-  width: 100%;
-  padding: 0.6rem;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  box-sizing: border-box; /* Garante que o padding não aumente a largura total */
+  margin-bottom: 0.8rem;
 }
 </style>

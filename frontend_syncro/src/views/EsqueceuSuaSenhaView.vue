@@ -1,12 +1,12 @@
 <template>
-  <div class="esqueceu-sua-senha">
+  <div class="bg-padrao">
     <div class="validar-email-box">
       <h2>Redefinir senha</h2>
 
-      <p>Digite o email associado à sua conta</p>
+      <h4>Digite o email associado à sua conta</h4>
       <form @submit.prevent="validarEmail">
         <InputEmail v-model:email="email" />
-        <button type="submit" class="button">Enviar</button>
+        <BotaoCustomizado texto="Enviar" type="submit" />
       </form>
       <p v-if="emailError" class="error-message">
         {{ emailError }}
@@ -17,10 +17,12 @@
 
 <script>
 import InputEmail from "@/components/InputEmail.vue";
+import BotaoCustomizado from "@/components/BotaoCustomizado.vue";
 export default {
   name: "EsqueceuSuaSenhaView",
   components: {
     InputEmail,
+    BotaoCustomizado,
   },
   watch: {
     email() {
@@ -49,49 +51,24 @@ export default {
 </script>
 
 <style scoped>
-.esqueceu-sua-senha {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-image: linear-gradient(160deg, #a7f7dc, #33af90, #0d684c);
-}
-
 .validar-email-box {
-  /* justify-content: center; */
+  justify-content: center;
   padding: 2rem;
   background-color: white;
   border-radius: 30px;
   box-shadow: 10px 10px 6px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 400px;
+  min-height: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-input {
-  width: 100%;
-  padding: 0.6rem;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  box-sizing: border-box; /* Garante que o padding não aumente a largura total */
-}
-
-.button {
-  width: 100%;
-  padding: 0.6rem;
-  border: none;
-  background-color: #0d8668;
-  color: white;
-  font-size: 1rem;
-  font-weight: bold;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background-color 0.3s;
+/* .button {
   margin-top: 1rem;
-}
-
-.button:hover {
-  background-color: #10a075cb;
-}
+  margin-bottom: 0.5rem;
+} */
 
 .error-message {
   text-align: left;
@@ -101,7 +78,8 @@ input {
   color: red;
 }
 
-p {
+p,
+h4 {
   text-align: left;
 }
 </style>
