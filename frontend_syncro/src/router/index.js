@@ -3,6 +3,7 @@ import HomeView from "../views/HomeView.vue";
 import LoginView from "../views/LoginView.vue";
 import CadastroView from "../views/CadastroView.vue";
 import EsqueceuSuaSenhaView from "../views/EsqueceuSuaSenhaView.vue";
+import RedefinirSenhaView from "../views/RedefinirSenhaView.vue";
 
 const routes = [
   {
@@ -33,6 +34,11 @@ const routes = [
     path: "/esqueceu-sua-senha",
     name: "esqueceu-sua-senha",
     component: EsqueceuSuaSenhaView,
+  },
+  {
+    path: "/redefinir-senha",
+    name: "redefinir-senha",
+    component: RedefinirSenhaView,
   },
 ];
 

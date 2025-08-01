@@ -37,6 +37,7 @@
   "eslintConfig": {
     "root": true,
     "env": {
+      "vue/setup-compiler-macros": true,
       "node": true
     },
     "extends": [

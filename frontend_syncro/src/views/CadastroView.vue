@@ -9,15 +9,13 @@
           <input type="text" v-model="name" required />
         </div>
 
-        <div class="input-group">
-          <label>Email</label>
-          <input type="email" v-model="email" required />
-        </div>
+        <InputEmail v-model:email="email" />
 
-        <Senha
+        <InputSenha
           v-model:password="password"
           v-model:confirmPassword="confirmPassword"
           :passwordError="passwordError"
+          :showConfirmacao="true"
         />
 
         <button type="submit" class="button">Cadastrar</button>
@@ -31,11 +29,13 @@
 </template>
 
 <script>
-import Senha from "@/components/Senha.vue";
+import InputSenha from "@/components/InputSenha.vue";
+import InputEmail from "@/components/InputEmail.vue";
 export default {
   name: "CadastroView",
   components: {
-    Senha,
+    InputSenha,
+    InputEmail,
   },
   data() {
     return {

@@ -4,22 +4,14 @@
       <h2>Login Syncro</h2>
 
       <form @submit.prevent="fazerLogin">
-        <div class="input-group">
-          <label>Email</label>
-          <input type="email" v-model="email" required />
-        </div>
+        <InputEmail v-model:email="email" />
 
-        <div class="password-group">
-          <div class="input-group">
-            <label>Senha</label>
-            <input type="password" v-model="password" required />
-          </div>
+        <InputSenha v-model:password="password" />
 
-          <div class="redireciona-esqueceu-senha">
-            <router-link to="/esqueceu-sua-senha"
-              >Esqueceu sua senha?</router-link
-            >
-          </div>
+        <div class="redireciona-esqueceu-senha">
+          <router-link to="/esqueceu-sua-senha"
+            >Esqueceu sua senha?</router-link
+          >
         </div>
 
         <button class="button">Entrar</button>
@@ -37,8 +29,14 @@
 </template>
 
 <script>
+import InputSenha from "@/components/InputSenha.vue";
+import InputEmail from "@/components/InputEmail.vue";
 export default {
   name: "LoginView",
+  components: {
+    InputSenha,
+    InputEmail,
+  },
   data() {
     return {
       email: "",
