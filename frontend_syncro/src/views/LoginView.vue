@@ -3,7 +3,7 @@
     <div class="login-box">
       <img
         alt="Syncro logo"
-        src="../assets/syncro_logo.png"
+        src="../assets/syncro_logo_verde.png"
         height="65"
         width="120"
       />
@@ -74,13 +74,13 @@ export default {
 /* O "scoped" faz com que este CSS só se aplique a este componente */
 
 .login-box {
-  justify-content: center;
   padding: 2rem;
   background-color: white;
   border-radius: 30px;
   box-shadow: 10px 10px 6px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 400px;
+  max-height: 470px;
 }
 
 h4 {
@@ -90,10 +90,6 @@ h4 {
   font-size: 0.94rem;
 }
 
-/* .button {
-
-} */
-
 .redireciona-esqueceu-senha {
   text-align: left;
   margin-top: -0.5rem;
@@ -101,14 +97,14 @@ h4 {
 }
 
 .redireciona-esqueceu-senha a {
-  color: #0d8668;
+  color: #077a7d;
   padding: 0;
   font-size: 0.92em;
   text-decoration: none;
 }
 
 .redireciona-esqueceu-senha a:hover {
-  color: #0d8668a2;
+  color: #0ca4aad4;
   text-decoration: underline;
 }
 

@@ -14,7 +14,8 @@ defineEmits(["click"]);
 
 <style scoped>
 button {
-  width: 100%;
+  width: 250px;
+  height: 40px;
   padding: 0.6rem;
   border: none;
   color: white;
@@ -23,23 +24,21 @@ button {
   border-radius: 10px;
   cursor: pointer;
   transition: 0.2s;
-  margin-top: 1rem;
-  margin-bottom: 0.5rem;
 }
 
 .principal {
-  background-color: #0d8668;
+  background-color: #077a7d;
 }
 
 .principal:hover {
-  background-color: #10a075cb;
+  background-color: #0ca4aad4;
 }
 
 .secundaria {
-  background-color: rgb(101, 165, 146);
+  background-color: #5fbbc1;
 }
 
 .secundaria:hover {
-  background-color: rgba(124, 202, 174, 0.938);
+  background-color: rgba(119, 204, 204, 0.892);
 }
 </style>

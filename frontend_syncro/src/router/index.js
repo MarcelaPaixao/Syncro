@@ -4,6 +4,8 @@ import LoginView from "../views/LoginView.vue";
 import CadastroView from "../views/CadastroView.vue";
 import EsqueceuSuaSenhaView from "../views/EsqueceuSuaSenhaView.vue";
 import RedefinirSenhaView from "../views/RedefinirSenhaView.vue";
+import CriarNovoGrupoView from "@/views/CriarNovoGrupoView.vue";
+import PerfilUsuarioView from "@/views/PerfilUsuarioView.vue";
 
 const routes = [
   // {
@@ -13,6 +15,10 @@ const routes = [
   // },
   {
     path: "/",
+    redirect: "/login",
+  },
+  {
+    path: "/login",
     name: "login",
     component: LoginView,
   },
@@ -30,6 +36,16 @@ const routes = [
     path: "/redefinir-senha",
     name: "redefinir-senha",
     component: RedefinirSenhaView,
+  },
+  {
+    path: "/criar-grupo",
+    name: "criar-grupo",
+    component: CriarNovoGrupoView,
+  },
+  {
+    path: "/perfil-usuario",
+    name: "perfil-usuario",
+    component: PerfilUsuarioView,
   },
 ];
 

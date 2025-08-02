@@ -3,7 +3,7 @@
     <div class="cadastro-box">
       <img
         alt="Syncro logo"
-        src="../assets/syncro_logo.png"
+        src="../assets/syncro_logo_verde.png"
         height="65"
         width="120"
       />
@@ -90,12 +90,8 @@ export default {
   box-shadow: 10px 10px 6px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 400px;
-  max-height: 480px;
+  max-height: 470px;
 }
-
-/* .button {
-  margin-top: 1rem;
-} */
 
 .login-redirect {
   text-align: center;
@@ -104,14 +100,14 @@ export default {
 }
 
 .login-redirect a {
-  color: #0d8668;
+  color: #077a7d;
   padding: 0;
   font-size: 0.97em;
   text-decoration: none;
 }
 
 .login-redirect a:hover {
-  color: #0d8668a2;
+  color: #0ca4aad4;
   text-decoration: underline;
 }
 
