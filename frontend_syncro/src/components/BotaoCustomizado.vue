@@ -24,6 +24,7 @@ button {
   border-radius: 10px;
   cursor: pointer;
   transition: 0.2s;
+  margin-top: 10px;
 }
 
 .principal {

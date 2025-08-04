@@ -18,4 +18,27 @@
 
 <script setup></script>
 
-<style scoped></style>
+<style>
+header {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background-color: #077a7d;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  margin-bottom: 1rem;
+}
+
+.logo-container img {
+  height: 45px;
+}
+
+.icon-container {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.icon-container img {
+  height: 35px;
+}
+</style>

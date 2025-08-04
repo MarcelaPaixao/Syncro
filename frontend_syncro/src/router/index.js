@@ -6,6 +6,7 @@ import EsqueceuSuaSenhaView from "../views/EsqueceuSuaSenhaView.vue";
 import RedefinirSenhaView from "../views/RedefinirSenhaView.vue";
 import CriarNovoGrupoView from "@/views/CriarNovoGrupoView.vue";
 import PerfilUsuarioView from "@/views/PerfilUsuarioView.vue";
+import CriarTarefaView from "@/views/CriarTarefaView.vue";
 
 const routes = [
   // {
@@ -46,6 +47,11 @@ const routes = [
     path: "/perfil-usuario",
     name: "perfil-usuario",
     component: PerfilUsuarioView,
+  },
+  {
+    path: "/criar-tarefa",
+    name: "criar-tarefa",
+    component: CriarTarefaView,
   },
 ];
 

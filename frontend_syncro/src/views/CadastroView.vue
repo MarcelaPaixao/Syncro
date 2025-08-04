@@ -81,7 +81,6 @@ export default {
 
 <style scoped>
 /* O "scoped" faz com que este CSS só se aplique a este componente */
-
 .cadastro-box {
   justify-content: center;
   padding: 2rem;
@@ -96,7 +95,7 @@ export default {
 .login-redirect {
   text-align: center;
   margin-top: 1.2rem;
-  margin-bottom: -0.6rem;
+  /* margin-bottom: -0.6rem; */
 }
 
 .login-redirect a {
@@ -114,7 +113,6 @@ export default {
 .error-message {
   text-align: left;
   font-size: 0.9rem;
-  margin-top: -0.5rem;
   font-style: italic;
   color: red;
 }

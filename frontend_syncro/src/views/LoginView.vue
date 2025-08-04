@@ -72,7 +72,6 @@ export default {
 
 <style scoped>
 /* O "scoped" faz com que este CSS só se aplique a este componente */
-
 .login-box {
   padding: 2rem;
   background-color: white;
@@ -88,18 +87,19 @@ h4 {
   margin-bottom: 1rem;
   color: #333;
   font-size: 0.94rem;
+  margin-bottom: 10px;
 }
 
 .redireciona-esqueceu-senha {
   text-align: left;
-  margin-top: -0.5rem;
-  margin-bottom: 1.5rem;
+  margin-top: -0.3rem;
+  margin-bottom: 1rem;
 }
 
 .redireciona-esqueceu-senha a {
   color: #077a7d;
   padding: 0;
-  font-size: 0.92em;
+  font-size: 0.95em;
   text-decoration: none;
 }
 

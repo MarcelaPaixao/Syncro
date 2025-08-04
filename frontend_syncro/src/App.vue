@@ -16,19 +16,6 @@
   color: #2c3e50;
 }
 
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
-}
-
 .bg-padrao {
   display: flex;
   justify-content: center;
@@ -39,7 +26,6 @@ nav a.router-link-exact-active {
 
 h2 {
   text-align: center;
-  margin-bottom: 1.5rem;
   color: #333;
   font-size: 1.3rem;
 }
@@ -58,35 +44,5 @@ input {
   border: 1px solid #ccc;
   border-radius: 10px;
   box-sizing: border-box; /* Garante que o padding não aumente a largura total */
-}
-
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  background-color: #077a7d;
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
-  box-shadow: 10px 10px 6px rgba(0, 0, 0, 0.1);
-  margin-bottom: 1rem;
-}
-
-.logo-container {
-  display: flex;
-  align-items: center;
-}
-.logo-container img {
-  height: 45px;
-}
-
-.icon-container {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-}
-
-.icon-container img {
-  height: 35px;
 }
 </style>
