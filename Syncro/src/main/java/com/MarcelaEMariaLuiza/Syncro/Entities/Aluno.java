@@ -126,4 +126,8 @@ public class Aluno implements UserDetails {
     public String getUsername() {
         return email;
     }
+
+    public boolean estaEmGrupoAluno(Grupo grupo){
+        return this.grupos.contains(grupo);
+    } 
 }

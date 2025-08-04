@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import com.MarcelaEMariaLuiza.Syncro.DTO.CreateGrupoDTO;
 import com.MarcelaEMariaLuiza.Syncro.Entities.Aluno;
@@ -55,7 +54,7 @@ public class GrupoService {
      * @throws CampoNaoPreenchidoException Se campos essenciais como nome, professor, matéria ou a lista de membros não forem fornecidos.
      */
     @Transactional
-    public Grupo criaGrupo(@RequestBody CreateGrupoDTO createGrupoDTO, Object criador){
+    public Grupo criaGrupo(CreateGrupoDTO createGrupoDTO, Object criador){
         
         Aluno criador1 = (Aluno)criador;
         if(createGrupoDTO.getNome().isEmpty() || createGrupoDTO.getNome() == null ||
@@ -70,16 +69,14 @@ public class GrupoService {
 
         Grupo novoGrupo = new Grupo(createGrupoDTO.getNome(), createGrupoDTO.getProfessor(), createGrupoDTO.getMateria(), createGrupoDTO.getPrazo(),
         createGrupoDTO.getDescricao());
-        List <Aluno> alunos = new ArrayList<>();
-        grupoRepository.save(novoGrupo);
-        criador1.adicionaGrupo(novoGrupo);
-        alunoRepository.save(criador1);
+        createGrupoDTO.getMembros().add(criador1.getEmail());
         for(String email: createGrupoDTO.getMembros()){
             Aluno aluno = alunoRepository.findByEmail(email);
             if(aluno==null) continue;
             aluno.adicionaGrupo(novoGrupo);
 
         }
+        grupoRepository.save(novoGrupo);
         return novoGrupo;     
     }
     /**
@@ -113,4 +110,5 @@ public class GrupoService {
        }
      return grupos;
     }
+    
 }

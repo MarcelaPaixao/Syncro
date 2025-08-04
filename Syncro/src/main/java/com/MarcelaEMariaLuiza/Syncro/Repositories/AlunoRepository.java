@@ -36,4 +36,7 @@ public interface AlunoRepository extends JpaRepository<Aluno, Long> {
     @Query("SELECT a FROM Aluno a JOIN a.grupos g WHERE g.id = :idDoGrupo")
     List<Aluno> FindByGrupos(@Param("idDoGrupo") Long idDoGrupo);
 
+    @Query("SELECT COUNT (a) FROM Aluno a JOIN a.grupos g WHERE g.id = :grupoId")
+    int countGrupoMembers(@Param("grupoId") Long grupoId);
+
 }

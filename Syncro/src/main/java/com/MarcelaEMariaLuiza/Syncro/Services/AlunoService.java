@@ -1,4 +1,8 @@
 package com.MarcelaEMariaLuiza.Syncro.Services;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,12 +12,16 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.MarcelaEMariaLuiza.Syncro.DTO.AlunosResponseDTO;
 import com.MarcelaEMariaLuiza.Syncro.DTO.LoginDTO;
 import com.MarcelaEMariaLuiza.Syncro.Entities.Aluno;
+import com.MarcelaEMariaLuiza.Syncro.Entities.Grupo;
 import com.MarcelaEMariaLuiza.Syncro.Errors.CampoNaoPreenchidoException;
 import com.MarcelaEMariaLuiza.Syncro.Errors.EmailExistenteException;
+import com.MarcelaEMariaLuiza.Syncro.Errors.GrupoInexistenteException;
 import com.MarcelaEMariaLuiza.Syncro.Errors.SenhaIncorretaException;
 import com.MarcelaEMariaLuiza.Syncro.Repositories.AlunoRepository;
+import com.MarcelaEMariaLuiza.Syncro.Repositories.GrupoRepository;
 
 /**
  * Serviço responsável pela lógica de negócio de Alunos e pela integração com o Spring Security.
@@ -29,12 +37,15 @@ import com.MarcelaEMariaLuiza.Syncro.Repositories.AlunoRepository;
  */
 @Service
 public class AlunoService implements UserDetailsService{
+ 
     private final AlunoRepository alunoRepository;
-
+   
+    private final GrupoRepository grupoRepository;
+    
     @Autowired
-    public AlunoService(AlunoRepository alunoRepository){
+    public AlunoService(AlunoRepository alunoRepository, GrupoRepository grupoRepository){
         this.alunoRepository = alunoRepository;
-        
+        this.grupoRepository = grupoRepository;
     }
 
     /**
@@ -112,5 +123,24 @@ public class AlunoService implements UserDetailsService{
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
+    }
+
+    public List<AlunosResponseDTO> getAlunosGrupo(Long GrupoId){
+        
+        Optional<Grupo> g  = grupoRepository.findById(GrupoId);
+        if(!g.isPresent()) throw new GrupoInexistenteException("Grupo inválido. Não é possível retornar a lista");
+        Grupo grupo = g.get();
+        List <Aluno> alunos = alunoRepository.FindByGrupos(GrupoId); 
+
+        List <AlunosResponseDTO> alunosFormatados = new ArrayList<>();
+        for(Aluno a: alunos){
+            AlunosResponseDTO alunoResponse = new AlunosResponseDTO();
+            alunoResponse.setNome(a.getNome());
+            alunoResponse.setEmail(a.getEmail());
+            alunosFormatados.add(alunoResponse);
+        }
+
+        return alunosFormatados;
+
     }
 }

@@ -17,6 +17,7 @@ import com.MarcelaEMariaLuiza.Syncro.Errors.GrupoInexistenteException;
 import com.MarcelaEMariaLuiza.Syncro.Repositories.AlunoRepository;
 import com.MarcelaEMariaLuiza.Syncro.Repositories.GrupoRepository;
 import com.MarcelaEMariaLuiza.Syncro.Repositories.TarefaRepository;
+import com.MarcelaEMariaLuiza.Syncro.enums.TarefaStatus;
 
 /**
  * Classe de serviço responsável pela lógica de negócio das tarefas.
@@ -66,6 +67,7 @@ public class TarefaService{
         tarefa.setPrazo(createTarefaDTO.getPrazo());
         tarefa.setLinkDrive(createTarefaDTO.getLinkDrive());
         tarefa.setLinkDrive(createTarefaDTO.getLinkExtra());
+        tarefa.setStatus(TarefaStatus.TODO);
         
         Optional<Grupo> novoGrupo = grupoRepository.findById(createTarefaDTO.getGrupoId());
         if(!novoGrupo.isPresent()) throw new GrupoInexistenteException("Grupo inválido");
@@ -76,6 +78,7 @@ public class TarefaService{
         Optional<Aluno> novoAluno = alunoRepository.findById(createTarefaDTO.getAlunoId());
         if(novoGrupo.isPresent()){
             Aluno aluno  = novoAluno.get();
+            if(!aluno.estaEmGrupoAluno(grupo)) return null;
             tarefa.setAluno(aluno);
         }
         
@@ -145,4 +148,24 @@ public class TarefaService{
         }
        return tarefasFiltradas;
      }
+
+    public Tarefa EditaTarefa(CreateTarefaDTO createTarefaDTO){
+        int numMembros = alunoRepository.countGrupoMembers(createTarefaDTO.getGrupoId());
+        System.out.println(numMembros);
+        if(createTarefaDTO.getTitulo().isEmpty() || createTarefaDTO.getTitulo() == null 
+        || createTarefaDTO.getId() == null || createTarefaDTO.getGrupoId() == null || createTarefaDTO.getStatus()==null){
+            throw new IllegalArgumentException("Dados inválidos. Tarefa não encontrada");
+        }
+        Optional<Tarefa> t = tarefaRepository.findById(createTarefaDTO.getId());
+        if(!t.isPresent()) throw new RuntimeException("Tarefa inexistente");
+        Tarefa tarefa = t.get(); 
+
+        if(createTarefaDTO.getStatus()!=TarefaStatus.DONE){
+            tarefa.setStatus(createTarefaDTO.getStatus());
+        }{
+            //int numMembros = alunoRepository.countGrupoMembers(createTarefaDTO.getGrupoId());
+
+        }
+        return null;
+    }
 }
