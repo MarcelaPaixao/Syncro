@@ -5,7 +5,7 @@
 
       <h4>Digite o email associado à sua conta</h4>
       <form @submit.prevent="validarEmail">
-        <InputEmail v-model:email="email" />
+        <InputString v-model:email="email" tipo="email" rotulo="Email" />
         <BotaoCustomizado texto="Enviar" type="submit" />
       </form>
       <p v-if="emailError" class="error-message">
@@ -16,12 +16,12 @@
 </template>
 
 <script>
-import InputEmail from "@/components/InputEmail.vue";
+import InputString from "@/components/InputString.vue";
 import BotaoCustomizado from "@/components/BotaoCustomizado.vue";
 export default {
   name: "EsqueceuSuaSenhaView",
   components: {
-    InputEmail,
+    InputString,
     BotaoCustomizado,
   },
   watch: {

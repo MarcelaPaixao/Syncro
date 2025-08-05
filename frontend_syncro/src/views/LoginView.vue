@@ -10,7 +10,15 @@
       <h2>Login</h2>
 
       <form @submit.prevent="fazerLogin">
-        <InputEmail v-model:email="email" />
+        <!-- <InputEmail v-model:email="email" /> -->
+        <!-- <InputString v-model="name" rotulo="Nome completo" tipo="text" /> -->
+
+        <InputString
+          v-model="email"
+          rotulo="Email"
+          tipo="email"
+          placeholder="seu@email.com"
+        />
 
         <InputSenha v-model:password="password" />
 
@@ -38,14 +46,16 @@
 
 <script>
 import InputSenha from "@/components/InputSenha.vue";
-import InputEmail from "@/components/InputEmail.vue";
+// import InputEmail from "@/components/InputEmail.vue";
+import InputString from "@/components/InputString.vue";
 import BotaoCustomizado from "@/components/BotaoCustomizado.vue";
 export default {
   name: "LoginView",
   components: {
     InputSenha,
-    InputEmail,
+    // InputEmail,
     BotaoCustomizado,
+    InputString,
   },
   data() {
     return {

@@ -10,9 +10,9 @@
       <h2>Crie sua conta</h2>
 
       <form @submit.prevent="fazerCadastro">
-        <InputNome v-model:name="name" />
+        <InputString v-model:name="name" tipo="text" rotulo="Nome completo" />
 
-        <InputEmail v-model:email="email" />
+        <InputString v-model:email="email" tipo="email" rotulo="Email" />
 
         <InputSenha
           v-model:password="password"
@@ -33,15 +33,13 @@
 
 <script>
 import InputSenha from "@/components/InputSenha.vue";
-import InputEmail from "@/components/InputEmail.vue";
-import InputNome from "@/components/InputNome.vue";
+import InputString from "@/components/InputString.vue";
 import BotaoCustomizado from "@/components/BotaoCustomizado.vue";
 export default {
   name: "CadastroView",
   components: {
     InputSenha,
-    InputEmail,
-    InputNome,
+    InputString,
     BotaoCustomizado,
   },
   data() {
