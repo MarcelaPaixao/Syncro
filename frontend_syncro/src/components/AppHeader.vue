@@ -40,5 +40,10 @@ header {
 
 .icon-container img {
   height: 35px;
+  opacity: 1;
+}
+
+.icon-container img:hover {
+  opacity: 0.8;
 }
 </style>

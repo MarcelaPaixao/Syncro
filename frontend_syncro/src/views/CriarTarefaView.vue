@@ -102,7 +102,8 @@ input {
   font-size: 15px;
   background-color: rgb(216, 226, 225);
   box-shadow: 4px 6px 6px rgba(0, 0, 0, 0.173);
-  width: 700px;
+  border: 0.1px solid rgb(205, 213, 217);
+  width: 75%;
 }
 
 .nova-tarefa {
@@ -128,13 +129,24 @@ input {
 
 textarea {
   resize: none;
-  width: 700px;
+  width: 75%;
   height: 150px;
   border-radius: 10px;
-  border: 0px solid #acadad;
+  border: 0.1px solid rgb(205, 213, 217);
   font-family: Avenir, Helvetica, Arial, sans-serif;
   font-size: 15px;
   background-color: rgb(216, 226, 225);
   box-shadow: 4px 6px 6px rgba(0, 0, 0, 0.173);
+}
+
+select {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  background-color: rgb(216, 226, 225);
+  box-shadow: 4px 6px 6px rgba(0, 0, 0, 0.173);
+  border-radius: 10px;
+  border: 0.1px solid rgb(205, 213, 217);
+  padding: 0.6rem;
+  width: 75%;
 }
 </style>
