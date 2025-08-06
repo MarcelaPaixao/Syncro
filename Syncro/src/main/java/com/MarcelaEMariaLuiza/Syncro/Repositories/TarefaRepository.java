@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
 import com.MarcelaEMariaLuiza.Syncro.Entities.Tarefa;
 
 /**
@@ -33,4 +34,9 @@ public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
      */
     public List<Tarefa> findByAluno_id(Long alunoId);
 
+    @Query("SELECT COUNT (t) FROM Tarefa t where t.grupo.id = :grupoId")
+    public int qtdTarefasTotal(@Param("grupoId") Long grupoId);
+
+    @Query("SELECT COUNT (t) FROM Tarefa t WHERE t.grupo.id = :grupoId AND t.status = DONE")
+    public int qtdTarefasDone(@Param("grupoId") Long grupoId);
 }

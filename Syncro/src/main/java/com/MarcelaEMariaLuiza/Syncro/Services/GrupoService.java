@@ -11,8 +11,10 @@ import com.MarcelaEMariaLuiza.Syncro.DTO.CreateGrupoDTO;
 import com.MarcelaEMariaLuiza.Syncro.Entities.Aluno;
 import com.MarcelaEMariaLuiza.Syncro.Entities.Grupo;
 import com.MarcelaEMariaLuiza.Syncro.Errors.CampoNaoPreenchidoException;
+import com.MarcelaEMariaLuiza.Syncro.Errors.GrupoInexistenteException;
 import com.MarcelaEMariaLuiza.Syncro.Repositories.AlunoRepository;
 import com.MarcelaEMariaLuiza.Syncro.Repositories.GrupoRepository;
+import com.MarcelaEMariaLuiza.Syncro.Repositories.TarefaRepository;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -39,6 +41,9 @@ public class GrupoService {
 
     @Autowired
     private final AlunoRepository alunoRepository;
+
+    @Autowired
+    private final TarefaRepository tarefaRepository;
 
     /**
      * Cria um novo grupo, associa o criador e adiciona os membros convidados.
@@ -110,5 +115,20 @@ public class GrupoService {
        }
      return grupos;
     }
-    
+    @Transactional
+    public float getProgressoGrupo(Long grupoId){
+        
+        Optional<Grupo> g = grupoRepository.findById(grupoId);
+        if(g.isPresent() == false) throw new GrupoInexistenteException("Grupo Inválido");
+        Grupo grupo = g.get();
+
+        float tarefasTotais = tarefaRepository.qtdTarefasTotal(grupoId);
+        float tarefasDone = tarefaRepository.qtdTarefasDone(grupoId);
+
+        float progresso =(tarefasDone/tarefasTotais)*100;
+        int progressoRetorno = Math.round(progresso);
+
+        return progressoRetorno;
+        
+    }
 }

@@ -63,8 +63,8 @@ public class Feedback {
 
     /**
      * O aluno autor do feedback.
-     * A anotação {@code @MapsId} mapeia este feedback diretamente ao aluno
-     * correspondente.
+     * 
+     * 
      */
   
     @JoinColumn(name = "aluno_id")

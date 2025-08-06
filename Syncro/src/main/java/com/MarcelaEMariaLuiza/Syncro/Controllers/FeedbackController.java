@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.MarcelaEMariaLuiza.Syncro.DTO.CreateFeedbackDTO;
+import com.MarcelaEMariaLuiza.Syncro.DTO.EditFeedbackDTO;
 import com.MarcelaEMariaLuiza.Syncro.Entities.Feedback;
 import com.MarcelaEMariaLuiza.Syncro.Errors.CampoNaoPreenchidoException;
 import com.MarcelaEMariaLuiza.Syncro.Services.FeedbackService;
@@ -58,7 +59,7 @@ public class FeedbackController {
         try{
             Feedback feedback = feedbackService.createFeedback(createFeedbackDTO);
             if(feedback== null) return(ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Algum dos dados inseridos está inválido"));
-            return ResponseEntity.ok(feedback);
+            return ResponseEntity.ok(createFeedbackDTO);
         }catch (CampoNaoPreenchidoException e){
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }catch(Exception e){
@@ -66,9 +67,10 @@ public class FeedbackController {
         }
     }
     @PutMapping("/edita")
-    public ResponseEntity<?> editaFeedback(@RequestBody CreateFeedbackDTO createFeedbackDTO){
+    public ResponseEntity<?> editaFeedback(@RequestBody EditFeedbackDTO editFeedbackDTO){
         try{
-            return ResponseEntity.ok("Feedback editado");
+            feedbackService.EditaFeedback(editFeedbackDTO);
+            return ResponseEntity.ok(editFeedbackDTO);
         }catch(Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }

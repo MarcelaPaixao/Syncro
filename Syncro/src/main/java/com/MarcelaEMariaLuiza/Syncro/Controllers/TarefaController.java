@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.MarcelaEMariaLuiza.Syncro.DTO.CreateTarefaDTO;
+import com.MarcelaEMariaLuiza.Syncro.DTO.TarefaResponseDTO;
 import com.MarcelaEMariaLuiza.Syncro.Entities.Tarefa;
 import com.MarcelaEMariaLuiza.Syncro.Errors.CampoNaoPreenchidoException;
 import com.MarcelaEMariaLuiza.Syncro.Errors.GrupoInexistenteException;
@@ -67,10 +68,10 @@ public class TarefaController {
      * @return Uma lista de {@link CreateTarefaDTO} representando as tarefas do grupo, ou {@code null} em caso de erro.
      */
     @GetMapping("/get/grupo/{grupoId}")
-    public List<CreateTarefaDTO> getTarefasPorGrupo(@PathVariable Long grupoId){
+    public ResponseEntity<?> getTarefasPorGrupo(@PathVariable Long grupoId){
         try{
             List <CreateTarefaDTO> tarefas = tarefaService.getTarefasPorGrupo(grupoId);
-            return tarefas;
+            return ResponseEntity.ok(tarefas);
         }
         catch(Exception e){
             return null;
@@ -97,7 +98,7 @@ public class TarefaController {
 
 }
 
-@PutMapping("edita")
+@PutMapping("/edita")
     public ResponseEntity<?> editaTarefa(@RequestBody CreateTarefaDTO createTarefaDTO, Authentication authentication ){
         try{
           Tarefa tarefa = tarefaService.EditaTarefa(createTarefaDTO);
@@ -108,4 +109,17 @@ public class TarefaController {
         }
 
     }
+
+    @GetMapping("/get/avalia/{alunoId}")
+    public ResponseEntity<?> getTarefasAvaliarPorAluno(@PathVariable Long alunoId){
+        try{
+            List <TarefaResponseDTO> tarefas = tarefaService.getTarefasParaAvaliar(alunoId);
+            return ResponseEntity.ok(tarefas);
+        }
+        catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+           
+        }
+
+}
 }

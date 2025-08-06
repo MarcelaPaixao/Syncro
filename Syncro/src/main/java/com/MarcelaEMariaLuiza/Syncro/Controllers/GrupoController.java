@@ -76,21 +76,28 @@ public class GrupoController {
      * @return Uma lista de {@link CreateGrupoDTO} representando os grupos do aluno, ou {@code null} em caso de erro.
      */
     @GetMapping("/get/{alunoId}")
-    public List<CreateGrupoDTO> getGruposAluno(@PathVariable Long alunoId){
+    public ResponseEntity<?> getGruposAluno(@PathVariable Long alunoId){
         try{
-            System.out.println("entrou");
+            
             List <CreateGrupoDTO> grupos = grupoService.getGruposAluno(alunoId);
-            System.out.println(grupos);
-            return grupos;
+            return ResponseEntity.ok(grupos);
         }
         catch(Exception e){
-            System.out.println(e.getMessage());
-            return null;
-            //throw  new ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
-
-        
-        
-        
+     
     }
+
+    @GetMapping("/progresso/{grupoId}")
+    public ResponseEntity<?> getProgressoGrupo(@PathVariable Long grupoId){
+        try{
+            float progresso = grupoService.getProgressoGrupo(grupoId);
+            return ResponseEntity.ok(progresso);
+        }catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+        }
+    
+
 }

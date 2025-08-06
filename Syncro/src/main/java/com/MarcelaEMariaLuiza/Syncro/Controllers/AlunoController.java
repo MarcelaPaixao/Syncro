@@ -97,10 +97,10 @@ public class AlunoController {
        
     }
     @GetMapping("/get/{grupoId}")
-    public List<AlunosResponseDTO> getAlunosGrupo(@PathVariable Long grupoId){
+    public ResponseEntity<?> getAlunosGrupo(@PathVariable Long grupoId){
         try{
             List<AlunosResponseDTO> alunos =  alunoService.getAlunosGrupo(grupoId);
-            return alunos;
+            return ResponseEntity.ok(alunos);
         }catch(GrupoInexistenteException e){
             return null;
         }

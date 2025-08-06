@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.MarcelaEMariaLuiza.Syncro.DTO.CreateTarefaDTO;
+import com.MarcelaEMariaLuiza.Syncro.DTO.TarefaResponseDTO;
 import com.MarcelaEMariaLuiza.Syncro.Entities.Aluno;
 import com.MarcelaEMariaLuiza.Syncro.Entities.Grupo;
 import com.MarcelaEMariaLuiza.Syncro.Entities.Tarefa;
@@ -90,7 +91,6 @@ public class TarefaService{
         tarefaRepository.save(tarefa);
         grupo.adicionaNovaTarefa(tarefa);
         grupoRepository.save(grupo);
-        //List<Aluno> a = grupoRepository.findByGrupos_Id(grupo.getId());
         return tarefa;
     
     }
@@ -189,5 +189,27 @@ public class TarefaService{
         }
         tarefaRepository.save(tarefa);
         return null;
+    }
+
+    public List<TarefaResponseDTO> getTarefasParaAvaliar(Long alunoId){
+        List<Grupo> grupo = grupoRepository.findByAlunoId(alunoId);
+        List <Tarefa> tarefasGrupo = new ArrayList<>();
+        for(Grupo g: grupo){
+            tarefasGrupo.addAll(tarefaRepository.findByGrupo_id(g.getId()));
+        }
+        List <TarefaResponseDTO> tarefasParaAvaliacao = new ArrayList<>();
+        for(Tarefa t: tarefasGrupo){
+            if((t.getAluno().getId() != alunoId) && (t.getStatus()==TarefaStatus.REVIEW)){
+                if(feedbackRepository.FeedbackDado(alunoId, t.getId())==0){
+                    TarefaResponseDTO response = new TarefaResponseDTO();
+                    response.setId(t.getId());
+                    response.setTitulo(t.getTitulo());
+                    response.setDescricao(t.getDescricao());
+                    response.setAlunoNome(t.getAluno().getNome());
+                    tarefasParaAvaliacao.add(response);
+                }
+            }
+        }
+        return tarefasParaAvaliacao;
     }
 }
