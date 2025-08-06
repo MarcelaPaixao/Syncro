@@ -1,21 +1,25 @@
 package com.MarcelaEMariaLuiza.Syncro.Services;
 
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.MarcelaEMariaLuiza.Syncro.DTO.CreateFeedbackDTO;
+import com.MarcelaEMariaLuiza.Syncro.DTO.EditFeedbackDTO;
 import com.MarcelaEMariaLuiza.Syncro.Entities.Aluno;
 import com.MarcelaEMariaLuiza.Syncro.Entities.Feedback;
 import com.MarcelaEMariaLuiza.Syncro.Entities.Tarefa;
 import com.MarcelaEMariaLuiza.Syncro.Errors.CampoNaoPreenchidoException;
+import com.MarcelaEMariaLuiza.Syncro.Errors.FeedbackInvalidoException;
+import com.MarcelaEMariaLuiza.Syncro.Errors.FeedbackJaAprovado;
 import com.MarcelaEMariaLuiza.Syncro.Errors.GrupoInexistenteException;
 import com.MarcelaEMariaLuiza.Syncro.Repositories.AlunoRepository;
 import com.MarcelaEMariaLuiza.Syncro.Repositories.FeedbackRepository;
 import com.MarcelaEMariaLuiza.Syncro.Repositories.TarefaRepository;
+
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import java.util.Optional;
 
 /**
  * Classe de serviço responsável pela lógica de negócio relacionada a Feedbacks.
@@ -51,17 +55,23 @@ public class FeedbackService {
      * @throws CampoNaoPreenchidoException Se algum dos campos obrigatórios no DTO estiver vazio ou nulo.
      * @throws GrupoInexistenteException Se a tarefa ou o aluno associado não forem encontrados no banco de dados.
      */
-    public Feedback createFeedback(@RequestBody CreateFeedbackDTO createFeedbackDTO){
+    public Feedback createFeedback(CreateFeedbackDTO createFeedbackDTO){
+        
         if(createFeedbackDTO.getComentario().isEmpty() || createFeedbackDTO.getComentario() == null ||
                 createFeedbackDTO.getAprovado() == null || createFeedbackDTO.getAlunoId() == null
                 || createFeedbackDTO.getTarefaId() == null ){
             throw new CampoNaoPreenchidoException("Preencha os campos válidos");
         }
+
         Feedback feedback = new Feedback();
         feedback.setComentario(createFeedbackDTO.getComentario());
         feedback.setAprovado(createFeedbackDTO.getAprovado());
         Optional<Tarefa> novaTarefa = tarefaRepository.findById(createFeedbackDTO.getTarefaId());
+        
         if(!novaTarefa.isPresent()) throw new GrupoInexistenteException("Tarefa inválida");
+        if(feedbackRepository.FeedbackDado(createFeedbackDTO.getTarefaId(), createFeedbackDTO.getAlunoId())>=0){
+            throw new FeedbackInvalidoException("Já existe um feedback seu sobre essa tarefa. Tente editá-lo!");
+        }
         Tarefa tarefa= novaTarefa.get();
         feedback.setTarefa(tarefa);
         Optional<Aluno> novoAluno = alunoRepository.findById(createFeedbackDTO.getAlunoId());
@@ -71,4 +81,24 @@ public class FeedbackService {
         feedbackRepository.save(feedback);
         return feedback;
     }
+    public void EditaFeedback(EditFeedbackDTO editFeedbackDTO){
+        if(editFeedbackDTO.getComentario().isEmpty() || editFeedbackDTO.getComentario() == null ||
+       editFeedbackDTO.getAprovado() == null || editFeedbackDTO.getId() == null){
+            throw new CampoNaoPreenchidoException("Preencha os campos válidos");
+}
+        Optional <Feedback> f = feedbackRepository.findById(editFeedbackDTO.getId());
+        if(!f.isPresent()) throw new FeedbackInvalidoException("Feedbak inválido");
+        Feedback feedback = f.get();
+        if(feedback.getAprovado()==false){
+            feedback.setAprovado(editFeedbackDTO.getAprovado());
+            feedback.setComentario(editFeedbackDTO.getComentario());
+            feedbackRepository.save(feedback);
+            
+        }else{
+            throw new FeedbackJaAprovado("Não é possível mudar o feedback após aprovado.");}
+        
+    }
+
+    
+    
 }

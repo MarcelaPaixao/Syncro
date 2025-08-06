@@ -1,19 +1,24 @@
 package com.MarcelaEMariaLuiza.Syncro.Controllers;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.MarcelaEMariaLuiza.Syncro.DTO.AlunosResponseDTO;
 import com.MarcelaEMariaLuiza.Syncro.DTO.LoginDTO;
 import com.MarcelaEMariaLuiza.Syncro.DTO.LoginResponseDTO;
 import com.MarcelaEMariaLuiza.Syncro.Entities.Aluno;
 import com.MarcelaEMariaLuiza.Syncro.Errors.CampoNaoPreenchidoException;
 import com.MarcelaEMariaLuiza.Syncro.Errors.EmailExistenteException;
+import com.MarcelaEMariaLuiza.Syncro.Errors.GrupoInexistenteException;
 import com.MarcelaEMariaLuiza.Syncro.Security.TokenService;
 import com.MarcelaEMariaLuiza.Syncro.Services.AlunoService;
 
@@ -90,6 +95,15 @@ public class AlunoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocorreu um erro ao fazer o login");
         }
        
+    }
+    @GetMapping("/get/{grupoId}")
+    public ResponseEntity<?> getAlunosGrupo(@PathVariable Long grupoId){
+        try{
+            List<AlunosResponseDTO> alunos =  alunoService.getAlunosGrupo(grupoId);
+            return ResponseEntity.ok(alunos);
+        }catch(GrupoInexistenteException e){
+            return null;
+        }
     }
     
 }

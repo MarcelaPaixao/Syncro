@@ -1,6 +1,7 @@
 package com.MarcelaEMariaLuiza.Syncro.Repositories;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -35,5 +36,11 @@ public interface AlunoRepository extends JpaRepository<Aluno, Long> {
      */
     @Query("SELECT a FROM Aluno a JOIN a.grupos g WHERE g.id = :idDoGrupo")
     List<Aluno> FindByGrupos(@Param("idDoGrupo") Long idDoGrupo);
+
+    @Query("SELECT COUNT (a) FROM Aluno a JOIN a.grupos g WHERE g.id = :grupoId")
+    int countGrupoMembers(@Param("grupoId") Long grupoId);
+
+    @Query("SELECT a FROM Aluno a JOIN a.grupos g WHERE g.id = :grupoId AND a.id = :alunoId")
+    Optional<Aluno> estaNoGrupoAluno(@Param("grupoId") Long grupoId, @Param("alunoId")Long id);
 
 }

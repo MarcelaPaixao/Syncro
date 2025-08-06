@@ -2,6 +2,10 @@ package com.MarcelaEMariaLuiza.Syncro.DTO;
 
 import java.time.LocalDate;
 
+import com.MarcelaEMariaLuiza.Syncro.enums.TarefaStatus;
+
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -56,5 +60,8 @@ public class CreateTarefaDTO {
      * O ID do aluno designado para realizar a tarefa.
      */
     private Long alunoId;
+
+    @Enumerated(EnumType.STRING)
+    private TarefaStatus status;
 
 }

@@ -9,14 +9,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.MarcelaEMariaLuiza.Syncro.DTO.CreateTarefaDTO;
+import com.MarcelaEMariaLuiza.Syncro.DTO.TarefaResponseDTO;
 import com.MarcelaEMariaLuiza.Syncro.Entities.Aluno;
 import com.MarcelaEMariaLuiza.Syncro.Entities.Grupo;
 import com.MarcelaEMariaLuiza.Syncro.Entities.Tarefa;
 import com.MarcelaEMariaLuiza.Syncro.Errors.CampoNaoPreenchidoException;
 import com.MarcelaEMariaLuiza.Syncro.Errors.GrupoInexistenteException;
 import com.MarcelaEMariaLuiza.Syncro.Repositories.AlunoRepository;
+import com.MarcelaEMariaLuiza.Syncro.Repositories.FeedbackRepository;
 import com.MarcelaEMariaLuiza.Syncro.Repositories.GrupoRepository;
 import com.MarcelaEMariaLuiza.Syncro.Repositories.TarefaRepository;
+import com.MarcelaEMariaLuiza.Syncro.enums.TarefaStatus;
 
 /**
  * Classe de serviço responsável pela lógica de negócio das tarefas.
@@ -39,6 +42,9 @@ public class TarefaService{
 
     @Autowired
     private AlunoRepository alunoRepository;
+
+    @Autowired 
+    private FeedbackRepository feedbackRepository;
 
     /**
      * Cria uma nova tarefa e a associa a um grupo e a um aluno.
@@ -66,6 +72,7 @@ public class TarefaService{
         tarefa.setPrazo(createTarefaDTO.getPrazo());
         tarefa.setLinkDrive(createTarefaDTO.getLinkDrive());
         tarefa.setLinkDrive(createTarefaDTO.getLinkExtra());
+        tarefa.setStatus(TarefaStatus.TODO);
         
         Optional<Grupo> novoGrupo = grupoRepository.findById(createTarefaDTO.getGrupoId());
         if(!novoGrupo.isPresent()) throw new GrupoInexistenteException("Grupo inválido");
@@ -76,6 +83,7 @@ public class TarefaService{
         Optional<Aluno> novoAluno = alunoRepository.findById(createTarefaDTO.getAlunoId());
         if(novoGrupo.isPresent()){
             Aluno aluno  = novoAluno.get();
+            if(!aluno.estaEmGrupoAluno(grupo)) return null;
             tarefa.setAluno(aluno);
         }
         
@@ -83,7 +91,6 @@ public class TarefaService{
         tarefaRepository.save(tarefa);
         grupo.adicionaNovaTarefa(tarefa);
         grupoRepository.save(grupo);
-        //List<Aluno> a = grupoRepository.findByGrupos_Id(grupo.getId());
         return tarefa;
     
     }
@@ -145,4 +152,64 @@ public class TarefaService{
         }
        return tarefasFiltradas;
      }
+
+    public Tarefa EditaTarefa(CreateTarefaDTO createTarefaDTO){
+        
+       
+        if(createTarefaDTO.getTitulo().isEmpty() || createTarefaDTO.getTitulo() == null 
+        || createTarefaDTO.getId() == null || createTarefaDTO.getGrupoId() == null || createTarefaDTO.getStatus()==null){
+            throw new IllegalArgumentException("Dados inválidos. Tarefa não encontrada");
+        }
+        Optional<Tarefa> t = tarefaRepository.findById(createTarefaDTO.getId());
+        if(!t.isPresent()) throw new RuntimeException("Tarefa inexistente");
+        Tarefa tarefa = t.get(); 
+
+        if(createTarefaDTO.getStatus() != TarefaStatus.DONE){
+            tarefa.setStatus(createTarefaDTO.getStatus());
+        }{
+            int numMembros = alunoRepository.countGrupoMembers(createTarefaDTO.getGrupoId());
+
+            int feedbacksAprovados = feedbackRepository.countApprovedFeedbacks(tarefa.getId(), tarefa.getAluno().getId());
+            
+            float porcentagem = (feedbacksAprovados/(numMembros -1))*100;
+            if(porcentagem>70){
+                tarefa.setStatus(TarefaStatus.DONE);
+            }
+        }
+
+        tarefa.setTitulo(createTarefaDTO.getTitulo());
+        tarefa.setDescricao(createTarefaDTO.getDescricao());
+        tarefa.setLinkDrive(createTarefaDTO.getTitulo());
+        tarefa.setLinkExtra(createTarefaDTO.getLinkExtra());
+        tarefa.setPrazo(createTarefaDTO.getPrazo());
+        
+        Optional <Aluno> aluno = alunoRepository.estaNoGrupoAluno(createTarefaDTO.getGrupoId(), createTarefaDTO.getAlunoId());
+        if(aluno.isPresent()){
+            tarefa.setAluno(aluno.get());
+        }
+        tarefaRepository.save(tarefa);
+        return null;
+    }
+
+    public List<TarefaResponseDTO> getTarefasParaAvaliar(Long alunoId){
+        List<Grupo> grupo = grupoRepository.findByAlunoId(alunoId);
+        List <Tarefa> tarefasGrupo = new ArrayList<>();
+        for(Grupo g: grupo){
+            tarefasGrupo.addAll(tarefaRepository.findByGrupo_id(g.getId()));
+        }
+        List <TarefaResponseDTO> tarefasParaAvaliacao = new ArrayList<>();
+        for(Tarefa t: tarefasGrupo){
+            if((t.getAluno().getId() != alunoId) && (t.getStatus()==TarefaStatus.REVIEW)){
+                if(feedbackRepository.FeedbackDado(alunoId, t.getId())==0){
+                    TarefaResponseDTO response = new TarefaResponseDTO();
+                    response.setId(t.getId());
+                    response.setTitulo(t.getTitulo());
+                    response.setDescricao(t.getDescricao());
+                    response.setAlunoNome(t.getAluno().getNome());
+                    tarefasParaAvaliacao.add(response);
+                }
+            }
+        }
+        return tarefasParaAvaliacao;
+    }
 }

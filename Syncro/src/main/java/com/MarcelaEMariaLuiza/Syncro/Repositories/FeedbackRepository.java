@@ -2,9 +2,11 @@ package com.MarcelaEMariaLuiza.Syncro.Repositories;
 
 import java.util.List;
 
-import com.MarcelaEMariaLuiza.Syncro.Entities.Feedback;
-
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import com.MarcelaEMariaLuiza.Syncro.Entities.Feedback;
 
 /**
  * Repositório para a entidade {@link Feedback}.
@@ -29,4 +31,12 @@ public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
      * @return Uma lista de {@link Feedback} relacionados ao aluno.
      */
     List<Feedback> findByAluno_id(Long alunoId);
+
+    @Query("SELECT COUNT(f) FROM Feedback f WHERE f.tarefa.id = :tarefaId AND f.aluno.id != :donoId AND f.aprovado = TRUE")
+    int countApprovedFeedbacks(@Param("tarefaId") Long tarefaId, @Param("donoId") Long donoId);
+
+    @Query("SELECT COUNT (f) from Feedback f Where f.tarefa.id = :tarefaId AND f.aluno.id = :alunoId")
+    int FeedbackDado(@Param("tarefaId") Long tarefaId, @Param("alunoId") Long alunoId);
+
+    
 }

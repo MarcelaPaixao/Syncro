@@ -6,14 +6,15 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import com.MarcelaEMariaLuiza.Syncro.DTO.CreateGrupoDTO;
 import com.MarcelaEMariaLuiza.Syncro.Entities.Aluno;
 import com.MarcelaEMariaLuiza.Syncro.Entities.Grupo;
 import com.MarcelaEMariaLuiza.Syncro.Errors.CampoNaoPreenchidoException;
+import com.MarcelaEMariaLuiza.Syncro.Errors.GrupoInexistenteException;
 import com.MarcelaEMariaLuiza.Syncro.Repositories.AlunoRepository;
 import com.MarcelaEMariaLuiza.Syncro.Repositories.GrupoRepository;
+import com.MarcelaEMariaLuiza.Syncro.Repositories.TarefaRepository;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -41,6 +42,9 @@ public class GrupoService {
     @Autowired
     private final AlunoRepository alunoRepository;
 
+    @Autowired
+    private final TarefaRepository tarefaRepository;
+
     /**
      * Cria um novo grupo, associa o criador e adiciona os membros convidados.
      * <p>
@@ -55,7 +59,7 @@ public class GrupoService {
      * @throws CampoNaoPreenchidoException Se campos essenciais como nome, professor, matéria ou a lista de membros não forem fornecidos.
      */
     @Transactional
-    public Grupo criaGrupo(@RequestBody CreateGrupoDTO createGrupoDTO, Object criador){
+    public Grupo criaGrupo(CreateGrupoDTO createGrupoDTO, Object criador){
         
         Aluno criador1 = (Aluno)criador;
         if(createGrupoDTO.getNome().isEmpty() || createGrupoDTO.getNome() == null ||
@@ -70,16 +74,14 @@ public class GrupoService {
 
         Grupo novoGrupo = new Grupo(createGrupoDTO.getNome(), createGrupoDTO.getProfessor(), createGrupoDTO.getMateria(), createGrupoDTO.getPrazo(),
         createGrupoDTO.getDescricao());
-        List <Aluno> alunos = new ArrayList<>();
-        grupoRepository.save(novoGrupo);
-        criador1.adicionaGrupo(novoGrupo);
-        alunoRepository.save(criador1);
+        createGrupoDTO.getMembros().add(criador1.getEmail());
         for(String email: createGrupoDTO.getMembros()){
             Aluno aluno = alunoRepository.findByEmail(email);
             if(aluno==null) continue;
             aluno.adicionaGrupo(novoGrupo);
 
         }
+        grupoRepository.save(novoGrupo);
         return novoGrupo;     
     }
     /**
@@ -112,5 +114,21 @@ public class GrupoService {
             grupos.add(g1);
        }
      return grupos;
+    }
+    @Transactional
+    public float getProgressoGrupo(Long grupoId){
+        
+        Optional<Grupo> g = grupoRepository.findById(grupoId);
+        if(g.isPresent() == false) throw new GrupoInexistenteException("Grupo Inválido");
+        Grupo grupo = g.get();
+
+        float tarefasTotais = tarefaRepository.qtdTarefasTotal(grupoId);
+        float tarefasDone = tarefaRepository.qtdTarefasDone(grupoId);
+
+        float progresso =(tarefasDone/tarefasTotais)*100;
+        int progressoRetorno = Math.round(progresso);
+
+        return progressoRetorno;
+        
     }
 }

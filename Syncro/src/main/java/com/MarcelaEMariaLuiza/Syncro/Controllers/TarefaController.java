@@ -1,23 +1,24 @@
 package com.MarcelaEMariaLuiza.Syncro.Controllers;
 
-import com.MarcelaEMariaLuiza.Syncro.Errors.GrupoInexistenteException;
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.MarcelaEMariaLuiza.Syncro.DTO.CreateGrupoDTO;
 import com.MarcelaEMariaLuiza.Syncro.DTO.CreateTarefaDTO;
+import com.MarcelaEMariaLuiza.Syncro.DTO.TarefaResponseDTO;
 import com.MarcelaEMariaLuiza.Syncro.Entities.Tarefa;
 import com.MarcelaEMariaLuiza.Syncro.Errors.CampoNaoPreenchidoException;
+import com.MarcelaEMariaLuiza.Syncro.Errors.GrupoInexistenteException;
 import com.MarcelaEMariaLuiza.Syncro.Services.TarefaService;
 /**
  * Controlador REST para o gerenciamento de Tarefas.
@@ -67,10 +68,10 @@ public class TarefaController {
      * @return Uma lista de {@link CreateTarefaDTO} representando as tarefas do grupo, ou {@code null} em caso de erro.
      */
     @GetMapping("/get/grupo/{grupoId}")
-    public List<CreateTarefaDTO> getTarefasPorGrupo(@PathVariable Long grupoId){
+    public ResponseEntity<?> getTarefasPorGrupo(@PathVariable Long grupoId){
         try{
             List <CreateTarefaDTO> tarefas = tarefaService.getTarefasPorGrupo(grupoId);
-            return tarefas;
+            return ResponseEntity.ok(tarefas);
         }
         catch(Exception e){
             return null;
@@ -85,13 +86,38 @@ public class TarefaController {
      * @return Uma lista de {@link CreateTarefaDTO} representando as tarefas do aluno, ou {@code null} em caso de erro.
      */
 @GetMapping("/get/aluno/{alunoId}")
-    public List<CreateTarefaDTO> getTarefasPorAluno(@PathVariable Long alunoId){
+    public ResponseEntity<?> getTarefasPorAluno(@PathVariable Long alunoId){
         try{
             List <CreateTarefaDTO> tarefas = tarefaService.getTarefasPorAluno(alunoId);
-            return tarefas;
+            return ResponseEntity.ok(tarefas);
         }
         catch(Exception e){
-            return null;
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+           
+        }
+
+}
+
+@PutMapping("/edita")
+    public ResponseEntity<?> editaTarefa(@RequestBody CreateTarefaDTO createTarefaDTO, Authentication authentication ){
+        try{
+          Tarefa tarefa = tarefaService.EditaTarefa(createTarefaDTO);
+          return ResponseEntity.ok("Tarefa editada com sucesso");
+          
+        }catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+
+    }
+
+    @GetMapping("/get/avalia/{alunoId}")
+    public ResponseEntity<?> getTarefasAvaliarPorAluno(@PathVariable Long alunoId){
+        try{
+            List <TarefaResponseDTO> tarefas = tarefaService.getTarefasParaAvaliar(alunoId);
+            return ResponseEntity.ok(tarefas);
+        }
+        catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
            
         }
 
