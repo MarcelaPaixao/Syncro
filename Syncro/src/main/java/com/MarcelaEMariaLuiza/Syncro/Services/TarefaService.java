@@ -15,6 +15,7 @@ import com.MarcelaEMariaLuiza.Syncro.Entities.Tarefa;
 import com.MarcelaEMariaLuiza.Syncro.Errors.CampoNaoPreenchidoException;
 import com.MarcelaEMariaLuiza.Syncro.Errors.GrupoInexistenteException;
 import com.MarcelaEMariaLuiza.Syncro.Repositories.AlunoRepository;
+import com.MarcelaEMariaLuiza.Syncro.Repositories.FeedbackRepository;
 import com.MarcelaEMariaLuiza.Syncro.Repositories.GrupoRepository;
 import com.MarcelaEMariaLuiza.Syncro.Repositories.TarefaRepository;
 import com.MarcelaEMariaLuiza.Syncro.enums.TarefaStatus;
@@ -40,6 +41,9 @@ public class TarefaService{
 
     @Autowired
     private AlunoRepository alunoRepository;
+
+    @Autowired 
+    private FeedbackRepository feedbackRepository;
 
     /**
      * Cria uma nova tarefa e a associa a um grupo e a um aluno.
@@ -150,8 +154,8 @@ public class TarefaService{
      }
 
     public Tarefa EditaTarefa(CreateTarefaDTO createTarefaDTO){
-        int numMembros = alunoRepository.countGrupoMembers(createTarefaDTO.getGrupoId());
-        System.out.println(numMembros);
+        
+       
         if(createTarefaDTO.getTitulo().isEmpty() || createTarefaDTO.getTitulo() == null 
         || createTarefaDTO.getId() == null || createTarefaDTO.getGrupoId() == null || createTarefaDTO.getStatus()==null){
             throw new IllegalArgumentException("Dados inválidos. Tarefa não encontrada");
@@ -160,12 +164,30 @@ public class TarefaService{
         if(!t.isPresent()) throw new RuntimeException("Tarefa inexistente");
         Tarefa tarefa = t.get(); 
 
-        if(createTarefaDTO.getStatus()!=TarefaStatus.DONE){
+        if(createTarefaDTO.getStatus() != TarefaStatus.DONE){
             tarefa.setStatus(createTarefaDTO.getStatus());
         }{
-            //int numMembros = alunoRepository.countGrupoMembers(createTarefaDTO.getGrupoId());
+            int numMembros = alunoRepository.countGrupoMembers(createTarefaDTO.getGrupoId());
 
+            int feedbacksAprovados = feedbackRepository.countApprovedFeedbacks(tarefa.getId(), tarefa.getAluno().getId());
+            
+            float porcentagem = (feedbacksAprovados/(numMembros -1))*100;
+            if(porcentagem>70){
+                tarefa.setStatus(TarefaStatus.DONE);
+            }
         }
+
+        tarefa.setTitulo(createTarefaDTO.getTitulo());
+        tarefa.setDescricao(createTarefaDTO.getDescricao());
+        tarefa.setLinkDrive(createTarefaDTO.getTitulo());
+        tarefa.setLinkExtra(createTarefaDTO.getLinkExtra());
+        tarefa.setPrazo(createTarefaDTO.getPrazo());
+        
+        Optional <Aluno> aluno = alunoRepository.estaNoGrupoAluno(createTarefaDTO.getGrupoId(), createTarefaDTO.getAlunoId());
+        if(aluno.isPresent()){
+            tarefa.setAluno(aluno.get());
+        }
+        tarefaRepository.save(tarefa);
         return null;
     }
 }

@@ -9,8 +9,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -68,9 +66,9 @@ public class Feedback {
      * A anotação {@code @MapsId} mapeia este feedback diretamente ao aluno
      * correspondente.
      */
-    @MapsId
+  
     @JoinColumn(name = "aluno_id")
-    @OneToOne
+    @ManyToOne
     private Aluno aluno;
 
     /**

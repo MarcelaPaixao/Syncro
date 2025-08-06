@@ -1,15 +1,17 @@
 package com.MarcelaEMariaLuiza.Syncro.Controllers;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.MarcelaEMariaLuiza.Syncro.DTO.CreateFeedbackDTO;
 import com.MarcelaEMariaLuiza.Syncro.Entities.Feedback;
 import com.MarcelaEMariaLuiza.Syncro.Errors.CampoNaoPreenchidoException;
 import com.MarcelaEMariaLuiza.Syncro.Services.FeedbackService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 /**
  * Controlador REST para as operações relacionadas a Feedbacks.
  * <p>
@@ -56,12 +58,19 @@ public class FeedbackController {
         try{
             Feedback feedback = feedbackService.createFeedback(createFeedbackDTO);
             if(feedback== null) return(ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Algum dos dados inseridos está inválido"));
-            return ResponseEntity.ok("Feedback criado");
+            return ResponseEntity.ok(feedback);
         }catch (CampoNaoPreenchidoException e){
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }catch(Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
-
+    @PutMapping("/edita")
+    public ResponseEntity<?> editaFeedback(@RequestBody CreateFeedbackDTO createFeedbackDTO){
+        try{
+            return ResponseEntity.ok("Feedback editado");
+        }catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
 }
