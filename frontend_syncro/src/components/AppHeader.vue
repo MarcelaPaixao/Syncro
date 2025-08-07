@@ -9,7 +9,8 @@
         <img alt="Perfil" src="@/assets/user_icon.png" />
       </router-link>
 
-      <router-link to="/criar-grupo" class="icon-link">
+      <!-- <router-link to="/criar-grupo" class="icon-link"> -->
+      <router-link to="/criar-tarefa" class="icon-link">
         <img alt="Novo Grupo" src="@/assets/plus_circle_icon.png" />
       </router-link>
     </div>
@@ -27,6 +28,7 @@ header {
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
   margin-bottom: 1rem;
+  width: 100vw;
 }
 
 .logo-container img {

@@ -10,9 +10,19 @@
       <h2>Crie sua conta</h2>
 
       <form @submit.prevent="fazerCadastro">
-        <InputString v-model:name="name" tipo="text" rotulo="Nome completo" />
+        <InputString
+          v-model="name"
+          type="text"
+          label="Nome completo"
+          placeholder=""
+        />
 
-        <InputString v-model:email="email" tipo="email" rotulo="Email" />
+        <InputString
+          v-model="email"
+          tipo="email"
+          label="Email"
+          placeholder=""
+        />
 
         <InputSenha
           v-model:password="password"
@@ -65,7 +75,7 @@ export default {
         this.passwordError = "As senhas são diferentes!";
         return;
       }
-      // Testando no console do navegador
+      // MARCELA:Testando no console do navegador
       console.log("Dados para cadastro:", {
         name: this.name,
         email: this.email,

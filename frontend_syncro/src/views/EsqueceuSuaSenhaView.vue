@@ -5,7 +5,12 @@
 
       <h4>Digite o email associado à sua conta</h4>
       <form @submit.prevent="validarEmail">
-        <InputString v-model:email="email" tipo="email" rotulo="Email" />
+        <InputString
+          v-model="email"
+          type="email"
+          label="Email"
+          placeholder=""
+        />
         <BotaoCustomizado texto="Enviar" type="submit" />
       </form>
       <p v-if="emailError" class="error-message">

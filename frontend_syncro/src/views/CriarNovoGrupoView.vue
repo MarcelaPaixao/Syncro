@@ -4,48 +4,24 @@
 
   <form @submit.prevent="criarGrupo">
     <div class="novo-grupo">
-      <div class="input-container">
-        <div class="form-grid">
+      <div class="text-container">
+        <div class="input-container">
           <div class="input-group">
-            <label>Nome</label>
-            <input
-              type="text"
-              v-model="name"
-              required
-              placeholder="Digite algo..."
-            />
+            <InputString v-model="name" label="Nome" />
           </div>
           <div class="input-group">
-            <label>Matéria</label>
-            <input
-              type="text"
-              v-model="materia"
-              required
-              placeholder="Digite algo..."
-            />
+            <InputString v-model="materia" label="Matéria" />
           </div>
           <div class="input-group">
-            <label>Professor</label>
-            <input
-              type="text"
-              v-model="professor"
-              required
-              placeholder="Digite algo..."
-            />
+            <InputString v-model="professor" label="Professor" />
           </div>
           <div class="input-group">
-            <label>Data</label>
-            <input type="date" v-model="prazo" />
+            <InputString v-model="prazo" label="Data" type="date" />
           </div>
         </div>
 
         <div class="descricao-container">
-          <label>Descrição</label>
-          <textarea
-            v-model="descricao"
-            maxlength="300"
-            placeholder="Digite algo..."
-          ></textarea>
+          <TextArea v-model="descricao" label="Descrição"></TextArea>
         </div>
       </div>
 
@@ -54,9 +30,9 @@
           <label>Membros</label>
         </div>
       </div>
-    </div>
-    <div class="btn-container">
-      <BotaoCustomizado type="submit" texto="Salvar" id="criar-grupo-btn" />
+      <div class="btn-container">
+        <BotaoCustomizado type="submit" texto="Salvar" id="criar-grupo-btn" />
+      </div>
     </div>
   </form>
 </template>
@@ -64,11 +40,16 @@
 <script>
 import BotaoCustomizado from "@/components/BotaoCustomizado.vue";
 import AppHeader from "@/components/AppHeader.vue";
+import InputString from "@/components/InputString.vue";
+import TextArea from "@/components/TextArea.vue";
+
 export default {
   name: "CriarNovoGrupoView",
   components: {
     BotaoCustomizado,
     AppHeader,
+    InputString,
+    TextArea,
   },
   data() {
     return {
@@ -103,48 +84,64 @@ export default {
 </script>
 
 <style scoped>
-input {
+/* .input-group :deep(input) {
   border: 2px solid #077a7d;
   font-size: medium;
-}
+} */
 
 .novo-grupo {
-  display: flex;
+  display: grid;
+  width: 100vw;
+  height: 100vh;
+  grid-template-columns: 2fr 1.1fr;
+  grid-template-rows: 7fr 1fr;
+  column-gap: 40px;
+  padding-left: 30px;
+  padding-right: 30px;
 }
 
-.form-grid {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.form-grid .input-group {
-  flex-basis: calc(50% - 0.9rem);
+.text-container {
+  display: grid;
 }
 
 .input-container {
-  width: 65%;
-  margin-left: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  column-gap: 30px;
+  /* row-gap: -100px; */
 }
 
-.checklist-container {
-  padding-left: 1rem;
-  border-left: 1px solid black;
+/* .descricao-container {
+  background-color: aqua;
+} */
+
+.descricao-container:deep(.textarea-container) {
+  height: 250px;
+  border: 1.55px solid #dfe0da;
+  border-radius: 20px;
+  display: block;
+}
+
+.descricao-container:deep(textarea) {
+  height: 100%;
+  background-color: transparent;
 }
 
 .btn-container {
-  display: flex;
-  justify-content: flex-start;
-  padding: 1rem 0;
+  display: grid;
+  justify-content: left;
 }
 
-textarea {
-  resize: none;
-  width: 98%;
-  height: 200px;
-  border-radius: 10px;
-  border: 2px solid #077a7d;
+.checklist-container {
+  display: grid;
+  border-left: 1px solid black;
+  justify-content: center;
+}
+
+.input-group :deep(input),
+.descricao-container :deep(textarea) {
   font-family: Avenir, Helvetica, Arial, sans-serif;
-  font-size: medium;
+  font-size: 15px;
 }
 </style>

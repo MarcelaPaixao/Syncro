@@ -5,6 +5,7 @@
     <router-link to="/login">Login</router-link>
   </nav> -->
   <router-view />
+  <!-- <meta name="viewport" content="width=device-width, initial-scale=1" /> -->
 </template>
 
 <style>
@@ -21,6 +22,9 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
+  width: 100vw;
+  background-size: cover;
+  background-repeat: no-repeat;
   background-image: linear-gradient(160deg, #a7f7ee, #0a9296, #0d5d68);
 }
 

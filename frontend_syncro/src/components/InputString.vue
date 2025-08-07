@@ -1,12 +1,12 @@
 <template>
   <div class="input-string">
     <div class="input-group">
-      <label v-if="rotulo">{{ rotulo }}</label>
+      <label v-if="label">{{ label }}</label>
       <input
         :value="modelValue"
         @input="$emit('update:modelValue', $event.target.value)"
-        :type="tipo"
-        :placeholder="textoTemp"
+        :type="type"
+        :placeholder="placeholder"
         required
       />
     </div>
@@ -15,11 +15,10 @@
 
 <script setup>
 defineProps({
-  //corrigir placeholder
   modelValue: { type: String, required: true },
-  tipo: { type: String, default: "text" },
-  rotulo: { type: String },
-  textoTemp: { type: String },
+  type: { type: String, default: "text" },
+  label: { type: String },
+  placeholder: { type: String, default: "Digite algo..." },
 });
 defineEmits(["update:modelValue"]);
 </script>
@@ -27,5 +26,9 @@ defineEmits(["update:modelValue"]);
 <style scoped>
 .input-group {
   margin-bottom: 0.8rem;
+}
+
+::placeholder {
+  font-size: 15px;
 }
 </style>

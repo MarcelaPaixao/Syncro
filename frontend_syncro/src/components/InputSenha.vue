@@ -6,6 +6,7 @@
         :value="password"
         @input="$emit('update:password', $event.target.value)"
         type="password"
+        :placeholder="textoTemp"
         required
       />
     </div>
@@ -16,6 +17,7 @@
         :value="confirmPassword"
         @input="$emit('update:confirmPassword', $event.target.value)"
         type="password"
+        :placeholder="textoTemp"
         required
       />
     </div>
@@ -32,6 +34,7 @@ defineProps({
   confirmPassword: { type: String },
   passwordError: { type: String },
   showConfirmacao: { type: Boolean, default: false },
+  textoTemp: { type: String, default: "" },
 });
 defineEmits(["update:password", "update:confirmPassword"]);
 </script>
