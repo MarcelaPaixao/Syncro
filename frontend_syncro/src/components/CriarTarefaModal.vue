@@ -1,6 +1,6 @@
 <template>
   <BaseModal :visivel="visivel" @close="$emit('close')">
-    <template v-slor:header>
+    <template v-slot:header>
       <h2>Nova Tarefa</h2>
     </template>
 
@@ -75,7 +75,12 @@ export default {
     submitTarefa() {
       this.$emit("salvar", this.tarefaLocal);
 
-      // this.tarefaLocal = { titulo: "", descricao: "", responsavel: "", prazoTarefa: "" };
+      this.tarefaLocal = {
+        titulo: "",
+        descricao: "",
+        responsavel: "",
+        prazoTarefa: "",
+      };
     },
   },
 };
@@ -99,7 +104,7 @@ export default {
   height: 150px;
   box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.173);
   border: 0.1px solid rgb(205, 213, 217);
-  display: block; /* Garante o comportamento correto */
+  display: block;
 }
 
 .input-group :deep(textarea) {

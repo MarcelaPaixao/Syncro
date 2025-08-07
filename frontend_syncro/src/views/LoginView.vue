@@ -66,6 +66,7 @@ export default {
         email: this.email,
         password: this.password,
       });
+      this.$router.push("/criar-grupo");
     },
     redirecionaCadastrar() {
       console.log("redirecionando cadastro...");

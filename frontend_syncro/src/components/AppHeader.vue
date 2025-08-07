@@ -9,8 +9,7 @@
         <img alt="Perfil" src="@/assets/user_icon.png" />
       </router-link>
 
-      <!-- <router-link to="/criar-grupo" class="icon-link"> -->
-      <router-link to="/criar-tarefa" class="icon-link">
+      <router-link to="/criar-grupo" class="icon-link">
         <img alt="Novo Grupo" src="@/assets/plus_circle_icon.png" />
       </router-link>
     </div>
@@ -19,7 +18,7 @@
 
 <script setup></script>
 
-<style>
+<style scoped>
 header {
   display: flex;
   justify-content: space-between;

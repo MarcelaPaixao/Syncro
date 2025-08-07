@@ -26,7 +26,7 @@
       </div>
 
       <div class="checklist-container">
-        <div class="box">
+        <div>
           <label>Membros</label>
         </div>
       </div>
@@ -94,7 +94,7 @@ export default {
   width: 100vw;
   height: 100vh;
   grid-template-columns: 2fr 1.1fr;
-  grid-template-rows: 7fr 1fr;
+  /* grid-template-rows: 7fr 1fr; */
   column-gap: 40px;
   padding-left: 30px;
   padding-right: 30px;
@@ -102,6 +102,7 @@ export default {
 
 .text-container {
   display: grid;
+  align-items: stretch;
 }
 
 .input-container {
@@ -109,12 +110,7 @@ export default {
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   column-gap: 30px;
-  /* row-gap: -100px; */
 }
-
-/* .descricao-container {
-  background-color: aqua;
-} */
 
 .descricao-container:deep(.textarea-container) {
   height: 250px;

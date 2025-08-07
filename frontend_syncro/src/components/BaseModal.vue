@@ -10,7 +10,7 @@
       </header>
 
       <main class="modal-body">
-        <slot name="body"> </slot>
+        <slot> </slot>
       </main>
 
       <footer class="modal-footer">
@@ -44,11 +44,11 @@ defineEmits(["close"]);
 }
 
 .modal-content {
-  background-color: white;
+  background-color: rgb(255, 255, 255);
   padding: 1.5rem;
   border-radius: 20px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  width: 90%;
+  width: 35%;
   max-width: 600px;
   position: relative;
   display: flex;
@@ -61,15 +61,15 @@ defineEmits(["close"]);
   right: 15px;
   background: none;
   border: none;
-  font-size: 2rem;
+  font-size: 3rem;
   cursor: pointer;
   color: #888;
 }
 
-.modal-header,
+/* .modal-header,
 .modal-footer {
-  padding: 1rem;
-}
+  padding: 0.5rem;
+} */
 
 .modal-header {
   border-bottom: 1px solid #eee;
@@ -85,6 +85,6 @@ defineEmits(["close"]);
 .modal-body {
   padding: 1rem;
   overflow-y: auto; /* Adiciona scroll se o conteúdo for muito grande */
-  max-height: 70vh;
+  max-height: 100vh;
 }
 </style>
