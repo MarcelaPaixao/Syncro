@@ -40,6 +40,8 @@
 import InputSenha from "@/components/InputSenha.vue";
 import InputEmail from "@/components/InputEmail.vue";
 import BotaoCustomizado from "@/components/BotaoCustomizado.vue";
+import axios from "axios";
+import { setAuthTokens } from "axios-jwt";
 export default {
   name: "LoginView",
   components: {
@@ -54,13 +56,24 @@ export default {
     };
   },
   methods: {
-    fazerLogin() {
-      // Testando no console do navegador
-      // aqui faz chamada para backend
-      console.log("Dados para login:", {
-        email: this.email,
-        password: this.password,
-      });
+    async fazerLogin() {
+      try {
+        const loginDTO = {
+          email: this.email,
+          senha: this.password,
+        };
+        const response = await axios.post(
+          `http://localhost:8080/api/aluno/login`,
+          loginDTO
+        );
+        setAuthTokens({
+          accessToken: response.data.access_token,
+          refreshToken: response.data.refresh_token,
+        });
+        console.log(response.headers);
+      } catch (error) {
+        console.error("Error posting data:", error);
+      }
     },
     redirecionaCadastrar() {
       console.log("redirecionando cadastro...");
