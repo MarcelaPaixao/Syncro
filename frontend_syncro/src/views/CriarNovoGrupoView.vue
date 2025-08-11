@@ -1,38 +1,34 @@
 <template>
   <AppHeader />
-  <h2>Novo Projeto</h2>
+  <h2 class="text-2xl font-bold text-gray-800 text-center my-4">
+    Novo Projeto
+  </h2>
 
-  <form @submit.prevent="criarGrupo">
-    <div class="novo-grupo">
-      <div class="text-container">
-        <div class="input-container">
-          <div class="input-group">
-            <InputString v-model="name" label="Nome" />
-          </div>
-          <div class="input-group">
-            <InputString v-model="materia" label="Matéria" />
-          </div>
-          <div class="input-group">
-            <InputString v-model="professor" label="Professor" />
-          </div>
-          <div class="input-group">
-            <InputString v-model="prazo" label="Data" type="date" />
-          </div>
-        </div>
-
-        <div class="descricao-container">
-          <TextArea v-model="descricao" label="Descrição"></TextArea>
-        </div>
+  <form
+    @submit.prevent="criarGrupo"
+    class="grid grid-cols-[2fr_1.1fr] gap-x-10 p-8"
+  >
+    <div class="flex flex-col gap-y-6">
+      <div class="grid grid-cols-2 gap-x-8 gap-y-4">
+        <InputString v-model="name" label="Nome" />
+        <InputString v-model="materia" label="Matéria" />
+        <InputString v-model="professor" label="Professor" />
+        <InputString v-model="prazo" label="Data" type="date" />
       </div>
 
-      <div class="checklist-container">
-        <div>
-          <label>Membros</label>
-        </div>
+      <div>
+        <TextArea v-model="descricao" label="Descrição" />
       </div>
-      <div class="btn-container">
-        <BotaoCustomizado type="submit" texto="Salvar" id="criar-grupo-btn" />
+
+      <div class="mt-auto">
+        <BotaoCustomizado type="submit" texto="Salvar" />
       </div>
+    </div>
+
+    <div
+      class="checklist-container border-l border-gray-300 pl-10 flex flex-col"
+    >
+      <label class="text-lg font-bold text-gray-700 mb-4">Membros</label>
     </div>
   </form>
 </template>
@@ -82,62 +78,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-/* .input-group :deep(input) {
-  border: 2px solid #077a7d;
-  font-size: medium;
-} */
-
-.novo-grupo {
-  display: grid;
-  width: 100vw;
-  height: 100vh;
-  grid-template-columns: 2fr 1.1fr;
-  /* grid-template-rows: 7fr 1fr; */
-  column-gap: 40px;
-  padding-left: 30px;
-  padding-right: 30px;
-}
-
-.text-container {
-  display: grid;
-  align-items: stretch;
-}
-
-.input-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  column-gap: 30px;
-}
-
-.descricao-container:deep(.textarea-container) {
-  height: 250px;
-  border: 1.55px solid #dfe0da;
-  border-radius: 20px;
-  display: block;
-}
-
-.descricao-container:deep(textarea) {
-  height: 100%;
-  background-color: transparent;
-}
-
-.btn-container {
-  display: grid;
-  justify-content: left;
-}
-
-.checklist-container {
-  display: grid;
-  border-left: 1px solid black;
-  justify-content: center;
-}
-
-.input-group :deep(input),
-.descricao-container :deep(textarea) {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  font-size: 15px;
-}
-</style>

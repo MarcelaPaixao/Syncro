@@ -1,15 +1,23 @@
 <template>
   <div class="bg-padrao">
-    <div class="cadastro-box">
+    <div
+      class="flex flex-col items-center bg-white p-8 rounded-[30px] shadow-xl w-full max-w-sm"
+    >
       <img
         alt="Syncro logo"
         src="../assets/syncro_logo_verde.png"
         height="65"
         width="120"
+        class="mb-4"
       />
-      <h2>Crie sua conta</h2>
+      <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">
+        Crie sua conta
+      </h2>
 
-      <form @submit.prevent="fazerCadastro">
+      <form
+        @submit.prevent="fazerCadastro"
+        class="flex flex-col items-center w-full space-y-4"
+      >
         <InputString
           v-model="name"
           type="text"
@@ -34,8 +42,10 @@
         <BotaoCustomizado texto="Cadastrar" type="submit" />
       </form>
 
-      <div class="login-redirect">
-        <router-link to="/login">Já tem uma conta?</router-link>
+      <div class="login-redirect text-center mt-6">
+        <router-link to="/login" class="text-sm text-[#077a7d] hover:underline"
+          >Já tem uma conta?</router-link
+        >
       </div>
     </div>
   </div>

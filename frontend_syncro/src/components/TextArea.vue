@@ -1,15 +1,22 @@
 <template>
-  <div class="text-area">
-    <label v-if="label">{{ label }}</label>
-    <div class="textarea-container">
+  <div class="w-full">
+    <label v-if="label" class="block mb-1 text-base font-bold text-gray-700">
+      {{ label }}
+    </label>
+
+    <div class="relative">
       <textarea
         :value="modelValue"
         @input="$emit('update:modelValue', $event.target.value)"
         :placeholder="placeholder"
         :maxlength="maxlength"
-        required
+        class="w-full h-40 p-3 pr-14 border border-gray-300 rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-teal-500 placeholder:text-gray-400"
       ></textarea>
-      <div v-if="maxlength" class="char-counter">
+
+      <div
+        v-if="maxlength"
+        class="absolute bottom-2 right-3 text-xs text-gray-500 pointer-events-none"
+      >
         {{ modelValue.length }} / {{ maxlength }}
       </div>
     </div>
@@ -21,46 +28,7 @@ defineProps({
   modelValue: { type: String, required: true },
   label: { type: String },
   placeholder: { type: String, default: "Digite algo..." },
-  maxlength: { type: Number, default: 400 },
+  maxlength: { type: Number, default: 500 },
 });
 defineEmits(["update:modelValue"]);
 </script>
-
-<style scoped>
-label {
-  display: block;
-  margin-bottom: 0.5rem;
-}
-.textarea {
-  margin-bottom: 0.8rem;
-}
-.textarea-container {
-  position: relative;
-}
-
-textarea {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  width: 100%;
-  height: 100%;
-  background: transparent;
-  border: none;
-  border-radius: 20px;
-  box-sizing: border-box;
-  padding: 10px 50px 10px 10px;
-  resize: none;
-  font-size: 15px;
-}
-
-.char-counter {
-  position: absolute;
-  bottom: 8px;
-  right: 12px;
-  font-size: 0.8rem;
-  color: #555;
-  pointer-events: none;
-}
-
-::placeholder {
-  font-size: 15px;
-}
-</style>

@@ -5,17 +5,22 @@
     <router-link to="/login">Login</router-link>
   </nav> -->
   <router-view />
-  <!-- <meta name="viewport" content="width=device-width, initial-scale=1" /> -->
 </template>
 
 <style>
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
-  height: 100%;
 }
 
 .bg-padrao {
@@ -27,27 +32,5 @@
   background-size: cover;
   background-repeat: no-repeat;
   background-image: linear-gradient(160deg, #a7f7ee, #0a9296, #0d5d68);
-}
-
-h2 {
-  text-align: center;
-  color: #333;
-  font-size: 1.3rem;
-}
-
-label {
-  text-align: left;
-  display: block;
-  margin-bottom: 0.3rem;
-  color: #555;
-  font-weight: bold;
-}
-
-input {
-  width: 100%;
-  padding: 0.6rem;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  box-sizing: border-box; /* Garante que o padding não aumente a largura total */
 }
 </style>

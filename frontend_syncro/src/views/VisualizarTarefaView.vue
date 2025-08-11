@@ -2,21 +2,26 @@
  e possibilidade de alteração -->
 <template>
   <AppHeader />
-  <h2>Visualizar Tarefa</h2>
-  <div class="visualizar-tarefa">
-    <div class="text-group">
-      <form @submit.prevent="visualizarTarefa">
-        <div class="info-container">
-          <div class="input-group">
-            <InputString v-model="titulo" label="Título" />
-          </div>
-          <div class="input-group">
-            <TextArea v-model="descricao" label="Descrição"></TextArea>
-          </div>
-          <!-- MARCELA: Fazer componente especifico -->
-          <div class="input-group">
-            <label>Responsável</label>
-            <select v-model="responsavel" required>
+  <h2 class="text-2xl font-bold text-gray-800 text-center my-4">
+    Perfil da Tarefa
+  </h2>
+
+  <div class="visualizar-tarefa grid grid-cols-[2fr_1.1fr] gap-x-10 p-8">
+    <div class="text-group flex flex-col">
+      <form @submit.prevent="visualizarTarefa" class="flex flex-col flex-grow">
+        <div class="info-container space-y-4">
+          <InputString v-model="titulo" label="Título" />
+          <TextArea v-model="descricao" label="Descrição" />
+
+          <div>
+            <label class="block mb-1 text-base font-bold text-gray-700"
+              >Responsável</label
+            >
+            <select
+              v-model="responsavel"
+              required
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+            >
               <option value="">Selecione um membro</option>
               <option
                 v-for="membro in membrosDoGrupo"
@@ -27,32 +32,58 @@
               </option>
             </select>
           </div>
-          <div class="input-group">
-            <InputString v-model="prazoTarefa" label="Prazo" type="date" />
-          </div>
+
+          <InputString v-model="prazoTarefa" label="Prazo" type="date" />
+
           <div class="status-group">
-            <label>Status</label> <span>{{ status }}</span>
+            <label class="block mb-1 text-base font-bold text-gray-700"
+              >Status</label
+            >
+            <p
+              class="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg italic text-gray-600"
+            >
+              {{ status }}
+            </p>
           </div>
-          <!-- MARCELA:Conferir se aqui precisa de componente especifico ou se InputString vale -->
-          <div class="input-group">
-            <label>Links</label>
-            <input type="text" v-model="links" />
+
+          <div>
+            <label class="block mb-1 text-base font-bold text-gray-700"
+              >Links</label
+            >
+            <input
+              type="text"
+              v-model="links"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+            />
           </div>
         </div>
 
-        <div class="btn-container">
-          <BotaoCustomizado
-            type="submit"
-            texto="Salvar"
-            id="visualizar-tarefa-btn"
-          />
+        <div class="btn-container mt-auto pt-4">
+          <BotaoCustomizado type="submit" texto="Salvar" />
         </div>
       </form>
     </div>
 
-    <div class="feedback-container">
-      <div>
-        <label>Feedbacks</label>
+    <div
+      class="feedback-container flex flex-col gap-6 pl-10 border-l border-gray-200"
+    >
+      <div class="feedback-header flex justify-between items-center">
+        <h3 class="text-2xl font-bold">Feedbacks</h3>
+        <a href="#" class="text-gray-600 hover:text-black no-underline"
+          >Filtrar &#9662;</a
+        >
+      </div>
+
+      <div class="feedback-list flex-grow overflow-y-auto space-y-4">
+        <!-- <FeedbackCard v-for="fb in feedbacks" :key="fb.id" :feedback="fb" /> -->
+      </div>
+
+      <div class="new-feedback-input relative">
+        <input
+          type="text"
+          placeholder="Digite aqui seu feedback"
+          class="w-full p-3 pr-10 border border-gray-300 rounded-xl"
+        />
       </div>
     </div>
   </div>
@@ -78,13 +109,33 @@ export default {
       descricao: "",
       responsavel: "",
       prazoTarefa: "",
-      status: "status provisorio",
+      status: "Aguardando aprovação (x/x)",
       membrosDoGrupo: [
         { id: 1, nome: "Marcela" },
         { id: 2, nome: "Malu" },
         { id: 3, nome: "Fulano" },
       ],
       links: [], //MARCELA:conferir em relação aos links, tentar colocar dinamicamente campos de input
+      feedbacks: [
+        {
+          id: 1,
+          membro: { nome: "Membro Y" },
+          texto: "bla bla bla bla bla bla bla bla bla.",
+          status: "reprovado",
+        },
+        {
+          id: 2,
+          membro: { nome: "Membro Z" },
+          texto: "",
+          status: "aprovado",
+        },
+        {
+          id: 3,
+          membro: { nome: "Membro W" },
+          texto: "bla bla bla.",
+          status: "aprovado",
+        },
+      ],
     };
   },
   methods: {
@@ -102,134 +153,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.visualizar-tarefa {
-  display: grid;
-  width: 100vw;
-  height: 100vh;
-  grid-template-columns: 2fr 1.1fr;
-  column-gap: 40px;
-  padding: 30px;
-  box-sizing: border-box;
-}
-
-.text-group {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  justify-content: space-between;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  min-height: 400px;
-}
-
-.btn-container {
-  margin-top: 20px;
-  padding: 1rem 0;
-  display: flex;
-  justify-content: left;
-}
-
-.input-group :deep(input) {
-  font-size: 15px;
-  background-color: rgb(216, 226, 225);
-  box-shadow: 4px 6px 6px rgba(0, 0, 0, 0.173);
-  border: 0.1px solid rgb(205, 213, 217);
-}
-
-.feedback-container {
-  display: grid;
-  border-left: 1px solid black;
-  justify-content: center;
-}
-
-.input-group :deep(.textarea-container) {
-  height: 150px;
-  background-color: rgb(216, 226, 225);
-  box-shadow: 4px 6px 6px rgba(0, 0, 0, 0.173);
-  border: 0.1px solid rgb(205, 213, 217);
-  border-radius: 10px;
-  display: block;
-}
-
-.input-group :deep(textarea) {
-  height: 100%;
-}
-
-select {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  font-size: 15px;
-  background-color: rgb(216, 226, 225);
-  box-shadow: 4px 6px 6px rgba(0, 0, 0, 0.173);
-  border-radius: 10px;
-  border: 0.1px solid rgb(205, 213, 217);
-  padding: 0.6rem;
-  width: 100%;
-}
-</style>
-
-<!-- <style scoped>
-input,
-.input-group :deep(input) {
-  font-size: 15px;
-  background-color: rgb(216, 226, 225);
-  box-shadow: 4px 6px 6px rgba(0, 0, 0, 0.173);
-  border: 0.1px solid rgb(205, 213, 217);
-  width: 75%;
-}
-.input-group {
-  width: 100%;
-}
-.nova-tarefa {
-  display: flex;
-  width: 100vw;
-  height: 100vh;
-}
-
-.input-container {
-  width: 65%;
-  margin-left: 20px;
-}
-
-.feedback-container {
-  /* justify-content: center; */
-  padding-left: 1rem;
-  border-left: 1px solid black;
-}
-
-.btn-container {
-  display: flex;
-  justify-content: flex-start;
-  padding: 1rem 0;
-}
-
-.input-group :deep(.textarea-container) {
-  width: 75%;
-  height: 150px;
-  background-color: rgb(216, 226, 225);
-  box-shadow: 4px 6px 6px rgba(0, 0, 0, 0.173);
-  border: 0.1px solid rgb(205, 213, 217);
-  border-radius: 10px;
-  display: block; /* Garante o comportamento correto */
-}
-
-.input-group :deep(textarea) {
-  height: 100%; /* Faz a textarea preencher a altura do contêiner */
-}
-
-select {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  font-size: 15px;
-  background-color: rgb(216, 226, 225);
-  box-shadow: 4px 6px 6px rgba(0, 0, 0, 0.173);
-  border-radius: 10px;
-  border: 0.1px solid rgb(205, 213, 217);
-  padding: 0.6rem;
-  width: 75%;
-}
-</style> -->

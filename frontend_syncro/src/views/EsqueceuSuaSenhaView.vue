@@ -1,10 +1,19 @@
 <template>
   <div class="bg-padrao">
-    <div class="validar-email-box">
-      <h2>Redefinir senha</h2>
+    <div
+      class="bg-white p-8 rounded-[30px] shadow-xl w-full max-w-sm min-h-[290px] flex flex-col gap-4"
+    >
+      <div class="text-center">
+        <h2 class="text-2xl font-bold text-gray-800">Redefinir senha</h2>
+        <h4 class="text-base text-gray-600 mt-2">
+          Digite o email associado à sua conta
+        </h4>
+      </div>
 
-      <h4>Digite o email associado à sua conta</h4>
-      <form @submit.prevent="validarEmail">
+      <form
+        @submit.prevent="validarEmail"
+        class="flex flex-col items-center space-y-4 mt-auto h-full justify-between"
+      >
         <InputString
           v-model="email"
           type="email"
@@ -13,7 +22,8 @@
         />
         <BotaoCustomizado texto="Enviar" type="submit" />
       </form>
-      <p v-if="emailError" class="error-message">
+
+      <p v-if="emailError" class="text-sm text-red-600 italic">
         {{ emailError }}
       </p>
     </div>
@@ -54,37 +64,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.validar-email-box {
-  justify-content: center;
-  padding: 2rem;
-  background-color: white;
-  border-radius: 30px;
-  box-shadow: 10px 10px 6px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 400px;
-  min-height: 250px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-/* .button {
-  margin-top: 1rem;
-  margin-bottom: 0.5rem;
-} */
-
-.error-message {
-  text-align: left;
-  font-size: 0.9rem;
-  margin-top: -0.5rem;
-  font-style: italic;
-  color: red;
-}
-
-p,
-h4 {
-  text-align: left;
-}
-</style>

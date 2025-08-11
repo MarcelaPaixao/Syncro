@@ -1,22 +1,36 @@
 <template>
-  <div class="modal-overlay" v-if="visivel" @click="$emit('close')">
-    <div class="modal-content" @click.stop>
-      <button @click="$emit('close')" class="close-btn">&times;</button>
+  <div
+    class="fixed inset-0 w-screen h-screen bg-[#0a9296]/80 flex justify-center items-center z-50"
+    v-if="visivel"
+    @click="$emit('close')"
+  >
+    <div
+      class="relative bg-white p-6 rounded-[30px] shadow-xl w-[35%] max-w-[650px] flex flex-col"
+      @click.stop
+    >
+      <button
+        @click="$emit('close')"
+        class="absolute top-2 right-4 text-4xl text-gray-500 hover:text-gray-800"
+      >
+        &times;
+      </button>
 
-      <header class="modal-header">
+      <header
+        class="modal-header border-b border-gray-200 pb-4 mb-4 flex justify-center"
+      >
         <slot name="header">
-          <h2>Pop-up</h2>
+          <h2 class="text-2xl font-bold"></h2>
         </slot>
       </header>
 
-      <main class="modal-body">
-        <slot> </slot>
+      <main class="modal-body overflow-y-auto max-h-[70vh]">
+        <slot></slot>
       </main>
 
-      <footer class="modal-footer">
-        <slot name="footer">
-          <button @click="$emit('close')">Fechar</button>
-        </slot>
+      <footer
+        class="modal-footer border-t border-gray-200 pt-4 mt-4 flex justify-center gap-4"
+      >
+        <slot name="footer"> </slot>
       </footer>
     </div>
   </div>
@@ -28,63 +42,3 @@ defineProps({
 });
 defineEmits(["close"]);
 </script>
-
-<style>
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(16, 108, 106, 0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.modal-content {
-  background-color: rgb(255, 255, 255);
-  padding: 1.5rem;
-  border-radius: 20px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  width: 35%;
-  max-width: 600px;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-}
-
-.close-btn {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  background: none;
-  border: none;
-  font-size: 3rem;
-  cursor: pointer;
-  color: #888;
-}
-
-/* .modal-header,
-.modal-footer {
-  padding: 0.5rem;
-} */
-
-.modal-header {
-  border-bottom: 1px solid #eee;
-}
-
-.modal-footer {
-  border-top: 1px solid #eee;
-  display: flex;
-  justify-content: flex-end; /* Alinha botões à direita */
-  gap: 1rem;
-}
-
-.modal-body {
-  padding: 1rem;
-  overflow-y: auto; /* Adiciona scroll se o conteúdo for muito grande */
-  max-height: 100vh;
-}
-</style>
