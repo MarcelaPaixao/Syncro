@@ -20,15 +20,38 @@
         <TextArea v-model="descricao" label="Descrição" />
       </div>
 
+      <div class="modal-tarefa">
+        <BotaoCustomizado
+          @click="isModalTarefaVisible = true"
+          texto="Criar Tarefa"
+          variante="secundaria"
+        />
+        <CriarTarefaModal
+          :visivel="isModalTarefaVisible"
+          :membrosDoGrupo="listaMembrosGrupo"
+          @close="isModalTarefaVisible = false"
+          @salvar="adicionarTarefaAoGrupo"
+        />
+      </div>
+
       <div class="mt-auto">
         <BotaoCustomizado type="submit" texto="Salvar" />
       </div>
     </div>
 
     <div
-      class="checklist-container border-l border-gray-300 pl-10 flex flex-col"
+      class="checklist-container border-l border-gray-300 pl-10 flex flex-col min-w-0"
     >
       <label class="text-lg font-bold text-gray-700 mb-4">Membros</label>
+      <TagInputVertical
+        v-model="membrosEmail"
+        type="email"
+        placeholder="Digite um email e pressione Enter"
+        @interaction="limpaMembrosError"
+      />
+      <p v-if="membrosError" class="text-sm text-red-600 italic mt-2">
+        {{ membrosError }}
+      </p>
     </div>
   </form>
 </template>
@@ -38,6 +61,8 @@ import BotaoCustomizado from "@/components/BotaoCustomizado.vue";
 import AppHeader from "@/components/AppHeader.vue";
 import InputString from "@/components/InputString.vue";
 import TextArea from "@/components/TextArea.vue";
+import TagInputVertical from "@/components/TagInputVertical.vue";
+import CriarTarefaModal from "@/components/CriarTarefaModal.vue";
 
 export default {
   name: "CriarNovoGrupoView",
@@ -46,6 +71,8 @@ export default {
     AppHeader,
     InputString,
     TextArea,
+    TagInputVertical,
+    CriarTarefaModal,
   },
   data() {
     return {
@@ -54,18 +81,21 @@ export default {
       professor: "",
       prazo: "",
       descricao: "",
-      membros: [],
-      // membrosError: "",
+      membrosEmail: [],
+      membrosError: "",
+      isModalTarefaVisible: false,
     };
   },
   methods: {
-    criarGrupo() {
-      // this.membrosError="";
+    limpaMembrosError() {
+      this.membrosError = "";
+    },
 
-      // if(this.membros.length < 2) {
-      //   this.membrosError="Não há membros o suficiente!";
-      //   return;
-      // }
+    criarGrupo() {
+      if (this.membrosEmail && this.membrosEmail.length < 2) {
+        this.membrosError = "Não há membros o suficiente!";
+        return;
+      }
 
       console.log("Dados do grupo:", {
         name: this.name,

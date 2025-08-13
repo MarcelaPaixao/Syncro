@@ -7,7 +7,7 @@
   </h2>
 
   <div class="visualizar-tarefa grid grid-cols-[2fr_1.1fr] gap-x-10 p-8">
-    <div class="text-group flex flex-col">
+    <div class="text-group flex flex-col min-w-0">
       <form @submit.prevent="visualizarTarefa" class="flex flex-col flex-grow">
         <div class="info-container space-y-4">
           <InputString v-model="titulo" label="Título" />
@@ -50,10 +50,11 @@
             <label class="block mb-1 text-base font-bold text-gray-700"
               >Links</label
             >
-            <input
-              type="text"
+            <TagInputVertical
               v-model="links"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+              type="url"
+              placeholder="Cole um link e pressione Enter"
+              :itemsAsLinks="true"
             />
           </div>
         </div>
@@ -94,6 +95,7 @@ import BotaoCustomizado from "@/components/BotaoCustomizado.vue";
 import AppHeader from "@/components/AppHeader.vue";
 import InputString from "@/components/InputString.vue";
 import TextArea from "@/components/TextArea.vue";
+import TagInputVertical from "@/components/TagInputVertical.vue";
 
 export default {
   name: "VisualizarTarefaView",
@@ -102,6 +104,7 @@ export default {
     AppHeader,
     InputString,
     TextArea,
+    TagInputVertical,
   },
   data() {
     return {
@@ -115,7 +118,7 @@ export default {
         { id: 2, nome: "Malu" },
         { id: 3, nome: "Fulano" },
       ],
-      links: [], //MARCELA:conferir em relação aos links, tentar colocar dinamicamente campos de input
+      links: [],
       feedbacks: [
         {
           id: 1,
