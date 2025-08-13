@@ -20,7 +20,7 @@
             <select
               v-model="responsavel"
               required
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+              class="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500"
             >
               <option value="">Selecione um membro</option>
               <option
@@ -40,7 +40,7 @@
               >Status</label
             >
             <p
-              class="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg italic text-gray-600"
+              class="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-xl italic text-gray-600"
             >
               {{ status }}
             </p>
@@ -116,32 +116,35 @@ export default {
       membrosDoGrupo: [
         { id: 1, nome: "Marcela" },
         { id: 2, nome: "Malu" },
-        { id: 3, nome: "Fulano" },
+        { id: 3, nome: "Caramelo" },
       ],
       links: [],
-      feedbacks: [
-        {
-          id: 1,
-          membro: { nome: "Membro Y" },
-          texto: "bla bla bla bla bla bla bla bla bla.",
-          status: "reprovado",
-        },
-        {
-          id: 2,
-          membro: { nome: "Membro Z" },
-          texto: "",
-          status: "aprovado",
-        },
-        {
-          id: 3,
-          membro: { nome: "Membro W" },
-          texto: "bla bla bla.",
-          status: "aprovado",
-        },
-      ],
+      feedbacks: [],
     };
   },
+  //Marcela: criado para simulação
+  created() {
+    const tarefaId = parseInt(this.$route.params.id);
+    const dadosDoBanco = this.buscarTarefaNoBanco(tarefaId);
+    if (dadosDoBanco) {
+      this.titulo = dadosDoBanco.titulo;
+      this.descricao = dadosDoBanco.descricao;
+      this.responsavel = dadosDoBanco.responsavel;
+      this.prazoTarefa = dadosDoBanco.prazoTarefa;
+    } else {
+      console.error("Tarefa não encontrada!");
+    }
+  },
   methods: {
+    //Marcela: criado para simulação
+    buscarTarefaNoBanco(id) {
+      const todasAsTarefas = [
+        { id: 1691945189000, titulo: "Tarefa A", descricao: "Descrição A" },
+        { id: 1691945199000, titulo: "Tarefa B", descricao: "Descrição B" },
+      ];
+      return todasAsTarefas.find((tarefa) => tarefa.id === id);
+    },
+
     visualizarTarefa() {
       console.log("Dados do grupo:", {
         titulo: this.titulo,
