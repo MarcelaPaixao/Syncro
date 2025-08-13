@@ -40,8 +40,8 @@
 import InputSenha from "@/components/InputSenha.vue";
 import InputEmail from "@/components/InputEmail.vue";
 import BotaoCustomizado from "@/components/BotaoCustomizado.vue";
-import axios from "axios";
-import { setAuthTokens } from "axios-jwt";
+import api from "@/services/api";
+import { getAccessToken, setAuthTokens } from "axios-jwt";
 export default {
   name: "LoginView",
   components: {
@@ -62,15 +62,12 @@ export default {
           email: this.email,
           senha: this.password,
         };
-        const response = await axios.post(
-          `http://localhost:8080/api/aluno/login`,
-          loginDTO
-        );
+        const response = await api.post(`/aluno/login`, loginDTO);
         setAuthTokens({
-          accessToken: response.data.access_token,
-          refreshToken: response.data.refresh_token,
+          accessToken: response.data.token,
         });
-        console.log(response.headers);
+        console.log(getAccessToken());
+        this.$router.push("/perfil-usuario");
       } catch (error) {
         console.error("Error posting data:", error);
       }

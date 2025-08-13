@@ -64,6 +64,8 @@
 <script>
 import BotaoCustomizado from "@/components/BotaoCustomizado.vue";
 import AppHeader from "@/components/AppHeader.vue";
+import api from "@/services/api";
+import { getAccessToken } from "axios-jwt";
 export default {
   name: "CriarNovoGrupoView",
   components: {
@@ -77,26 +79,38 @@ export default {
       professor: "",
       prazo: "",
       descricao: "",
-      membros: [],
+      membros: ["l@l.com", "maria@email.com"],
       // membrosError: "",
     };
   },
   methods: {
-    criarGrupo() {
-      // this.membrosError="";
-
-      // if(this.membros.length < 2) {
-      //   this.membrosError="Não há membros o suficiente!";
-      //   return;
-      // }
-
-      console.log("Dados do grupo:", {
-        name: this.name,
+    async criarGrupo() {
+      const criaGrupoDTO = {
+        nome: this.name,
         materia: this.materia,
         professor: this.professor,
         prazo: this.prazo,
         descricao: this.descricao,
-      });
+        membros: this.membros,
+      };
+      const token = await getAccessToken();
+      console.log(token);
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      try {
+        const response = await api.post(
+          "/api/grupo/create",
+          criaGrupoDTO,
+          config
+        );
+        this.$router.push();
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 };
