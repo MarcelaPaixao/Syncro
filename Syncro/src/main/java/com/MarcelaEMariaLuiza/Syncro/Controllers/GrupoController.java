@@ -56,7 +56,7 @@ public class GrupoController {
     public ResponseEntity<?> createGrupo(@RequestBody CreateGrupoDTO createGrupoDTO, Authentication authentication){
         try{
             Grupo novoGrupo = grupoService.criaGrupo(createGrupoDTO, authentication.getPrincipal());
-            return ResponseEntity.ok("Grupo Criado");
+            return ResponseEntity.ok(novoGrupo);
         }catch(CampoNaoPreenchidoException e){
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
