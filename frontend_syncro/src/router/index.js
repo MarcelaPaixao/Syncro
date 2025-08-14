@@ -55,7 +55,7 @@ const routes = [
     component: PerfilUsuarioView,
   },
   {
-    path: "/visualizar-tarefa",
+    path: "/tarefa/:id",
     name: "visualizar-tarefa",
     component: VisualizarTarefaView,
   },

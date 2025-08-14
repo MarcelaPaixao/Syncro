@@ -14,8 +14,6 @@
         />
       </div>
 
-      <TextArea v-model="tarefaLocal.descricao" label="Descrição" />
-
       <div>
         <label class="block mb-1 text-base font-bold text-gray-700"
           >Responsável</label
@@ -23,7 +21,7 @@
         <select
           v-model="tarefaLocal.responsavel"
           required
-          class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+          class="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500"
         >
           <option value="" disabled>Selecione um membro</option>
           <option
@@ -35,6 +33,7 @@
           </option>
         </select>
       </div>
+      <TextArea v-model="tarefaLocal.descricao" label="Descrição" />
     </form>
 
     <template v-slot:footer>

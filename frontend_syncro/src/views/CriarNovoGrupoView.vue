@@ -20,18 +20,30 @@
         <TextArea v-model="descricao" label="Descrição" />
       </div>
 
-      <div class="modal-tarefa">
-        <BotaoCustomizado
-          @click="isModalTarefaVisible = true"
-          texto="Criar Tarefa"
-          variante="secundaria"
-        />
-        <CriarTarefaModal
-          :visivel="isModalTarefaVisible"
-          :grupoId="grupoId"
-          @close="isModalTarefaVisible = false"
-          @salvar="adicionarTarefaAoGrupo"
-        />
+      <div>
+        <label class="text-base font-bold text-gray-700 mb-2 block"
+          >Tarefas</label
+        >
+        <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
+          <router-link
+            v-for="(tarefa, index) in tarefas"
+            :key="index"
+            :to="'tarefa/${tarefa.id}'"
+            class="text-teal-600 underline cursor-pointer hover:text-teal-800"
+          >
+            {{ tarefa.titulo }}
+          </router-link>
+
+          <button
+            @click="abrirModalTarefas"
+            type="button"
+            class="flex items-center justify-center w-8 h-8 bg-gray-200 rounded-full hover:bg-gray-300 transition-colors"
+          >
+            <span class="text-2xl font-bold text-gray-600 leading-none mb-1"
+              >+</span
+            >
+          </button>
+        </div>
       </div>
 
       <div class="mt-auto">
@@ -54,6 +66,13 @@
       </p>
     </div>
   </form>
+
+  <CriarTarefaModal
+    :visivel="isModalTarefaVisible"
+    :grupoId="grupoId"
+    @close="isModalTarefaVisible = false"
+    @salvar="adicionarTarefa"
+  />
 </template>
 
 <script>
@@ -87,6 +106,7 @@ export default {
       membrosError: "",
       grupoId: 1315,
       isModalTarefaVisible: false,
+      tarefas: [],
     };
   },
   methods: {
@@ -123,6 +143,19 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    },
+    //Marcela: criado para simulação
+    adicionarTarefa(dadosDaTarefa) {
+      const novaTarefa = {
+        ...dadosDaTarefa,
+        id: Date.now(),
+      };
+      this.tarefas.push(novaTarefa);
+      this.isModalTarefaVisible = false;
+    },
+
+    abrirModalTarefas() {
+      this.isModalTarefaVisible = true;
     },
   },
 };

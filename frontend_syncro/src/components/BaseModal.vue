@@ -23,7 +23,7 @@
         </slot>
       </header>
 
-      <main class="modal-body overflow-y-auto max-h-[70vh]">
+      <main class="modal-body overflow-y-auto max-h-[70vh] p-4">
         <slot></slot>
       </main>
 
