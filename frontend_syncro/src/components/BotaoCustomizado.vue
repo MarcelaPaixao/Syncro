@@ -1,7 +1,7 @@
 <template>
   <button
     :class="[
-      'w-full max-w-[250px] h-[40px] px-4 py-2 border-none text-white text-base font-bold rounded-[10px] cursor-pointer transition-colors duration-200 mt-2.5',
+      'w-full max-w-[250px] h-[40px] px-4 py-2 border-none text-white text-base font-bold rounded-xl cursor-pointer transition-colors duration-200 mt-2.5',
       variantClasses,
     ]"
     @click="$emit('click')"

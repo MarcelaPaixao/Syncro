@@ -37,13 +37,34 @@
 
           <div class="status-group">
             <label class="block mb-1 text-base font-bold text-gray-700"
-              >Status</label
+              >Status de aprovação</label
             >
             <p
               class="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-xl italic text-gray-600"
             >
               {{ status }}
             </p>
+          </div>
+
+          <div>
+            <label class="block mb-1 text-base font-bold text-gray-700"
+              >Estado</label
+            >
+            <select
+              v-model="estadoTarefa"
+              class="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500"
+              required
+            >
+              <option value="" disabled>Selecione o estado da Tarefa</option>
+              <option
+                v-for="(estado, index) in estadosPossiveis"
+                :key="index"
+                :value="estado"
+                this.estadoTarefa="estado"
+              >
+                {{ estado }}
+              </option>
+            </select>
           </div>
 
           <div>
@@ -112,7 +133,7 @@ export default {
       descricao: "",
       responsavel: "",
       prazoTarefa: "",
-      status: "Aguardando aprovação (x/x)",
+      status: "Aguardando aprovação",
       membrosDoGrupo: [
         { id: 1, nome: "Marcela" },
         { id: 2, nome: "Malu" },
@@ -120,6 +141,8 @@ export default {
       ],
       links: [],
       feedbacks: [],
+      estadoTarefa: "",
+      estadosPossiveis: ["To-do", "Doing", "Review", "Done"],
     };
   },
   //Marcela: criado para simulação
@@ -131,6 +154,8 @@ export default {
       this.descricao = dadosDoBanco.descricao;
       this.responsavel = dadosDoBanco.responsavel;
       this.prazoTarefa = dadosDoBanco.prazoTarefa;
+      this.estadoTarefa = dadosDoBanco.estadoTarefa;
+      this.status = dadosDoBanco.status;
     } else {
       console.error("Tarefa não encontrada!");
     }
@@ -154,6 +179,7 @@ export default {
         status: this.status,
         links: this.links,
         membrosDoGrupo: this.membrosDoGrupo,
+        estadoTarefa: this.estadoTarefa,
       });
     },
   },

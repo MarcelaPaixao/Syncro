@@ -68,6 +68,7 @@ export default {
         descricao: "",
         responsavel: "",
         prazoTarefa: "",
+        estado: "To-do",
       },
     };
   },
