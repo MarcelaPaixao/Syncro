@@ -8,7 +8,6 @@ import CriarNovoGrupoView from "@/views/CriarNovoGrupoView.vue";
 import PerfilUsuarioView from "@/views/PerfilUsuarioView.vue";
 import DashboardView from "@/views/DashboardView.vue";
 import VisualizarTarefaView from "@/views/VisualizarTarefaView.vue";
-import { getAccessToken } from "axios-jwt";
 
 const routes = [
   // {
@@ -24,13 +23,11 @@ const routes = [
     path: "/login",
     name: "login",
     component: LoginView,
-    meta: { requiresAuth: false },
   },
   {
     path: "/cadastro",
     name: "cadastro",
     component: CadastroView,
-    meta: { requiresAuth: false },
   },
   {
     path: "/esqueceu-sua-senha",
@@ -45,13 +42,11 @@ const routes = [
   {
     path: "/criar-grupo",
     name: "criar-grupo",
-    meta: { requiresAuth: true },
     component: CriarNovoGrupoView,
   },
   {
     path: "/perfil-usuario",
     name: "perfil-usuario",
-    meta: { requiresAuth: true },
     component: PerfilUsuarioView,
   },
   {
@@ -60,28 +55,20 @@ const routes = [
     component: VisualizarTarefaView,
   },
   {
-    path: "/criar-tarefa",
-    name: "criar-tarefa",
-    meta: { requiresAuth: true },
+    path: "/visualizar-tarefa",
+    name: "visualizar-tarefa",
+    component: VisualizarTarefaView,
+  },
+  {
+    path: "/dashboard-grupo",
+    name: "dashboard-grupo",
     component: DashboardView,
-    props: true,
   },
 ];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
-});
-router.beforeEach((to, from, next) => {
-  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
-  const isAuthenticated = !!getAccessToken();
-  console.log(requiresAuth);
-  console.log(isAuthenticated);
-  if (requiresAuth && !isAuthenticated) {
-    next("/login");
-  } else {
-    next();
-  }
 });
 
 export default router;

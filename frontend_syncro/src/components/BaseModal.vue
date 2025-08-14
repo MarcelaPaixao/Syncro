@@ -1,6 +1,6 @@
 <template>
   <div
-    class="fixed inset-0 w-screen h-screen bg-[#0a9296]/80 flex justify-center items-center z-50"
+    class="fixed inset-0 w-screen h-screen bg-[#0a9296]/90 flex justify-center items-center z-50"
     v-if="visivel"
     @click="$emit('close')"
   >

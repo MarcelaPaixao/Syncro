@@ -55,7 +55,6 @@
 import InputSenha from "@/components/InputSenha.vue";
 import InputString from "@/components/InputString.vue";
 import BotaoCustomizado from "@/components/BotaoCustomizado.vue";
-import axios from "axios";
 export default {
   name: "CadastroView",
   components: {
@@ -81,70 +80,7 @@ export default {
     },
   },
   methods: {
-    async fazerCadastro() {
-      try {
-        if (this.password != this.confirmPassword) {
-          this.passwordError = "As senhas são diferentes!";
-          return;
-        }
-        const cadastroData = {
-          nome: this.name,
-          email: this.email,
-          senha: this.password,
-        };
-        const response = axios.post(
-          `http://localhost:8080/api/aluno/create`,
-          cadastroData
-        );
-        console.log((await response).data);
-      } catch (error) {
-        console.log("Erro ao cadastrar", error);
-      }
-    },
+    fazerCadastro() {},
   },
 };
 </script>
-
-<style scoped>
-/* O "scoped" faz com que este CSS só se aplique a este componente */
-.cadastro-box {
-  justify-content: center;
-  padding: 2rem;
-  background-color: white;
-  border-radius: 30px;
-  box-shadow: 10px 10px 6px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 400px;
-  max-height: 470px;
-}
-
-.login-redirect {
-  text-align: center;
-  margin-top: 1.2rem;
-  /* margin-bottom: -0.6rem; */
-}
-
-.login-redirect a {
-  color: #077a7d;
-  padding: 0;
-  font-size: 0.97em;
-  text-decoration: none;
-}
-
-.login-redirect a:hover {
-  color: #0ca4aad4;
-  text-decoration: underline;
-}
-
-.error-message {
-  text-align: left;
-  font-size: 0.9rem;
-  font-style: italic;
-  color: red;
-}
-
-img {
-  margin-top: -0.7rem;
-  margin-bottom: -0.2rem;
-}
-</style>
