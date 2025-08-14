@@ -1,8 +1,16 @@
 <template>
   <div class="bg-padrao">
-    <div class="redefinir-senha-box">
-      <h2>Redefinir senha</h2>
-      <form @submit.prevent="redefineSenha">
+    <div
+      class="bg-white p-8 rounded-[30px] shadow-xl w-full max-w-sm max-h-[290px] flex flex-col items-center"
+    >
+      <h2 class="text-2xl font-bold text-gray-800 text-center">
+        Redefinir senha
+      </h2>
+
+      <form
+        @submit.prevent="redefineSenha"
+        class="flex flex-col h-full justify-between w-full items-center"
+      >
         <InputSenha
           v-model:password="password"
           v-model:confirmPassword="confirmPassword"
@@ -57,21 +65,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.redefinir-senha-box {
-  justify-content: center;
-  padding: 2rem;
-  background-color: white;
-  border-radius: 30px;
-  box-shadow: 10px 10px 6px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 400px;
-  max-height: 250px;
-}
-
-/* .button {
-  margin-top: 1rem;
-  margin-bottom: 0.5rem;
-} */
-</style>
