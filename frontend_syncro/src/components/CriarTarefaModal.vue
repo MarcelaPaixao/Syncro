@@ -90,7 +90,7 @@ export default {
         titulo: this.tarefaLocal.titulo,
         descricao: this.tarefaLocal.descricao,
         alunoId: this.tarefaLocal.responsavel,
-        prazoTarefa: this.tarefaLocal.prazoTarefa,
+        prazo: this.tarefaLocal.prazoTarefa,
       };
       try {
         await createTarefa(createTarefaDTO);

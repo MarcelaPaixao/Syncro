@@ -11,7 +11,7 @@
   "dependencies": {
     "axios": "^1.11.0",
     "axios-jwt": "^4.0.3",
-    "core-js": "^3.8.3",
+    "core-js": "^3.45.0",
     "tailwind": "^4.0.0",
     "vue": "^3.2.13",
     "vue-feather-icons": "^5.1.0",

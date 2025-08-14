@@ -55,8 +55,9 @@ const routes = [
     component: PerfilUsuarioView,
   },
   {
-    path: "/tarefa/:id",
+    path: "/tarefa/:tarefaId",
     name: "visualizar-tarefa",
+    meta: { requiresAuth: true },
     component: VisualizarTarefaView,
   },
   {

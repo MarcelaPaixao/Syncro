@@ -18,11 +18,12 @@
               >Responsável</label
             >
             <select
-              v-model="responsavel"
+              v-model="idDoMembroResponsavel"
+              id="idDoMembroResponsavel"
               required
               class="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500"
             >
-              <option value="">Selecione um membro</option>
+              <option value="" disabled>Selecione um membro</option>
               <option
                 v-for="membro in membrosDoGrupo"
                 :key="membro.id"
@@ -45,22 +46,12 @@
               {{ status }}
             </p>
           </div>
-
-          <div>
-            <label class="block mb-1 text-base font-bold text-gray-700"
-              >Links</label
-            >
-            <TagInputVertical
-              v-model="links"
-              type="url"
-              placeholder="Cole um link e pressione Enter"
-              :itemsAsLinks="true"
-            />
-          </div>
+          <InputString v-model="linkDrive" label="Link Drive" type="URL" />
+          <InputString v-model="linkExtra" label="Link Extra" />
         </div>
 
         <div class="btn-container mt-auto pt-4">
-          <BotaoCustomizado type="submit" texto="Salvar" />
+          <BotaoCustomizado type="submit" texto="Salvar" @click="editaTarefa" />
         </div>
       </form>
     </div>
@@ -89,13 +80,13 @@
     </div>
   </div>
 </template>
-
 <script>
 import BotaoCustomizado from "@/components/BotaoCustomizado.vue";
 import AppHeader from "@/components/AppHeader.vue";
 import InputString from "@/components/InputString.vue";
 import TextArea from "@/components/TextArea.vue";
-import TagInputVertical from "@/components/TagInputVertical.vue";
+import { editaTarefa, getTarefaById } from "@/services/tarefaService";
+import { getAlunosGrupo } from "@/services/alunoService";
 
 export default {
   name: "VisualizarTarefaView",
@@ -104,58 +95,58 @@ export default {
     AppHeader,
     InputString,
     TextArea,
-    TagInputVertical,
   },
   data() {
     return {
+      idDoMembroResponsavel: null,
+      tarefaId: null,
+      grupoId: null,
       titulo: "",
       descricao: "",
-      responsavel: "",
       prazoTarefa: "",
-      status: "Aguardando aprovação (x/x)",
-      membrosDoGrupo: [
-        { id: 1, nome: "Marcela" },
-        { id: 2, nome: "Malu" },
-        { id: 3, nome: "Caramelo" },
-      ],
-      links: [],
+      status: "",
+      membrosDoGrupo: [],
+      linkDrive: "",
+      linkExtra: "",
       feedbacks: [],
     };
   },
-  //Marcela: criado para simulação
-  created() {
-    const tarefaId = parseInt(this.$route.params.id);
-    const dadosDoBanco = this.buscarTarefaNoBanco(tarefaId);
-    if (dadosDoBanco) {
-      this.titulo = dadosDoBanco.titulo;
-      this.descricao = dadosDoBanco.descricao;
-      this.responsavel = dadosDoBanco.responsavel;
-      this.prazoTarefa = dadosDoBanco.prazoTarefa;
-    } else {
-      console.error("Tarefa não encontrada!");
-    }
-  },
   methods: {
-    //Marcela: criado para simulação
-    buscarTarefaNoBanco(id) {
-      const todasAsTarefas = [
-        { id: 1691945189000, titulo: "Tarefa A", descricao: "Descrição A" },
-        { id: 1691945199000, titulo: "Tarefa B", descricao: "Descrição B" },
-      ];
-      return todasAsTarefas.find((tarefa) => tarefa.id === id);
-    },
-
-    visualizarTarefa() {
-      console.log("Dados do grupo:", {
+    async editaTarefa() {
+      const createTarefaDTO = {
+        id: this.tarefaId,
         titulo: this.titulo,
         descricao: this.descricao,
-        responsavel: this.responsavel,
-        prazoTarefa: this.prazoTarefa,
+        prazo: this.prazoTarefa,
         status: this.status,
-        links: this.links,
-        membrosDoGrupo: this.membrosDoGrupo,
-      });
+        linkDrive: this.linkDrive,
+        linkExtra: this.linkExtra,
+        alunoId: this.idDoMembroResponsavel,
+        grupoId: this.grupoId,
+      };
+      console.log(createTarefaDTO);
+      const response = await editaTarefa(createTarefaDTO);
+      console.log(response);
     },
+  },
+  async mounted() {
+    try {
+      this.tarefaId = parseInt(this.$route.params.tarefaId);
+      const tarefa = await getTarefaById(this.tarefaId);
+      this.grupoId = tarefa.grupoId;
+      if (tarefa) {
+        this.titulo = tarefa.titulo;
+        this.descricao = tarefa.descricao ?? "adicione uma descrição";
+        this.prazoTarefa = tarefa.prazo;
+        this.status = tarefa.status;
+        this.linkDrive = tarefa.linkDrive ?? "";
+        this.linkExtra = tarefa.linkExtra ?? "";
+        this.membrosDoGrupo = await getAlunosGrupo(tarefa.grupoId);
+        this.idDoMembroResponsavel = tarefa.alunoId;
+      }
+    } catch (error) {
+      console.error("Falha ao carregar dados da tarefa:", error);
+    }
   },
 };
 </script>
