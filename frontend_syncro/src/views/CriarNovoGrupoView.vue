@@ -69,7 +69,7 @@
 
   <CriarTarefaModal
     :visivel="isModalTarefaVisible"
-    :membrosDoGrupo="membrosProvisorio"
+    :grupoId="grupoId"
     @close="isModalTarefaVisible = false"
     @salvar="adicionarTarefa"
   />
@@ -83,6 +83,8 @@ import TextArea from "@/components/TextArea.vue";
 import TagInputVertical from "@/components/TagInputVertical.vue";
 import CriarTarefaModal from "@/components/CriarTarefaModal.vue";
 
+import api from "@/services/api";
+import { getAccessToken } from "axios-jwt";
 export default {
   name: "CriarNovoGrupoView",
   components: {
@@ -101,13 +103,8 @@ export default {
       prazo: "",
       descricao: "",
       membrosEmail: [],
-      //Marcela: criado para simulação
-      membrosProvisorio: [
-        { id: 1, nome: "Marcela" },
-        { id: 2, nome: "Malu" },
-        { id: 3, nome: "Caramelo" },
-      ],
       membrosError: "",
+      grupoId: 1315,
       isModalTarefaVisible: false,
       tarefas: [],
     };
@@ -116,26 +113,37 @@ export default {
     limpaMembrosError() {
       this.membrosError = "";
     },
-
-    criarGrupo() {
-      if (this.membrosEmail && this.membrosEmail.length < 2) {
+    async criarGrupo() {
+      if (this.membrosEmail && this.membrosEmail.length < 1) {
         this.membrosError = "Não há membros o suficiente!";
         return;
       }
-
-      console.log("Dados do grupo:", {
-        name: this.name,
+      const criaGrupoDTO = {
+        nome: this.name,
         materia: this.materia,
         professor: this.professor,
         prazo: this.prazo,
         descricao: this.descricao,
-      });
+        membros: this.membrosEmail,
+      };
+      const token = await getAccessToken();
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      try {
+        const response = await api.post(
+          "/api/grupo/create",
+          criaGrupoDTO,
+          config
+        );
+        console.log(response.data);
+        this.grupoId = response.data.id;
+      } catch (error) {
+        console.log(error);
+      }
     },
-
-    abrirModalTarefas() {
-      this.isModalTarefaVisible = true;
-    },
-
     //Marcela: criado para simulação
     adicionarTarefa(dadosDaTarefa) {
       const novaTarefa = {
@@ -144,6 +152,10 @@ export default {
       };
       this.tarefas.push(novaTarefa);
       this.isModalTarefaVisible = false;
+    },
+
+    abrirModalTarefas() {
+      this.isModalTarefaVisible = true;
     },
   },
 };

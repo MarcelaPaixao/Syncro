@@ -55,6 +55,7 @@
 import InputSenha from "@/components/InputSenha.vue";
 import InputString from "@/components/InputString.vue";
 import BotaoCustomizado from "@/components/BotaoCustomizado.vue";
+import axios from "axios";
 export default {
   name: "CadastroView",
   components: {
@@ -80,18 +81,25 @@ export default {
     },
   },
   methods: {
-    fazerCadastro() {
-      if (this.password != this.confirmPassword) {
-        this.passwordError = "As senhas são diferentes!";
-        return;
+    async fazerCadastro() {
+      try {
+        if (this.password != this.confirmPassword) {
+          this.passwordError = "As senhas são diferentes!";
+          return;
+        }
+        const cadastroData = {
+          nome: this.name,
+          email: this.email,
+          senha: this.password,
+        };
+        const response = axios.post(
+          `http://localhost:8080/api/aluno/create`,
+          cadastroData
+        );
+        console.log((await response).data);
+      } catch (error) {
+        console.log("Erro ao cadastrar", error);
       }
-      // MARCELA:Testando no console do navegador
-      console.log("Dados para cadastro:", {
-        name: this.name,
-        email: this.email,
-        password: this.password,
-        confirmPassword: this.confirmPassword,
-      });
     },
   },
 };

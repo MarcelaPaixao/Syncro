@@ -47,6 +47,8 @@ import BotaoCustomizado from "./BotaoCustomizado.vue";
 import InputString from "./InputString.vue";
 import TextArea from "./TextArea.vue";
 import BaseModal from "./BaseModal.vue";
+import { getAlunosGrupo } from "@/services/alunoService";
+import { createTarefa } from "@/services/tarefaService";
 
 export default {
   name: "CriarTarefaModal",
@@ -58,7 +60,7 @@ export default {
   },
   props: {
     visivel: { type: Boolean, required: true },
-    membrosDoGrupo: { type: Array, required: true },
+    grupoId: { type: Number, required: true },
   },
   emits: ["close", "salvar"],
   data() {
@@ -69,22 +71,36 @@ export default {
         responsavel: "",
         prazoTarefa: "",
       },
+      membrosDoGrupo: [],
     };
   },
   methods: {
-    submitTarefa() {
-      this.$emit("salvar", this.tarefaLocal);
-      console.log("Dados recebidos:", {
-        tarefaLocal: this.tarefaLocal,
-      });
-
-      this.tarefaLocal = {
-        titulo: "",
-        descricao: "",
-        responsavel: "",
-        prazoTarefa: "",
-      };
+    async getMembrosGrupo() {
+      try {
+        const retorno = await getAlunosGrupo(this.$props.grupoId);
+        return retorno;
+      } catch (error) {
+        console.log(error);
+      }
     },
+    async submitTarefa() {
+      this.$emit("salvar", this.tarefaLocal);
+      const createTarefaDTO = {
+        grupoId: this.grupoId,
+        titulo: this.tarefaLocal.titulo,
+        descricao: this.tarefaLocal.descricao,
+        alunoId: this.tarefaLocal.responsavel,
+        prazoTarefa: this.tarefaLocal.prazoTarefa,
+      };
+      try {
+        await createTarefa(createTarefaDTO);
+      } catch (error) {
+        console.log("fazer mensagem de erro");
+      }
+    },
+  },
+  async mounted() {
+    this.membrosDoGrupo = await this.getMembrosGrupo();
   },
 };
 </script>

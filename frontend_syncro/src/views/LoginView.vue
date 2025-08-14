@@ -53,6 +53,8 @@
 import InputSenha from "@/components/InputSenha.vue";
 import InputString from "@/components/InputString.vue";
 import BotaoCustomizado from "@/components/BotaoCustomizado.vue";
+import { getAccessToken, setAuthTokens } from "axios-jwt";
+import axios from "axios";
 export default {
   name: "LoginView",
   components: {
@@ -67,14 +69,24 @@ export default {
     };
   },
   methods: {
-    fazerLogin() {
-      // Testando no console do navegador
-      // aqui faz chamada para backend
-      console.log("Dados para login:", {
-        email: this.email,
-        password: this.password,
-      });
-      this.$router.push("/criar-grupo");
+    async fazerLogin() {
+      try {
+        const loginDTO = {
+          email: this.email,
+          senha: this.password,
+        };
+        const response = await axios.post(
+          `http://localhost:8080/api/aluno/login`,
+          loginDTO
+        );
+        setAuthTokens({
+          accessToken: response.data.token,
+        });
+        console.log(getAccessToken());
+        this.$router.push("/perfil-usuario");
+      } catch (error) {
+        console.error("Error posting data:", error);
+      }
     },
     redirecionaCadastrar() {
       console.log("redirecionando cadastro...");
