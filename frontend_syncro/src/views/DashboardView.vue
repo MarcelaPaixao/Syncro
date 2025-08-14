@@ -10,8 +10,8 @@
       <h1 class="text-2xl font-bold text-center">Nome do grupo</h1>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 px-4">
-      <KanbanCard
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 px-6">
+      <CardTarefas
         v-for="coluna in colunas"
         :key="coluna.id"
         :titulo="coluna.titulo"
@@ -49,7 +49,7 @@ import VerDescricaoModal from "@/components/VerDescricaoModal.vue";
 import VerMembrosModal from "@/components/VerMembrosModal.vue";
 import AppHeader from "@/components/AppHeader.vue";
 import SubBar from "@/components/SubBar.vue";
-import KanbanCard from "@/components/KanbanCard.vue";
+import CardTarefas from "@/components/CardTarefas.vue";
 
 const isModalTarefaVisible = ref(false);
 const isModalDescricaoVisible = ref(false);

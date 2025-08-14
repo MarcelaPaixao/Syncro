@@ -23,7 +23,7 @@ defineEmits(["click"]);
 const variantClasses = computed(() => {
   switch (props.variante) {
     case "secundaria":
-      return "bg-[#5fbbc1] hover:bg-[#77ccccf0]";
+      return "bg-[#73babb] hover:bg-[#77ccccf0]";
 
     default:
       return "bg-[#077a7d] hover:bg-[#0ca4aad4]";

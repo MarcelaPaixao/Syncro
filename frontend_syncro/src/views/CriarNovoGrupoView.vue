@@ -28,7 +28,7 @@
           <router-link
             v-for="(tarefa, index) in tarefas"
             :key="index"
-            :to="'tarefa/${tarefa.id}'"
+            :to="`tarefa/${tarefa.id}`"
             class="text-teal-600 underline cursor-pointer hover:text-teal-800"
           >
             {{ tarefa.titulo }}

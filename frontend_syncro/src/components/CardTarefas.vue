@@ -4,13 +4,13 @@
       {{ titulo }}
     </label>
     <div
-      class="bg-gray-200 p-4 rounded-2xl shadow-lg w-full min-h-[60vh] space-y-3"
+      class="bg-[#eaf0f1] p-4 rounded-2xl shadow-xl w-full min-h-[60vh] space-y-3"
     >
       <router-link
         v-for="tarefa in tarefas"
         :key="tarefa.id"
         :to="`tarefa/${tarefa.id}`"
-        class="block p-2 bg-white rounded-xl shadow cursor-pointer hover:bg-gray-50"
+        class="block p-2 bg-white rounded-xl shadow cursor-pointer hover:bg-gray-50 font-medium flex-grow truncate"
       >
         {{ tarefa.titulo }}
       </router-link>

@@ -51,7 +51,7 @@ const routes = [
   },
   {
     path: "/tarefa/:id",
-    name: "visualizar-tarefa",
+    name: "ver-tarefa",
     component: VisualizarTarefaView,
   },
   {
@@ -62,6 +62,11 @@ const routes = [
   {
     path: "/dashboard-grupo",
     name: "dashboard-grupo",
+    component: DashboardView,
+  },
+  {
+    path: "/grupo/:id",
+    name: "ver-grupo",
     component: DashboardView,
   },
 ];

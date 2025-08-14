@@ -30,6 +30,6 @@ const baseClass =
 
 <style scoped>
 .router-link-exact-active {
-  @apply bg-white text-[#077a7d] hover:bg-white/80;
+  @apply bg-white text-[#347677] hover:bg-white/80;
 }
 </style>
