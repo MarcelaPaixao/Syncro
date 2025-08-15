@@ -1,4 +1,9 @@
 <template>
+  <AppNotification
+    :visivel="notificacao.visivel"
+    :mensagem="notificacao.mensagem"
+    :tipo="notificacao.tipo"
+  />
   <AppHeader />
   <h2 class="text-2xl font-bold text-gray-800 text-center my-4">
     Novo Projeto
@@ -64,7 +69,7 @@ import TagInputVertical from "@/components/TagInputVertical.vue";
 
 import api from "@/services/api";
 import { getAccessToken } from "axios-jwt";
-import emitter from "@/eventBus.js";
+import AppNotification from "@/components/AppNotification.vue";
 
 export default {
   name: "CriarNovoGrupoView",
@@ -74,6 +79,7 @@ export default {
     InputString,
     TextArea,
     TagInputVertical,
+    AppNotification,
   },
   data() {
     return {
@@ -87,19 +93,32 @@ export default {
       grupoId: "",
       isModalTarefaVisible: false,
       tarefas: [],
+      notificacao: {
+        visivel: false,
+        mensagem: "",
+        tipo: "sucesso", // 'sucesso' ou 'erro'
+      },
     };
   },
   methods: {
+    mostrarNotificacao(mensagem, tipo) {
+      this.notificacao.mensagem = mensagem;
+      this.notificacao.tipo = tipo;
+      this.notificacao.visivel = true;
+      setTimeout(() => {
+        this.notificacao.visivel = false;
+      }, 4500);
+    },
     limpaMembrosError() {
       this.membrosError = "";
     },
     async criarGrupo() {
       if (this.membrosEmail && this.membrosEmail.length < 1) {
         this.membrosError = "Não há membros o suficiente!";
-        emitter.emit("show-notification", {
-          message: "É necessário adicionar pelo menos um membro.",
-          type: "error",
-        });
+        this.mostrarNotificacao(
+          "É necessário adicionar pelo menos um membro.",
+          "error"
+        );
         return;
       }
       const criaGrupoDTO = {
@@ -123,17 +142,14 @@ export default {
           config
         );
         this.grupoId = response.data.id;
-        emitter.emit("show-notification", {
-          message: "Projeto criado com sucesso!",
-          type: "success",
-        });
+        this.mostrarNotificacao("Projeto criado com sucesso!", "sucesso");
         this.$router.push(`/perfil-usuario`);
       } catch (error) {
         console.log(error);
-        emitter.emit("show-notification", {
-          message: "Erro ao criar o projeto. Tente novamente.",
-          type: "error",
-        });
+        this.mostrarNotificacao(
+          "Erro ao criar o projeto. Tente novamente.",
+          "error"
+        );
       }
     },
 

@@ -32,7 +32,7 @@ const notificationListener = (payload) => {
   // Esconde a notificação automaticamente após 3 segundos.
   setTimeout(() => {
     visible.value = false;
-  }, 3000);
+  }, 4500);
 };
 
 onMounted(() => {
