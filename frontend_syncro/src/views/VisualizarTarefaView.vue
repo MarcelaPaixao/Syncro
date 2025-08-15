@@ -1,6 +1,9 @@
-<!-- Ajustar arquivo, pois não serão inputs normais, mas a visualização dos dados da tarefa
- e possibilidade de alteração -->
 <template>
+  <AppNotification
+    :visivel="notificacao.visivel"
+    :mensagem="notificacao.mensagem"
+    :tipo="notificacao.tipo"
+  />
   <AppHeader />
   <h2 class="text-2xl font-bold text-gray-800 text-center my-4">
     Perfil da Tarefa
@@ -50,7 +53,6 @@
                 v-for="(estado, index) in estadosPossiveis"
                 :key="index"
                 :value="estado"
-                this.estadoTarefa="estado"
               >
                 {{ estado }}
               </option>
@@ -97,6 +99,7 @@ import InputString from "@/components/InputString.vue";
 import TextArea from "@/components/TextArea.vue";
 import { editaTarefa, getTarefaById } from "@/services/tarefaService";
 import { getAlunosGrupo } from "@/services/alunoService";
+import AppNotification from "@/components/AppNotification.vue";
 
 export default {
   props: {
@@ -111,6 +114,7 @@ export default {
     AppHeader,
     InputString,
     TextArea,
+    AppNotification,
   },
   data() {
     return {
@@ -125,9 +129,22 @@ export default {
       linkExtra: "",
       feedbacks: [],
       estadosPossiveis: ["TODO", "DOING", "REVIEW", "DONE"],
+      notificacao: {
+        visivel: false,
+        mensagem: "",
+        tipo: "sucesso",
+      },
     };
   },
   methods: {
+    mostrarNotificacao(mensagem, tipo) {
+      this.notificacao.mensagem = mensagem;
+      this.notificacao.tipo = tipo;
+      this.notificacao.visivel = true;
+      setTimeout(() => {
+        this.notificacao.visivel = false;
+      }, 4500);
+    },
     async editaTarefa() {
       const createTarefaDTO = {
         id: this.tarefaId,
@@ -142,6 +159,8 @@ export default {
       };
       await editaTarefa(createTarefaDTO);
       console.log(createTarefaDTO);
+      //Marcela: Se tiver um try catch aqui, collocar notificação de erro na parte de catch(error)
+      this.mostrarNotificacao("Tarefa salva com sucesso!", "sucesso");
     },
   },
   async mounted() {

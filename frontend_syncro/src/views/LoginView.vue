@@ -1,5 +1,12 @@
 <template>
   <div class="bg-padrao">
+    <AppNotification
+      :visivel="notificacao.visivel"
+      :mensagem="notificacao.mensagem"
+      :tipo="notificacao.tipo"
+      class="absolute top-5"
+    />
+
     <div
       class="flex flex-col items-center bg-white p-8 rounded-[30px] shadow-xl w-full max-w-sm"
     >
@@ -55,20 +62,36 @@ import InputString from "@/components/InputString.vue";
 import BotaoCustomizado from "@/components/BotaoCustomizado.vue";
 import { getAccessToken, setAuthTokens } from "axios-jwt";
 import axios from "axios";
+import AppNotification from "@/components/AppNotification.vue";
+
 export default {
   name: "LoginView",
   components: {
     InputSenha,
     BotaoCustomizado,
     InputString,
+    AppNotification,
   },
   data() {
     return {
       email: "",
       password: "",
+      notificacao: {
+        visivel: false,
+        mensagem: "",
+        tipo: "sucesso",
+      },
     };
   },
   methods: {
+    mostrarNotificacao(mensagem, tipo) {
+      this.notificacao.mensagem = mensagem;
+      this.notificacao.tipo = tipo;
+      this.notificacao.visivel = true;
+      setTimeout(() => {
+        this.notificacao.visivel = false;
+      }, 4500);
+    },
     async fazerLogin() {
       try {
         const loginDTO = {
@@ -86,6 +109,10 @@ export default {
         this.$router.push("/perfil-usuario");
       } catch (error) {
         console.error("Error posting data:", error);
+        this.mostrarNotificacao(
+          "Email ou senha inválidos. Tente novamente.",
+          "error"
+        );
       }
     },
     redirecionaCadastrar() {
