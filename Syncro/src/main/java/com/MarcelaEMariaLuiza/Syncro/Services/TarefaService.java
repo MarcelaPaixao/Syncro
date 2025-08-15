@@ -71,7 +71,7 @@ public class TarefaService{
         tarefa.setDescricao(createTarefaDTO.getDescricao());
         tarefa.setPrazo(createTarefaDTO.getPrazo());
         tarefa.setLinkDrive(createTarefaDTO.getLinkDrive());
-        tarefa.setLinkDrive(createTarefaDTO.getLinkExtra());
+        tarefa.setLinkExtra(createTarefaDTO.getLinkExtra());
         tarefa.setStatus(TarefaStatus.TODO);
         
         Optional<Grupo> novoGrupo = grupoRepository.findById(createTarefaDTO.getGrupoId());
@@ -119,6 +119,7 @@ public class TarefaService{
         t1.setGrupoId(t.getGrupo().getId());
         t1.setId(t.getId());
         t1.setPrazo(t.getPrazo());
+        t1.setStatus(t.getStatus());
         tarefasFiltradas.add(t1);
        }
       return tarefasFiltradas;

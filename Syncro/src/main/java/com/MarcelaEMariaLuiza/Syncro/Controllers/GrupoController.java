@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.MarcelaEMariaLuiza.Syncro.DTO.CreateGrupoDTO;
+import com.MarcelaEMariaLuiza.Syncro.Entities.Aluno;
 import com.MarcelaEMariaLuiza.Syncro.Entities.Grupo;
 import com.MarcelaEMariaLuiza.Syncro.Errors.CampoNaoPreenchidoException;
 import com.MarcelaEMariaLuiza.Syncro.Services.GrupoService;
@@ -63,11 +64,21 @@ public class GrupoController {
         catch(Exception e){
             System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        } 
+        
+    }
+    @GetMapping("/getGrupo/{grupoId}")
+    public ResponseEntity<?> getGruposAluno(@PathVariable Long grupoId){
+        try{
+            
+            CreateGrupoDTO grupo = grupoService.getGrupo(grupoId);
+            return ResponseEntity.ok(grupo);
         }
-
-        
-        
-        
+        catch(Exception e){
+            
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+     
     }
     /**
      * Endpoint para buscar todos os grupos de um aluno específico.
@@ -75,11 +86,12 @@ public class GrupoController {
      * @param alunoId O ID do aluno, recebido como uma variável no caminho (path variable).
      * @return Uma lista de {@link CreateGrupoDTO} representando os grupos do aluno, ou {@code null} em caso de erro.
      */
-    @GetMapping("/get/{alunoId}")
-    public ResponseEntity<?> getGruposAluno(@PathVariable Long alunoId){
+    @GetMapping("/get")
+    public ResponseEntity<?> getGruposAluno(Authentication authentication){
         try{
-            
-            List <CreateGrupoDTO> grupos = grupoService.getGruposAluno(alunoId);
+            Object a = authentication.getPrincipal();
+            Aluno aluno = (Aluno)a;
+            List <CreateGrupoDTO> grupos = grupoService.getGruposAluno(aluno.getId());
             return ResponseEntity.ok(grupos);
         }
         catch(Exception e){
