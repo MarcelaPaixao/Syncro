@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -102,6 +103,17 @@ public class AlunoController {
             List<AlunosResponseDTO> alunos =  alunoService.getAlunosGrupo(grupoId);
             return ResponseEntity.ok(alunos);
         }catch(GrupoInexistenteException e){
+            return null;
+        }
+    }
+    @GetMapping("/get/UserId")
+    public ResponseEntity<?> getUserId(Authentication authentication){
+        try{
+            Object a = authentication.getPrincipal();
+            Aluno aluno = (Aluno)a;
+            AlunosResponseDTO alunoResponse = alunoService.getAluno(aluno);
+            return ResponseEntity.ok(alunoResponse);
+        }catch(Exception e){
             return null;
         }
     }

@@ -131,4 +131,28 @@ public class GrupoService {
         return progressoRetorno;
         
     }
+
+    @Transactional
+    public CreateGrupoDTO getGrupo(Long grupoId){
+        Optional <Grupo> g = grupoRepository.findById(grupoId);
+        if(!g.isPresent()) throw new RuntimeException("Grupo invalido");
+        Grupo grupo = g.get();
+          
+    
+        CreateGrupoDTO g1 = new CreateGrupoDTO();
+        g1.setId(grupo.getId());
+        g1.setNome(grupo.getNome());
+        g1.setDescricao(grupo.getDescricao());
+        g1.setMateria(grupo.getMateria());
+        g1.setPrazo(grupo.getPrazo());
+        g1.setProfessor(grupo.getProfessor());
+        List <String> membros = new ArrayList<>();
+        for(Aluno a: grupo.getAlunos()){
+                 membros.add(a.getEmail());
+        }
+        g1.setMembros(membros);
+        
+    
+      return g1;
+     }
 }

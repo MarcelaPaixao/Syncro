@@ -144,4 +144,13 @@ public class AlunoService implements UserDetailsService{
         return alunosFormatados;
 
     }
+    public AlunosResponseDTO getAluno(Aluno a){ 
+    
+        AlunosResponseDTO alunoResponse = new AlunosResponseDTO();
+        alunoResponse.setNome(a.getNome());
+        alunoResponse.setEmail(a.getEmail());
+        alunoResponse.setId(a.getId());
+        return alunoResponse;
+
+    }
 }
