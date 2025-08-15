@@ -1,11 +1,11 @@
 <template>
   <router-link to="/"></router-link>
-  <Notification />
+  <AppNotification />
   <router-view />
 </template>
 
 <script setup>
-import Notification from "@/components/Notification.vue";
+import AppNotification from "@/components/AppNotification.vue";
 </script>
 
 <style>
