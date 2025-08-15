@@ -1,13 +1,13 @@
 <template>
   <BaseModal :visivel="visivel" @close="$emit('close')">
     <template v-slot:header>
-      <h2 class="text-2xl font-bold text-gray-800">Nova Tarefa</h2>
+      <h2 class="text-2xl font-bold text-gray-800">Membros</h2>
     </template>
 
     <div class="space-y-4">
       <div class="grid grid-cols-2 gap-5">
-        <div v-for="membro in membrosDoGrupo" :key="membro.id">
-          {{ membro.nome }}
+        <div v-for="membro in membrosDoGrupo" :key="membro">
+          {{ membro }}
         </div>
       </div>
     </div>

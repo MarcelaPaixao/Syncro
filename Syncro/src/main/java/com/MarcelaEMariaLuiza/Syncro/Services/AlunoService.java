@@ -137,6 +137,7 @@ public class AlunoService implements UserDetailsService{
             AlunosResponseDTO alunoResponse = new AlunosResponseDTO();
             alunoResponse.setNome(a.getNome());
             alunoResponse.setEmail(a.getEmail());
+            alunoResponse.setId(a.getId());
             alunosFormatados.add(alunoResponse);
         }
 

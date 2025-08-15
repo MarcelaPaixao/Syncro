@@ -109,8 +109,7 @@ public class TarefaController {
         }
 
     }
-
-    @GetMapping("/get/avalia/{alunoId}")
+@GetMapping("/get/avalia/{alunoId}")
     public ResponseEntity<?> getTarefasAvaliarPorAluno(@PathVariable Long alunoId){
         try{
             List <TarefaResponseDTO> tarefas = tarefaService.getTarefasParaAvaliar(alunoId);
@@ -121,5 +120,16 @@ public class TarefaController {
            
         }
 
+}
+
+@GetMapping("/get/{tarefaId}")
+public ResponseEntity<?> getTarefa(@PathVariable Long tarefaId){
+    try{
+        CreateTarefaDTO createTarefaDTO = tarefaService.getTarefa(tarefaId);
+        return ResponseEntity.ok(createTarefaDTO);
+    }catch(Exception e){
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+       
+    }
 }
 }

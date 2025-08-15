@@ -10,13 +10,15 @@
     />
 
     <div
-      v-if="modelValue && modelValue.length > 0"
+      v-if="
+        modelValue && modelValue.length > 0 && modelValue.length != undefined
+      "
       class="w-full space-y-2 p-3 max-h-[300px] overflow-y-auto"
     >
       <div class="space-y-1">
         <div
           v-for="(item, index) in modelValue"
-          :key="index"
+          :key="item"
           class="w-full px-3 py-2 rounded-xl bg-gray-100 text-gray-700 flex justify-between items-center"
         >
           <a

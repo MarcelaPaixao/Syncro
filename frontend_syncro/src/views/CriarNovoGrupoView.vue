@@ -21,9 +21,6 @@
       </div>
 
       <div>
-        <label class="text-base font-bold text-gray-700 mb-2 block"
-          >Tarefas</label
-        >
         <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
           <router-link
             v-for="(tarefa, index) in tarefas"
@@ -33,16 +30,6 @@
           >
             {{ tarefa.titulo }}
           </router-link>
-
-          <button
-            @click="abrirModalTarefas"
-            type="button"
-            class="flex items-center justify-center w-8 h-8 bg-gray-200 rounded-full hover:bg-gray-300 transition-colors"
-          >
-            <span class="text-2xl font-bold text-gray-600 leading-none mb-1"
-              >+</span
-            >
-          </button>
         </div>
       </div>
 
@@ -66,13 +53,6 @@
       </p>
     </div>
   </form>
-
-  <CriarTarefaModal
-    :visivel="isModalTarefaVisible"
-    :grupoId="grupoId"
-    @close="isModalTarefaVisible = false"
-    @salvar="adicionarTarefa"
-  />
 </template>
 
 <script>
@@ -81,7 +61,6 @@ import AppHeader from "@/components/AppHeader.vue";
 import InputString from "@/components/InputString.vue";
 import TextArea from "@/components/TextArea.vue";
 import TagInputVertical from "@/components/TagInputVertical.vue";
-import CriarTarefaModal from "@/components/CriarTarefaModal.vue";
 
 import api from "@/services/api";
 import { getAccessToken } from "axios-jwt";
@@ -93,7 +72,6 @@ export default {
     InputString,
     TextArea,
     TagInputVertical,
-    CriarTarefaModal,
   },
   data() {
     return {
@@ -104,7 +82,7 @@ export default {
       descricao: "",
       membrosEmail: [],
       membrosError: "",
-      grupoId: 1315,
+      grupoId: "",
       isModalTarefaVisible: false,
       tarefas: [],
     };
@@ -138,20 +116,11 @@ export default {
           criaGrupoDTO,
           config
         );
-        console.log(response.data);
         this.grupoId = response.data.id;
+        this.$router.push(`perfil-usuario`);
       } catch (error) {
         console.log(error);
       }
-    },
-    //Marcela: criado para simulação
-    adicionarTarefa(dadosDaTarefa) {
-      const novaTarefa = {
-        ...dadosDaTarefa,
-        id: Date.now(),
-      };
-      this.tarefas.push(novaTarefa);
-      this.isModalTarefaVisible = false;
     },
 
     abrirModalTarefas() {

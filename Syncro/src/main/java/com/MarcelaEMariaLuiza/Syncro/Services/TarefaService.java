@@ -179,7 +179,7 @@ public class TarefaService{
 
         tarefa.setTitulo(createTarefaDTO.getTitulo());
         tarefa.setDescricao(createTarefaDTO.getDescricao());
-        tarefa.setLinkDrive(createTarefaDTO.getTitulo());
+        tarefa.setLinkDrive(createTarefaDTO.getLinkDrive());
         tarefa.setLinkExtra(createTarefaDTO.getLinkExtra());
         tarefa.setPrazo(createTarefaDTO.getPrazo());
         
@@ -211,5 +211,23 @@ public class TarefaService{
             }
         }
         return tarefasParaAvaliacao;
+    }
+
+    public CreateTarefaDTO getTarefa(Long tarefaId) {
+        Optional<Tarefa> tarefa = tarefaRepository.findById(tarefaId);
+        if(!tarefa.isPresent()) throw new RuntimeException("Tarefa inexistente");
+
+        Tarefa t = tarefa.get();
+        CreateTarefaDTO response = new CreateTarefaDTO();
+        response.setId(t.getId());
+        response.setTitulo(t.getTitulo());
+        response.setDescricao(t.getDescricao());
+        response.setLinkDrive(t.getTitulo());
+        response.setLinkExtra(t.getLinkExtra());
+        response.setPrazo(t.getPrazo());
+        response.setStatus(t.getStatus());
+        response.setAlunoId(t.getAluno().getId());
+        response.setGrupoId(t.getGrupo().getId());
+        return response;
     }
 }
