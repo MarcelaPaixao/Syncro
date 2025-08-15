@@ -9,7 +9,7 @@
       @submit.prevent="salvarDescricao"
       class="space-y-4"
     >
-      <TextArea v-model="tarefaLocal.descricao" label="Descrição" />
+      <TextArea v-model="descricaoLocal" label="Descrição" />
     </form>
 
     <template v-slot:footer>
@@ -30,16 +30,16 @@ export default {
     TextArea,
     BaseModal,
   },
+
   props: {
     visivel: { type: Boolean, required: true },
+    descricao: { type: String, required: true },
   },
-  // ver se vai ter a opção de editar
+
   emits: ["close", "salvar"],
   data() {
     return {
-      tarefaLocal: {
-        descricao: "",
-      },
+      descricaoLocal: this.descricao,
     };
   },
   methods: {

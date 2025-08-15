@@ -36,17 +36,27 @@
 
           <InputString v-model="prazoTarefa" label="Prazo" type="date" />
 
-          <div class="status-group">
+          <div>
             <label class="block mb-1 text-base font-bold text-gray-700"
-              >Status</label
+              >Estado</label
             >
-            <p
-              class="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-xl italic text-gray-600"
+            <select
+              v-model="status"
+              class="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500"
+              required
             >
-              {{ status }}
-            </p>
+              <option value="" disabled>Selecione o estado da Tarefa</option>
+              <option
+                v-for="(estado, index) in estadosPossiveis"
+                :key="index"
+                :value="estado"
+                this.estadoTarefa="estado"
+              >
+                {{ estado }}
+              </option>
+            </select>
           </div>
-          <InputString v-model="linkDrive" label="Link Drive" type="URL" />
+          <InputString v-model="linkDrive" label="Link Drive" />
           <InputString v-model="linkExtra" label="Link Extra" />
         </div>
 
@@ -89,6 +99,12 @@ import { editaTarefa, getTarefaById } from "@/services/tarefaService";
 import { getAlunosGrupo } from "@/services/alunoService";
 
 export default {
+  props: {
+    tarefaId: {
+      type: [String, Number], // Aceita String da URL ou Número
+      required: true,
+    },
+  },
   name: "VisualizarTarefaView",
   components: {
     BotaoCustomizado,
@@ -99,7 +115,6 @@ export default {
   data() {
     return {
       idDoMembroResponsavel: null,
-      tarefaId: null,
       grupoId: null,
       titulo: "",
       descricao: "",
@@ -109,6 +124,7 @@ export default {
       linkDrive: "",
       linkExtra: "",
       feedbacks: [],
+      estadosPossiveis: ["TODO", "DOING", "REVIEW", "DONE"],
     };
   },
   methods: {
@@ -124,16 +140,16 @@ export default {
         alunoId: this.idDoMembroResponsavel,
         grupoId: this.grupoId,
       };
+      await editaTarefa(createTarefaDTO);
       console.log(createTarefaDTO);
-      const response = await editaTarefa(createTarefaDTO);
-      console.log(response);
     },
   },
   async mounted() {
     try {
-      this.tarefaId = parseInt(this.$route.params.tarefaId);
       const tarefa = await getTarefaById(this.tarefaId);
       this.grupoId = tarefa.grupoId;
+      this.status = tarefa.status;
+      console.log(tarefa);
       if (tarefa) {
         this.titulo = tarefa.titulo;
         this.descricao = tarefa.descricao ?? "adicione uma descrição";
