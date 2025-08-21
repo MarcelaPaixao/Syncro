@@ -49,6 +49,7 @@ import TextArea from "./TextArea.vue";
 import BaseModal from "./BaseModal.vue";
 import { getAlunosGrupo } from "@/services/alunoService";
 import { createTarefa } from "@/services/tarefaService";
+import emitter from "@/eventBus";
 
 export default {
   name: "CriarTarefaModal",
@@ -94,8 +95,16 @@ export default {
       };
       try {
         await createTarefa(createTarefaDTO);
+        emitter.emit("show-notification", {
+          message: "Tarefa criada com sucesso!",
+          type: "success",
+        });
       } catch (error) {
         console.log("fazer mensagem de erro");
+        emmiter.emit("show-notification", {
+          message: "Erro ao criar tarefa. Tente novamente.",
+          type: "error",
+        });
       }
     },
   },

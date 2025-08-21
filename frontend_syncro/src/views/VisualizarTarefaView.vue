@@ -140,9 +140,9 @@ export default {
       };
       await editaTarefa(createTarefaDTO);
       console.log(createTarefaDTO);
-      //Marcela: Se tiver um try catch aqui, collocar notificação de erro na parte de catch(error)
+      //Marcela: Se tiver um try catch aqui, colocar notificação de erro na parte de catch(error)
       emitter.emit("show-notification", {
-        message: "Tarefa criada com sucesso!",
+        message: "Tarefa editada com sucesso!",
         type: "success",
       });
     },

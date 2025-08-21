@@ -29,7 +29,6 @@ const notificationListener = (payload) => {
   type.value = payload.type;
   visible.value = true;
 
-  // Esconde a notificação automaticamente após 3 segundos.
   setTimeout(() => {
     visible.value = false;
   }, 4500);
