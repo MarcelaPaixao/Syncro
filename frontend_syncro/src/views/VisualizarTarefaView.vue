@@ -1,5 +1,3 @@
-<!-- Ajustar arquivo, pois não serão inputs normais, mas a visualização dos dados da tarefa
- e possibilidade de alteração -->
 <template>
   <AppHeader />
   <h2 class="text-2xl font-bold text-gray-800 text-center my-4">
@@ -50,7 +48,6 @@
                 v-for="(estado, index) in estadosPossiveis"
                 :key="index"
                 :value="estado"
-                this.estadoTarefa="estado"
               >
                 {{ estado }}
               </option>
@@ -77,19 +74,41 @@
       </div>
 
       <div class="feedback-list flex-grow overflow-y-auto space-y-4">
-        <!-- <FeedbackCard v-for="fb in feedbacks" :key="fb.id" :feedback="fb" /> -->
+        <CardFeedback v-for="fb in feedbacks" :key="fb.id" :feedback="fb" />
       </div>
 
-      <div class="new-feedback-input relative">
-        <input
-          type="text"
-          placeholder="Digite aqui seu feedback"
-          class="w-full p-3 pr-10 border border-gray-300 rounded-xl"
-        />
+      <div class="new-feedback-input mt-auto pt-4">
+        <textarea
+          v-model="novoFeedback"
+          placeholder="Digite aqui seu feedback..."
+          class="w-full p-3 border border-gray-300 rounded-xl resize-none"
+          rows="3"
+        ></textarea>
+
+        <div class="flex justify-end items-center mt-2 gap-3">
+          <p class="text-xs text-gray-500 mr-auto">Aprovar tarefa?</p>
+
+          <button
+            @click="enviarFeedback(false)"
+            :disabled="usuarioJaDeuFeedback"
+            class="w-10 h-10 flex items-center justify-center bg-red-100 text-red-600 rounded-full hover:bg-red-200 text-2xl font-bold disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            &#10006;
+          </button>
+
+          <button
+            @click="enviarFeedback(true)"
+            :disabled="usuarioJaDeuFeedback"
+            class="w-10 h-10 flex items-center justify-center bg-teal-100 text-teal-600 rounded-full hover:bg-teal-200 text-2xl font-bold disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            &#10004;
+          </button>
+        </div>
       </div>
     </div>
   </div>
 </template>
+
 <script>
 import BotaoCustomizado from "@/components/BotaoCustomizado.vue";
 import AppHeader from "@/components/AppHeader.vue";
@@ -97,6 +116,7 @@ import InputString from "@/components/InputString.vue";
 import TextArea from "@/components/TextArea.vue";
 import { editaTarefa, getTarefaById } from "@/services/tarefaService";
 import { getAlunosGrupo } from "@/services/alunoService";
+import CardFeedback from "@/components/CardFeedback.vue";
 
 export default {
   props: {
@@ -111,6 +131,7 @@ export default {
     AppHeader,
     InputString,
     TextArea,
+    CardFeedback,
   },
   data() {
     return {
@@ -123,11 +144,53 @@ export default {
       membrosDoGrupo: [],
       linkDrive: "",
       linkExtra: "",
-      feedbacks: [],
+      novoFeedback: "",
+      feedbacks: [
+        // MARCELA: simulação; pegar dados do backend
+        {
+          id: 1,
+          membro: { id: 1, nome: "Belinha" },
+          texto: "amei amei",
+          aprovacao: true,
+        },
+        {
+          id: 2,
+          membro: { id: 2, nome: "Caramelo" },
+          texto: "horrivel :(",
+          aprovacao: false,
+        },
+      ],
+      usuarioAtual: { id: 99, nome: "Fulano" }, //MARCELA: simulação; pegar usuario atual do backend
       estadosPossiveis: ["TODO", "DOING", "REVIEW", "DONE"],
     };
   },
+
+  computed: {
+    usuarioJaDeuFeedback() {
+      return this.feedbacks.some((fb) => fb.membro.id === this.usuarioAtual.id);
+    },
+  },
+
   methods: {
+    enviarFeedback(feedbackAprovacao) {
+      const textoFeedback = this.novoFeedback.trim();
+
+      if (textoFeedback === "" && feedbackAprovacao === null) return;
+
+      //MARCELA: id simulado; pegar do backend
+      const novoFeedbackObj = {
+        id: Date.now(),
+        membro: this.usuarioAtual,
+        texto: textoFeedback,
+        aprovacao: feedbackAprovacao, // 'true' ou 'false'
+      };
+
+      this.feedbacks.push(novoFeedbackObj);
+      console.log("Enviando novo feedback:", novoFeedbackObj);
+
+      this.novoFeedback = "";
+    },
+
     async editaTarefa() {
       const createTarefaDTO = {
         id: this.tarefaId,
