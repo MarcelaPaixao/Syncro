@@ -49,7 +49,7 @@ import TextArea from "./TextArea.vue";
 import BaseModal from "./BaseModal.vue";
 import { getAlunosGrupo } from "@/services/alunoService";
 import { createTarefa } from "@/services/tarefaService";
-import emitter from "@/eventBus";
+import emitter from "@/eventBus.js";
 
 export default {
   name: "CriarTarefaModal",
@@ -101,7 +101,7 @@ export default {
         });
       } catch (error) {
         console.log("fazer mensagem de erro");
-        emmiter.emit("show-notification", {
+        emitter.emit("show-notification", {
           message: "Erro ao criar tarefa. Tente novamente.",
           type: "error",
         });

@@ -56,7 +56,7 @@ import InputSenha from "@/components/InputSenha.vue";
 import InputString from "@/components/InputString.vue";
 import BotaoCustomizado from "@/components/BotaoCustomizado.vue";
 import axios from "axios";
-import emitter from "@/eventBus";
+import emitter from "@/eventBus.js";
 
 export default {
   name: "CadastroView",
@@ -98,11 +98,11 @@ export default {
           `http://localhost:8080/api/aluno/create`,
           cadastroData
         );
+        console.log((await response).data);
         emitter.emit("show-notification", {
           message: "Usuário criado com sucesso!",
           type: "success",
         });
-        console.log((await response).data);
       } catch (error) {
         console.log("Erro ao cadastrar", error);
         emitter.emit("show-notification", {
