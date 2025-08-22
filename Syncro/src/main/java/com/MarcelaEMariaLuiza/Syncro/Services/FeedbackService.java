@@ -69,7 +69,7 @@ public class FeedbackService {
         Optional<Tarefa> novaTarefa = tarefaRepository.findById(createFeedbackDTO.getTarefaId());
         
         if(!novaTarefa.isPresent()) throw new GrupoInexistenteException("Tarefa inválida");
-        if(feedbackRepository.FeedbackDado(createFeedbackDTO.getTarefaId(), createFeedbackDTO.getAlunoId())>=0){
+        if(feedbackRepository.FeedbackDado(createFeedbackDTO.getTarefaId(), createFeedbackDTO.getAlunoId())>0){
             throw new FeedbackInvalidoException("Já existe um feedback seu sobre essa tarefa. Tente editá-lo!");
         }
         Tarefa tarefa= novaTarefa.get();

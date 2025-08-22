@@ -167,7 +167,7 @@ public class TarefaService{
 
         if(createTarefaDTO.getStatus() != TarefaStatus.DONE){
             tarefa.setStatus(createTarefaDTO.getStatus());
-        }{
+        }else{
             int numMembros = alunoRepository.countGrupoMembers(createTarefaDTO.getGrupoId());
 
             int feedbacksAprovados = feedbackRepository.countApprovedFeedbacks(tarefa.getId(), tarefa.getAluno().getId());
