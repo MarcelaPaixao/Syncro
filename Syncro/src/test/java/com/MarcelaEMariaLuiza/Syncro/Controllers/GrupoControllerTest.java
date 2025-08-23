@@ -4,20 +4,28 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 import com.MarcelaEMariaLuiza.Syncro.DTO.CreateGrupoDTO;
 import com.MarcelaEMariaLuiza.Syncro.Entities.Aluno;
@@ -33,8 +41,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 
 import com.MarcelaEMariaLuiza.Syncro.Repositories.AlunoRepository;
 import com.MarcelaEMariaLuiza.Syncro.Security.TokenService;
-@ActiveProfiles("test")
-@WebMvcTest(GrupoController.class) 
+//@ActiveProfiles("test")
+@SpringBootTest
+@AutoConfigureMockMvc
 public class GrupoControllerTest {
     
     private CreateGrupoDTO dto;
@@ -53,7 +62,7 @@ public class GrupoControllerTest {
     private AlunoRepository alunoRepository;
     
 
-    @Autowired // O Spring também injeta um ObjectMapper para converter objetos para JSON
+    @Autowired 
     private ObjectMapper objectMapper;
 
 
@@ -66,6 +75,7 @@ public class GrupoControllerTest {
         dto.setMembros(new ArrayList<>(Collections.singletonList("membro1@email.com")));
         criador = new Aluno();
         criador.setEmail("fulano@email.com");
+        criador.setId(2L);
     }
     @Test
     void grupoNaoCriadoPorCampoNulo()throws Exception{
@@ -88,7 +98,7 @@ public class GrupoControllerTest {
         grupoSalvo.setId(1L); 
         grupoSalvo.setNome("Syncro");
         grupoSalvo.setProfessor("Vitor");
-        dto.setMembros(new ArrayList<>(Collections.singletonList("membro1@email.com")));
+        grupoSalvo.setMateria("PI I");
 
         when(grupoService.criaGrupo(any(CreateGrupoDTO.class), any()))
             .thenReturn(grupoSalvo);
@@ -103,4 +113,66 @@ public class GrupoControllerTest {
         .andExpect(jsonPath("$.nome").value("Syncro"))
         .andExpect(jsonPath("$.professor").value("Vitor"));
     }
+
+     @Test
+    void deveRetornarGrupoPorId() throws Exception {
+      
+        Aluno alunoLogado = new Aluno();
+        alunoLogado.setEmail("usuario.logado@email.com");
+        
+        CreateGrupoDTO grupoTeste = new CreateGrupoDTO();
+        grupoTeste.setId(1L);
+        grupoTeste.setNome("Grupo de Teste");
+
+        when(grupoService.getGrupo(1L)).thenReturn(grupoTeste);
+        mockMvc.perform(get("/api/grupo/getGrupo/1")
+            .with(csrf())
+            .with(user("usuario.logado@email.com").roles("USER"))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andDo(print()) 
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.nome").value("Grupo de Teste"));
+    }
+
+    @Test
+    void deveRetornarGrupoInvalidoPorId() throws Exception {
+        when(grupoService.getGrupo(1L)).thenThrow(new RuntimeException());
+        mockMvc.perform(get("/api/grupo/getGrupo/1")
+            .with(csrf())
+            .with(user(criador.getEmail()).roles("USER"))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andDo(print()) 
+            .andExpect(status().isInternalServerError());
+    }   
+    /*@Test
+    void deveRetornarGruposPorAluno() throws Exception {
+        
+        CreateGrupoDTO grupoTeste = new CreateGrupoDTO();
+        grupoTeste.setId(1L);
+        grupoTeste.setNome("Grupo de Teste");
+        List<CreateGrupoDTO> lista = new ArrayList();
+        lista.add(grupoTeste);
+      
+        when(grupoService.getGruposAluno(anyLong())).thenReturn(lista);
+        mockMvc.perform(get("/api/grupo/get")
+            .with(csrf())
+            .with(user(criador.getEmail()).roles("USER"))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andDo(print()) 
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$[0].nome").value("Grupo de Teste"));
+    }
+
+    @Test
+    void deveRetornarGrupoInvalidoPorId() throws Exception {
+
+
+        when(grupoService.getGrupo(1L)).thenThrow(new RuntimeException());
+        mockMvc.perform(get("/api/grupo/getGrupo/1")
+            .with(csrf())
+            .with(user(criador.getEmail()).roles("USER"))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andDo(print()) 
+            .andExpect(status().isInternalServerError());
+    }  */
 }

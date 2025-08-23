@@ -68,7 +68,7 @@ public class GrupoController {
         
     }
     @GetMapping("/getGrupo/{grupoId}")
-    public ResponseEntity<?> getGruposAluno(@PathVariable Long grupoId){
+    public ResponseEntity<?> getGrupo(@PathVariable Long grupoId){
         try{
             
             CreateGrupoDTO grupo = grupoService.getGrupo(grupoId);
