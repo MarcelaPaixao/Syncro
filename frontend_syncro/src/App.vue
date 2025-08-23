@@ -1,7 +1,12 @@
 <template>
   <router-link to="/"></router-link>
+  <AppNotification />
   <router-view />
 </template>
+
+<script setup>
+import AppNotification from "@/components/AppNotification.vue";
+</script>
 
 <style>
 html,

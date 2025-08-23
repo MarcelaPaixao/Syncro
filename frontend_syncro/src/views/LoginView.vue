@@ -55,6 +55,8 @@ import InputString from "@/components/InputString.vue";
 import BotaoCustomizado from "@/components/BotaoCustomizado.vue";
 import { getAccessToken, setAuthTokens } from "axios-jwt";
 import axios from "axios";
+import emitter from "@/eventBus.js";
+
 export default {
   name: "LoginView",
   components: {
@@ -86,6 +88,10 @@ export default {
         this.$router.push("/perfil-usuario");
       } catch (error) {
         console.error("Error posting data:", error);
+        emitter.emit("show-notification", {
+          message: "Email ou senha inválidos. Tente novamente.",
+          type: "error",
+        });
       }
     },
     redirecionaCadastrar() {

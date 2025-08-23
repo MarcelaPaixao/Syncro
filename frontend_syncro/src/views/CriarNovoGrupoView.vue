@@ -48,9 +48,9 @@
         placeholder="Digite um email e pressione Enter"
         @interaction="limpaMembrosError"
       />
-      <p v-if="membrosError" class="text-sm text-red-600 italic mt-2">
+      <!-- <p v-if="membrosError" class="text-sm text-red-600 italic mt-2">
         {{ membrosError }}
-      </p>
+      </p> -->
     </div>
   </form>
 </template>
@@ -64,6 +64,8 @@ import TagInputVertical from "@/components/TagInputVertical.vue";
 
 import api from "@/services/api";
 import { getAccessToken } from "axios-jwt";
+import emitter from "@/eventBus.js";
+
 export default {
   name: "CriarNovoGrupoView",
   components: {
@@ -94,6 +96,10 @@ export default {
     async criarGrupo() {
       if (this.membrosEmail && this.membrosEmail.length < 1) {
         this.membrosError = "Não há membros o suficiente!";
+        emitter.emit("show-notification", {
+          message: "É necessário adicionar pelo menos um membro.",
+          type: "error",
+        });
         return;
       }
       const criaGrupoDTO = {
@@ -117,9 +123,17 @@ export default {
           config
         );
         this.grupoId = response.data.id;
+        emitter.emit("show-notification", {
+          message: "Projeto criado com sucesso!",
+          type: "success",
+        });
         this.$router.push(`/perfil-usuario`);
       } catch (error) {
         console.log(error);
+        emitter.emit("show-notification", {
+          message: "Erro ao criar o projeto. Tente novamente.",
+          type: "error",
+        });
       }
     },
 

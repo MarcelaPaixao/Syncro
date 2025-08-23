@@ -116,6 +116,7 @@ import TextArea from "@/components/TextArea.vue";
 import { editaTarefa, getTarefaById } from "@/services/tarefaService";
 import { getAlunosGrupo } from "@/services/alunoService";
 import CardFeedback from "@/components/CardFeedback.vue";
+import emitter from "@/eventBus.js";
 
 export default {
   props: {
@@ -204,6 +205,11 @@ export default {
       };
       await editaTarefa(createTarefaDTO);
       console.log(createTarefaDTO);
+      //Marcela: Se tiver um try catch aqui, colocar notificação de erro na parte de catch(error)
+      emitter.emit("show-notification", {
+        message: "Tarefa editada com sucesso!",
+        type: "success",
+      });
     },
   },
   async mounted() {
