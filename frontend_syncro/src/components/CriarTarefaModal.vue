@@ -59,7 +59,6 @@ export default {
     BaseModal,
   },
   props: {
-    visivel: { type: Boolean, required: true },
     grupoId: { type: Number, required: true },
   },
   emits: ["close", "salvar"],
@@ -72,6 +71,7 @@ export default {
         prazoTarefa: "",
       },
       membrosDoGrupo: [],
+      visivel: true,
     };
   },
   methods: {
@@ -94,6 +94,7 @@ export default {
       };
       try {
         await createTarefa(createTarefaDTO);
+        this.$emit("close");
       } catch (error) {
         console.log("fazer mensagem de erro");
       }

@@ -59,7 +59,7 @@ public class GrupoController {
             Grupo novoGrupo = grupoService.criaGrupo(createGrupoDTO, authentication.getPrincipal());
             return ResponseEntity.ok(novoGrupo);
         }catch(CampoNaoPreenchidoException e){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
         catch(Exception e){
             System.out.println(e.getMessage());

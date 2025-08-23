@@ -117,7 +117,7 @@ export default {
           config
         );
         this.grupoId = response.data.id;
-        this.$router.push(`perfil-usuario`);
+        this.$router.push(`/perfil-usuario`);
       } catch (error) {
         console.log(error);
       }

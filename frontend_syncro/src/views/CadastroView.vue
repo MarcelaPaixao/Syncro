@@ -92,11 +92,8 @@ export default {
           email: this.email,
           senha: this.password,
         };
-        const response = axios.post(
-          `http://localhost:8080/api/aluno/create`,
-          cadastroData
-        );
-        console.log((await response).data);
+        axios.post(`http://localhost:8080/api/aluno/create`, cadastroData);
+        this.$router.push("/login");
       } catch (error) {
         console.log("Erro ao cadastrar", error);
       }
