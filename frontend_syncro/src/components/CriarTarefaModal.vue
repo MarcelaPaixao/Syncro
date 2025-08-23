@@ -60,7 +60,6 @@ export default {
     BaseModal,
   },
   props: {
-    visivel: { type: Boolean, required: true },
     grupoId: { type: Number, required: true },
   },
   emits: ["close", "salvar"],
@@ -73,6 +72,7 @@ export default {
         prazoTarefa: "",
       },
       membrosDoGrupo: [],
+      visivel: true,
     };
   },
   methods: {
@@ -95,10 +95,12 @@ export default {
       };
       try {
         await createTarefa(createTarefaDTO);
+        
         emitter.emit("show-notification", {
           message: "Tarefa criada com sucesso!",
           type: "success",
         });
+        this.$emit("close");
       } catch (error) {
         console.log("fazer mensagem de erro");
         emitter.emit("show-notification", {

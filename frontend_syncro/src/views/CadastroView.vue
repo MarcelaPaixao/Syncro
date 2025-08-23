@@ -99,10 +99,12 @@ export default {
           cadastroData
         );
         console.log((await response).data);
+        this.$router.push("/login");
         emitter.emit("show-notification", {
           message: "Usuário criado com sucesso!",
           type: "success",
         });
+       
       } catch (error) {
         console.log("Erro ao cadastrar", error);
         emitter.emit("show-notification", {

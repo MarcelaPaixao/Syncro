@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.MarcelaEMariaLuiza.Syncro.DTO.AlunosResponseDTO;
+import com.MarcelaEMariaLuiza.Syncro.DTO.CreateAlunoDTO;
 import com.MarcelaEMariaLuiza.Syncro.DTO.LoginDTO;
 import com.MarcelaEMariaLuiza.Syncro.Entities.Aluno;
 import com.MarcelaEMariaLuiza.Syncro.Entities.Grupo;
@@ -78,19 +79,22 @@ public class AlunoService implements UserDetailsService{
      * @throws CampoNaoPreenchidoException se campos obrigatórios como nome, e-mail ou senha estiverem vazios.
      * @throws EmailExistenteException se o e-mail fornecido já estiver em uso por outro aluno.
      */
-    public Aluno createAluno(Aluno aluno){
+    public Aluno createAluno(CreateAlunoDTO aluno){
          
         if(aluno.getNome().isEmpty() || aluno.getEmail().isEmpty() || aluno.getSenha().isEmpty()
         || aluno.getNome()==null || aluno.getEmail() == null || aluno.getSenha()==null){
             throw new CampoNaoPreenchidoException("Existem campos não preenchidos") ;
         }
+        Aluno novoAluno = new Aluno();
         String email = aluno.getEmail();
-        aluno.setSenha(passwordEncoder().encode(aluno.getSenha()));
+        novoAluno.setSenha(passwordEncoder().encode(aluno.getSenha()));
+        novoAluno.setEmail(aluno.getEmail());
+        novoAluno.setNome(aluno.getNome());
         if(alunoRepository.findByEmail(email)!=null){
             throw new EmailExistenteException("O email informado já está cadastrado");
         }
-        alunoRepository.save(aluno);
-        return aluno;
+        alunoRepository.save(novoAluno);
+        return novoAluno;
     }
 
     /**

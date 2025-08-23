@@ -53,7 +53,6 @@
               </option>
             </select>
           </div>
-          <InputString v-model="linkDrive" label="Link Drive" />
           <InputString v-model="linkExtra" label="Link Extra" />
         </div>
 

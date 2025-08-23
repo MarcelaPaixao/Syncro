@@ -22,9 +22,10 @@
     </div>
 
     <CriarTarefaModal
+      v-if="isModalTarefaVisible"
       :visivel="isModalTarefaVisible"
       :grupoId="route.params.id"
-      @close="isModalTarefaVisible = false"
+      @close="fecharModal"
       @salvar="adicionarTarefaAoGrupo"
     />
 
@@ -53,6 +54,7 @@ import CardTarefas from "@/components/CardTarefas.vue";
 import { useRoute } from "vue-router";
 import { getGrupo } from "@/services/grupoService";
 import { getTarefasGrupo } from "@/services/tarefaService";
+
 const isModalTarefaVisible = ref(false);
 const isModalDescricaoVisible = ref(false);
 const isModalMembrosVisible = ref(false);
@@ -60,7 +62,7 @@ const route = useRoute();
 
 let listaMembrosGrupo = null;
 
-let descricaoAtual = "  ";
+let descricaoAtual = "";
 const nomeDoGrupo = ref("Carregando nome do grupo...");
 let grupoInfo = null;
 const colunas = reactive({
@@ -92,7 +94,10 @@ async function getGrupoInfo() {
   listaMembrosGrupo = grupoInfo.membros;
   nomeDoGrupo.value = grupoInfo.nome;
 }
-
+function fecharModal() {
+  isModalTarefaVisible.value = false;
+  window.location.reload();
+}
 onMounted(() => {
   carregarTarefasDoProjeto();
   getGrupoInfo();

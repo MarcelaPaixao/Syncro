@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.MarcelaEMariaLuiza.Syncro.DTO.AlunosResponseDTO;
+import com.MarcelaEMariaLuiza.Syncro.DTO.CreateAlunoDTO;
 import com.MarcelaEMariaLuiza.Syncro.DTO.LoginDTO;
 import com.MarcelaEMariaLuiza.Syncro.DTO.LoginResponseDTO;
 import com.MarcelaEMariaLuiza.Syncro.Entities.Aluno;
@@ -58,12 +59,14 @@ public class AlunoController {
      */
     @PostMapping("/create")
     @PermitAll
-    public ResponseEntity<?> createAluno(@RequestBody Aluno aluno){
+    public ResponseEntity<?> createAluno(@RequestBody CreateAlunoDTO aluno){
         try {
             Aluno alunoCriado = alunoService.createAluno(aluno);
             if(alunoCriado== null) return(ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Algum dos dados inseridos está inválido"));
             return ResponseEntity.ok("Usuário criado");
-        }catch (EmailExistenteException | CampoNaoPreenchidoException e){
+        }catch (CampoNaoPreenchidoException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }catch (EmailExistenteException e){
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
          catch (Exception e) {
