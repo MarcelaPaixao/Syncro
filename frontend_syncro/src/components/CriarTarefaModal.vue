@@ -95,7 +95,6 @@ export default {
       };
       try {
         await createTarefa(createTarefaDTO);
-        
         emitter.emit("show-notification", {
           message: "Tarefa criada com sucesso!",
           type: "success",

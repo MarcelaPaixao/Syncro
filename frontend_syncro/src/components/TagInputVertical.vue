@@ -51,7 +51,7 @@ import { ref, watch } from "vue";
 const props = defineProps({
   modelValue: { type: Array, required: true },
   type: { type: String, default: "text" },
-  placeholder: { type: String, default: "Adicione e pressioe Enter" },
+  placeholder: { type: String, default: "Adicione e pressione Enter" },
   itemsAsLinks: { type: Boolean, default: false },
 });
 

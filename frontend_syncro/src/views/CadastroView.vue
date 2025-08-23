@@ -104,7 +104,6 @@ export default {
           message: "Usuário criado com sucesso!",
           type: "success",
         });
-       
       } catch (error) {
         console.log("Erro ao cadastrar", error);
         emitter.emit("show-notification", {

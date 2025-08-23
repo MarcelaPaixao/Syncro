@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from "vue-router";
-// import HomeView from "../views/HomeView.vue";
 import LoginView from "../views/LoginView.vue";
 import CadastroView from "../views/CadastroView.vue";
 import EsqueceuSuaSenhaView from "../views/EsqueceuSuaSenhaView.vue";
@@ -11,11 +10,6 @@ import VisualizarTarefaView from "@/views/VisualizarTarefaView.vue";
 import { getAccessToken } from "axios-jwt";
 
 const routes = [
-  // {
-  //   path: "/",
-  //   name: "home",
-  //   component: HomeView,
-  // },
   {
     path: "/",
     redirect: "/login",
