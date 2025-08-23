@@ -12,21 +12,17 @@
       <TextArea v-model="descricaoLocal" label="Descrição" />
     </form>
 
-    <template v-slot:footer>
-      <BotaoCustomizado type="submit" form="form-descricao" texto="Salvar" />
-    </template>
+    <template v-slot:footer />
   </BaseModal>
 </template>
 
 <script>
-import BotaoCustomizado from "./BotaoCustomizado.vue";
 import TextArea from "./TextArea.vue";
 import BaseModal from "./BaseModal.vue";
 
 export default {
   name: "VerDescricaoModal",
   components: {
-    BotaoCustomizado,
     TextArea,
     BaseModal,
   },
