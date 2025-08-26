@@ -12,6 +12,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 
@@ -19,8 +21,11 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.MarcelaEMariaLuiza.Syncro.Errors.EmailExistenteException;
+import com.MarcelaEMariaLuiza.Syncro.Errors.SenhaIncorretaException;
+import com.MarcelaEMariaLuiza.Syncro.DTO.AlunosResponseDTO;
 import com.MarcelaEMariaLuiza.Syncro.DTO.CreateAlunoDTO;
 import com.MarcelaEMariaLuiza.Syncro.DTO.CreateGrupoDTO;
+import com.MarcelaEMariaLuiza.Syncro.DTO.LoginDTO;
 import com.MarcelaEMariaLuiza.Syncro.Entities.Aluno;
 import com.MarcelaEMariaLuiza.Syncro.Errors.CampoNaoPreenchidoException;
 import com.MarcelaEMariaLuiza.Syncro.Repositories.AlunoRepository;
@@ -33,7 +38,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -116,26 +123,85 @@ public class AlunoControllerTest {
         .andExpect(status().isConflict())
         .andExpect(content().string("O email informado já está cadastrado"));
     }
+    @Test
+    void LoginBemSucedido() throws Exception{
+        LoginDTO loginDTO = new LoginDTO();
+        loginDTO.setEmail("aluno@email.com");
+        loginDTO.setSenha("1234");
+       
+        Aluno alunoMock = new Aluno();
+        alunoMock.setEmail("aluno@email.com");
+        String tokenMock = "meu-jwt-token-simulado";
 
+        when(alunoService.login(any(LoginDTO.class))).thenReturn(alunoMock);
+        when(tokenService.generateToken(alunoMock)).thenReturn(tokenMock);
+        
+        mockMvc.perform(post("/api/aluno/login")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(objectMapper.writeValueAsString(loginDTO)))
+        .andExpect(status().isOk()) 
+        .andExpect(jsonPath("$.nome").value("aluno@email.com")) 
+        .andExpect(jsonPath("$.token").value(tokenMock));
+    }
+    @Test
+    void LoginMalSucedidoSenhaIncorreta() throws Exception{
+        LoginDTO loginDTO = new LoginDTO();
+        loginDTO.setEmail("aluno@email.com");
+        loginDTO.setSenha("1234");
+       
 
-    /*@Test
-    void deveRetornarGruposDoUsuarioAutenticado() throws Exception {
+        when(alunoService.login(any(LoginDTO.class))).thenThrow(new SenhaIncorretaException("Senha incompativel"));
+        
+        
+        mockMvc.perform(post("/api/aluno/login")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(objectMapper.writeValueAsString(loginDTO)))
+        .andExpect(status().isConflict()) 
+        .andExpect(content().string("Senha incompativel"));
+    }
+    @Test
+    void LoginMalSucedidoUsuarioInexistente() throws Exception{
+        LoginDTO loginDTO = new LoginDTO();
+        loginDTO.setEmail("aluno@email.com");
+        loginDTO.setSenha("1234");
+       
+
+        when(alunoService.login(any(LoginDTO.class))).thenThrow(new UsernameNotFoundException("Usuário inexistente"));
+        
+        
+        mockMvc.perform(post("/api/aluno/login")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(objectMapper.writeValueAsString(loginDTO)))
+        .andExpect(status().isConflict()) 
+        .andExpect(content().string("Usuário inexistente"));
+    }
+    @Test
+    void deveRetornarAlunosDoGrupo() throws Exception {
       
         Aluno alunoLogado = new Aluno();
-        alunoLogado.setEmail("usuario.logado@email.com");
+        alunoLogado.setEmail("usuario@email.com");
+        List <AlunosResponseDTO> alunos = new ArrayList<>();
+        AlunosResponseDTO alunoDTO = new AlunosResponseDTO();
+        alunoDTO.setEmail("usuario@email.com");
+        alunoDTO.setNome("user");
+        alunoDTO.setId(3L);
+        alunos.add(alunoDTO);
+
         Grupo grupoTeste = new Grupo();
         grupoTeste.setNome("Grupo de Teste");
-        List <Grupo> meusGrupos = Arrays.asList();
+        grupoTeste.setId(1L);
+    
 
-        when(grupoService.getGruposAluno((any(Aluno.class))).thenReturn(meusGrupos);
+        when(alunoService.getAlunosGrupo(1L)).thenReturn(alunos);
 
-        // Act & Assert
-        mockMvc.perform(get("api/aluno/{1L}")
+        mockMvc.perform(get("/api/aluno/get/{grupoId}", 1L)
             .with(csrf())
-            .with(user("usuario.logado@email.com").roles("USER"))
-            .contentType(MediaType.APPLICATION_JSON))
+            .with(user("usuario.logado@email.com").roles("USER")))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$[0].nome").value("Grupo de Teste"));
-    } */
+            .andExpect(jsonPath("$[0].nome").value("user"))
+            .andExpect(jsonPath("$[0].email").value("usuario@email.com"))
+            .andExpect(jsonPath("$[0].id").value(3L));
+    
+        }       
 
 }
