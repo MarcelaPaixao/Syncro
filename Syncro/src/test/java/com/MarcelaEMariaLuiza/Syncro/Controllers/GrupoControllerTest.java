@@ -2,11 +2,17 @@ package com.MarcelaEMariaLuiza.Syncro.Controllers;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,10 +37,13 @@ import com.MarcelaEMariaLuiza.Syncro.DTO.CreateGrupoDTO;
 import com.MarcelaEMariaLuiza.Syncro.Entities.Aluno;
 import com.MarcelaEMariaLuiza.Syncro.Entities.Grupo;
 import com.MarcelaEMariaLuiza.Syncro.Errors.CampoNaoPreenchidoException;
+import com.MarcelaEMariaLuiza.Syncro.Errors.GrupoInexistenteException;
 import com.MarcelaEMariaLuiza.Syncro.Services.GrupoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.boot.test.mock.mockito.MockBean;
+
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -42,11 +51,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import com.MarcelaEMariaLuiza.Syncro.Repositories.AlunoRepository;
 import com.MarcelaEMariaLuiza.Syncro.Security.TokenService;
 //@ActiveProfiles("test")
+
 @SpringBootTest
 @AutoConfigureMockMvc
 public class GrupoControllerTest {
     
     private CreateGrupoDTO dto;
+    @Mock
+    private Aluno alunoMock;
+
     private Aluno criador;
 
     @MockBean
@@ -65,6 +78,8 @@ public class GrupoControllerTest {
     @Autowired 
     private ObjectMapper objectMapper;
 
+    @Mock
+    private Authentication mockAuthentication;
 
     @BeforeEach
     void setUp(){
@@ -144,35 +159,26 @@ public class GrupoControllerTest {
             .andDo(print()) 
             .andExpect(status().isInternalServerError());
     }   
-    /*@Test
-    void deveRetornarGruposPorAluno() throws Exception {
-        
-        CreateGrupoDTO grupoTeste = new CreateGrupoDTO();
-        grupoTeste.setId(1L);
-        grupoTeste.setNome("Grupo de Teste");
-        List<CreateGrupoDTO> lista = new ArrayList();
-        lista.add(grupoTeste);
-      
-        when(grupoService.getGruposAluno(anyLong())).thenReturn(lista);
-        mockMvc.perform(get("/api/grupo/get")
-            .with(csrf())
-            .with(user(criador.getEmail()).roles("USER"))
-            .contentType(MediaType.APPLICATION_JSON))
-            .andDo(print()) 
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$[0].nome").value("Grupo de Teste"));
-    }
+
 
     @Test
-    void deveRetornarGrupoInvalidoPorId() throws Exception {
+    void deveRetornar500ProgressoGrupoInexistente() throws Exception {
 
+        when(grupoService.getProgressoGrupo(8L)).thenThrow(new GrupoInexistenteException("Grupo Inválido"));
+        mockMvc.perform(get("/api/grupo/progresso/{id}", 8L) // Faz a chamada GET para /api/grupos/1/progresso
+        .with(csrf())
+        .with(user(criador.getEmail()).roles("USER")))
+        .andExpect(status().isInternalServerError()); 
+    } 
+    @Test
+    void deveRetornarProgressoGrupo() throws Exception {
 
-        when(grupoService.getGrupo(1L)).thenThrow(new RuntimeException());
-        mockMvc.perform(get("/api/grupo/getGrupo/1")
-            .with(csrf())
-            .with(user(criador.getEmail()).roles("USER"))
-            .contentType(MediaType.APPLICATION_JSON))
-            .andDo(print()) 
-            .andExpect(status().isInternalServerError());
-    }  */
+        float progressoEsperado = 75.0f;
+        when(grupoService.getProgressoGrupo(1L)).thenReturn(progressoEsperado);
+        mockMvc.perform(get("/api/grupo/progresso/{id}", 1L) // Faz a chamada GET para /api/grupos/1/progresso
+        .with(csrf())
+        .with(user(criador.getEmail()).roles("USER")))
+        .andExpect(status().isOk()) 
+        .andExpect(content().string("75.0"));
+    } 
 }
