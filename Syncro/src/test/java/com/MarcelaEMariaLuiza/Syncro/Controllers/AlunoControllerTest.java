@@ -3,12 +3,11 @@ package com.MarcelaEMariaLuiza.Syncro.Controllers;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-import org.junit.jupiter.api.BeforeAll;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -24,7 +23,6 @@ import com.MarcelaEMariaLuiza.Syncro.Errors.EmailExistenteException;
 import com.MarcelaEMariaLuiza.Syncro.Errors.SenhaIncorretaException;
 import com.MarcelaEMariaLuiza.Syncro.DTO.AlunosResponseDTO;
 import com.MarcelaEMariaLuiza.Syncro.DTO.CreateAlunoDTO;
-import com.MarcelaEMariaLuiza.Syncro.DTO.CreateGrupoDTO;
 import com.MarcelaEMariaLuiza.Syncro.DTO.LoginDTO;
 import com.MarcelaEMariaLuiza.Syncro.Entities.Aluno;
 import com.MarcelaEMariaLuiza.Syncro.Errors.CampoNaoPreenchidoException;
@@ -34,13 +32,10 @@ import com.MarcelaEMariaLuiza.Syncro.Services.AlunoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
