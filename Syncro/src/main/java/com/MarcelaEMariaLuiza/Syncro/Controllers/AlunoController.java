@@ -21,6 +21,7 @@ import com.MarcelaEMariaLuiza.Syncro.Entities.Aluno;
 import com.MarcelaEMariaLuiza.Syncro.Errors.CampoNaoPreenchidoException;
 import com.MarcelaEMariaLuiza.Syncro.Errors.EmailExistenteException;
 import com.MarcelaEMariaLuiza.Syncro.Errors.GrupoInexistenteException;
+import com.MarcelaEMariaLuiza.Syncro.Errors.SenhaIncorretaException;
 import com.MarcelaEMariaLuiza.Syncro.Security.TokenService;
 import com.MarcelaEMariaLuiza.Syncro.Services.AlunoService;
 
@@ -92,7 +93,7 @@ public class AlunoController {
             Aluno aluno = alunoService.login(loginDTO);
             String token = tokenService.generateToken(aluno);
             return ResponseEntity.ok(new LoginResponseDTO(aluno.getEmail(), token));
-        }catch(UsernameNotFoundException | CampoNaoPreenchidoException e){
+        }catch(UsernameNotFoundException | SenhaIncorretaException |CampoNaoPreenchidoException e){
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
         catch (Exception e) {
