@@ -42,4 +42,8 @@ public class CreateFeedbackDTO {
      * O ID do aluno que está escrevendo o feedback.
      */
     private Long alunoId;
+    /**
+     * O nome do aluno que está escrevendo o feedback.
+     */
+    private String alunoNome;
 }

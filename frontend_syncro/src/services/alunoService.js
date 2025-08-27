@@ -25,10 +25,10 @@ export async function getUser() {
       Authorization: `Bearer ${token}`,
     },
   };
-  console.log(token);
+
   try {
+    console.log("entrou aqui");
     const response = api.get(`/api/aluno/get/UserId`, config);
-    console.log((await response).data);
     return (await response).data;
   } catch (error) {
     return error;
