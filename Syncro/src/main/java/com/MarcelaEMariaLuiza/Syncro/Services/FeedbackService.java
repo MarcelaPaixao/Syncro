@@ -1,5 +1,7 @@
 package com.MarcelaEMariaLuiza.Syncro.Services;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +57,7 @@ public class FeedbackService {
      * @throws CampoNaoPreenchidoException Se algum dos campos obrigatórios no DTO estiver vazio ou nulo.
      * @throws GrupoInexistenteException Se a tarefa ou o aluno associado não forem encontrados no banco de dados.
      */
-    public Feedback createFeedback(CreateFeedbackDTO createFeedbackDTO){
+    public CreateFeedbackDTO createFeedback(CreateFeedbackDTO createFeedbackDTO){
         
         if(createFeedbackDTO.getComentario().isEmpty() || createFeedbackDTO.getComentario() == null ||
                 createFeedbackDTO.getAprovado() == null || createFeedbackDTO.getAlunoId() == null
@@ -79,7 +81,8 @@ public class FeedbackService {
         Aluno aluno = novoAluno.get();
         feedback.setAluno(aluno);
         feedbackRepository.save(feedback);
-        return feedback;
+        createFeedbackDTO.setAlunoNome(aluno.getNome());
+        return createFeedbackDTO;
     }
     public void EditaFeedback(EditFeedbackDTO editFeedbackDTO){
         if(editFeedbackDTO.getComentario().isEmpty() || editFeedbackDTO.getComentario() == null ||
@@ -99,6 +102,21 @@ public class FeedbackService {
         
     }
 
+public List<CreateFeedbackDTO> getFeedbacksTarefa(Long tarefaId){
+    List <Feedback> feedbacks = feedbackRepository.findByTarefa_id(tarefaId);
+    List <CreateFeedbackDTO> feedbackDTO = new ArrayList<>();
+    for(Feedback f: feedbacks ){
+            CreateFeedbackDTO f1 = new CreateFeedbackDTO();
+            f1.setId(f.getId());
+            f1.setComentario(f.getComentario());
+            f1.setAprovado(f.getAprovado());
+            f1.setAlunoId(f.getAluno().getId());
+            f1.setAlunoNome(f.getAluno().getNome());
+            feedbackDTO.add(f1);
+       }
+       return feedbackDTO
+       ;
     
-    
+   }
+   
 }

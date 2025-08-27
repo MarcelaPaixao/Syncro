@@ -1,7 +1,11 @@
 package com.MarcelaEMariaLuiza.Syncro.Controllers;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.MarcelaEMariaLuiza.Syncro.DTO.CreateFeedbackDTO;
 import com.MarcelaEMariaLuiza.Syncro.DTO.EditFeedbackDTO;
-import com.MarcelaEMariaLuiza.Syncro.Entities.Feedback;
 import com.MarcelaEMariaLuiza.Syncro.Errors.CampoNaoPreenchidoException;
 import com.MarcelaEMariaLuiza.Syncro.Services.FeedbackService;
 /**
@@ -57,7 +60,7 @@ public class FeedbackController {
     @PostMapping("/create")
     public ResponseEntity<?> createFeedback (@RequestBody CreateFeedbackDTO createFeedbackDTO){
         try{
-            Feedback feedback = feedbackService.createFeedback(createFeedbackDTO);
+            CreateFeedbackDTO feedback = feedbackService.createFeedback(createFeedbackDTO);
             if(feedback== null) return(ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Algum dos dados inseridos está inválido"));
             return ResponseEntity.ok(createFeedbackDTO);
         }catch (CampoNaoPreenchidoException e){
@@ -73,6 +76,17 @@ public class FeedbackController {
             return ResponseEntity.ok(editFeedbackDTO);
         }catch(Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/get/{tarefaId}")
+    public ResponseEntity<?> getFeedbacksTarefa(@PathVariable Long tarefaId){
+        try{
+           List<CreateFeedbackDTO> feedbacks = feedbackService.getFeedbacksTarefa(tarefaId);
+           return ResponseEntity.ok(feedbacks);
+        }catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        
         }
     }
 }

@@ -73,7 +73,11 @@
       </div>
 
       <div class="feedback-list flex-grow overflow-y-auto space-y-4">
-        <CardFeedback v-for="fb in feedbacks" :key="fb.id" :feedback="fb" />
+        <CardFeedback
+          v-for="fb in feedbacks"
+          :key="fb.alunoId"
+          :feedback="fb"
+        />
       </div>
 
       <div class="new-feedback-input mt-auto pt-4">
@@ -88,16 +92,24 @@
           <p class="text-xs text-gray-500 mr-auto">Aprovar tarefa?</p>
 
           <button
-            @click="enviarFeedback(false)"
-            :disabled="usuarioJaDeuFeedback"
+            :disabled="usuarioJaDeuFeedbackPositivo"
+            @click="
+              usuarioJaDeuFeedbackNegativo
+                ? editaFeedback(false)
+                : enviarFeedback(false)
+            "
             class="w-10 h-10 flex items-center justify-center bg-red-100 text-red-600 rounded-full hover:bg-red-200 text-2xl font-bold disabled:opacity-50 disabled:cursor-not-allowed"
           >
             &#10006;
           </button>
 
           <button
-            @click="enviarFeedback(true)"
-            :disabled="usuarioJaDeuFeedback"
+            :disabled="usuarioJaDeuFeedbackPositivo"
+            @click="
+              usuarioJaDeuFeedbackNegativo
+                ? editaFeedback(true)
+                : enviarFeedback(true)
+            "
             class="w-10 h-10 flex items-center justify-center bg-teal-100 text-teal-600 rounded-full hover:bg-teal-200 text-2xl font-bold disabled:opacity-50 disabled:cursor-not-allowed"
           >
             &#10004;
@@ -114,9 +126,14 @@ import AppHeader from "@/components/AppHeader.vue";
 import InputString from "@/components/InputString.vue";
 import TextArea from "@/components/TextArea.vue";
 import { editaTarefa, getTarefaById } from "@/services/tarefaService";
-import { getAlunosGrupo } from "@/services/alunoService";
+import { getAlunosGrupo, getUser } from "@/services/alunoService";
 import CardFeedback from "@/components/CardFeedback.vue";
 import emitter from "@/eventBus.js";
+import {
+  createFeedback,
+  getFeedbacksTarefa,
+  editaFeedback,
+} from "@/services/feedbackService";
 
 export default {
   props: {
@@ -145,52 +162,58 @@ export default {
       linkDrive: "",
       linkExtra: "",
       novoFeedback: "",
-      feedbacks: [
-        // MARCELA: simulação; pegar dados do backend
-        {
-          id: 1,
-          membro: { id: 1, nome: "Belinha" },
-          texto: "amei amei",
-          aprovacao: true,
-        },
-        {
-          id: 2,
-          membro: { id: 2, nome: "Caramelo" },
-          texto: "horrivel :(",
-          aprovacao: false,
-        },
-      ],
-      usuarioAtual: { id: 99, nome: "Fulano" }, //MARCELA: simulação; pegar usuario atual do backend
+      feedbacks: [],
       estadosPossiveis: ["TODO", "DOING", "REVIEW", "DONE"],
+      alunoId: "",
     };
   },
 
   computed: {
-    usuarioJaDeuFeedback() {
-      return this.feedbacks.some((fb) => fb.membro.id === this.usuarioAtual.id);
+    usuarioJaDeuFeedbackPositivo() {
+      return this.feedbacks.some(
+        (fb) => fb.alunoId === this.alunoId && fb.aprovado == true
+      );
+    },
+    usuarioJaDeuFeedbackNegativo() {
+      return this.feedbacks.some(
+        (fb) => fb.alunoId === this.alunoId && fb.aprovado == false
+      );
     },
   },
 
   methods: {
-    enviarFeedback(feedbackAprovacao) {
+    async enviarFeedback(feedbackAprovacao) {
       const textoFeedback = this.novoFeedback.trim();
 
       if (textoFeedback === "" && feedbackAprovacao === null) return;
 
-      //MARCELA: id simulado; pegar do backend
       const novoFeedbackObj = {
-        id: Date.now(),
-        membro: this.usuarioAtual,
-        texto: textoFeedback,
-        aprovacao: feedbackAprovacao, // 'true' ou 'false'
+        alunoId: this.alunoId,
+        comentario: textoFeedback,
+        aprovado: feedbackAprovacao,
+        tarefaId: Number(this.tarefaId),
       };
-
-      this.feedbacks.push(novoFeedbackObj);
-      console.log("Enviando novo feedback:", novoFeedbackObj);
+      createFeedback(novoFeedbackObj);
 
       this.novoFeedback = "";
     },
+    async editaFeedback(feedbackAprovacao) {
+      const textoFeedback = this.novoFeedback.trim();
+      const fbEditavel = this.feedbacks.find(
+        (fb) => fb.alunoId === this.alunoId
+      );
 
+      if (textoFeedback === "" && feedbackAprovacao === null) return;
+      console.log(fbEditavel);
+      const novoFeedbackObj = {
+        id: fbEditavel.id,
+        comentario: textoFeedback,
+        aprovado: feedbackAprovacao,
+      };
+      await editaFeedback(novoFeedbackObj);
+
+      this.novoFeedback = "";
+    },
     async editaTarefa() {
       const createTarefaDTO = {
         id: this.tarefaId,
@@ -227,6 +250,10 @@ export default {
         this.linkExtra = tarefa.linkExtra ?? "";
         this.membrosDoGrupo = await getAlunosGrupo(tarefa.grupoId);
         this.idDoMembroResponsavel = tarefa.alunoId;
+        await getUser().then((resultado) => {
+          this.alunoId = resultado.id;
+        });
+        this.feedbacks = await getFeedbacksTarefa(this.tarefaId);
       }
     } catch (error) {
       console.error("Falha ao carregar dados da tarefa:", error);
