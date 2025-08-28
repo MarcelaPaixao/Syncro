@@ -69,6 +69,15 @@ public class FeedbackController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
+    /**
+     * Endpoint para editar um feedback existente.
+     *
+     * @param editFeedbackDTO O DTO contendo o ID do feedback e os dados a serem
+     * atualizados, fornecido no corpo da requisição.
+     * @return Um {@link ResponseEntity} com o DTO da requisição e status 200 OK em
+     * caso de sucesso. Em caso de erro (ex: feedback já aprovado, dados inválidos),
+     * retorna um status 500 Internal Server Error com a mensagem da exceção.
+     */
     @PutMapping("/edita")
     public ResponseEntity<?> editaFeedback(@RequestBody EditFeedbackDTO editFeedbackDTO){
         try{
@@ -78,7 +87,15 @@ public class FeedbackController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
-
+      /**
+     * Endpoint para buscar todos os feedbacks de uma tarefa específica.
+     *
+     * @param tarefaId O ID da tarefa cujos feedbacks serão buscados, fornecido como
+     * uma variável de caminho (path variable).
+     * @return Um {@link ResponseEntity} com a lista de {@link CreateFeedbackDTO} e
+     * status 200 OK em caso de sucesso. Retorna um status 500 Internal Server Error
+     * em caso de falha.
+     */
     @GetMapping("/get/{tarefaId}")
     public ResponseEntity<?> getFeedbacksTarefa(@PathVariable Long tarefaId){
         try{

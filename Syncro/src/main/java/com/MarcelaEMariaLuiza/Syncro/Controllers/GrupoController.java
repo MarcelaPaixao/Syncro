@@ -100,7 +100,18 @@ public class GrupoController {
         }
      
     }
-
+      /**
+     * Endpoint para obter o progresso de um grupo em porcentagem.
+     * <p>
+     * O progresso é calculado com base na quantidade de tarefas concluídas em relação ao total.
+     * </p>
+     *
+     * @param grupoId O ID do grupo cujo progresso será calculado, fornecido como
+     * uma variável de caminho (path variable).
+     * @return Um {@link ResponseEntity} com o valor do progresso ({@code float}) e status 200 OK.
+     * Em caso de erro (ex: grupo não encontrado), retorna um status 500 Internal Server Error
+     * com a mensagem da exceção.
+     */
     @GetMapping("/progresso/{grupoId}")
     public ResponseEntity<?> getProgressoGrupo(@PathVariable Long grupoId){
         try{

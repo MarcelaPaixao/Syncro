@@ -98,6 +98,15 @@ public class TarefaController {
 
 }
 
+    /**
+     * Endpoint para editar uma tarefa existente.
+     *
+     * @param createTarefaDTO O DTO contendo os dados atualizados da tarefa,
+     * fornecido no corpo da requisição.
+     * @param authentication O objeto de autenticação do usuário logado (atualmente não utilizado neste método).
+     * @return Um {@link ResponseEntity} com uma mensagem de sucesso e status 200 OK.
+     * Em caso de erro, retorna um status 500 Internal Server Error com a mensagem da exceção.
+     */
 @PutMapping("/edita")
     public ResponseEntity<?> editaTarefa(@RequestBody CreateTarefaDTO createTarefaDTO, Authentication authentication ){
         try{
@@ -109,6 +118,17 @@ public class TarefaController {
         }
 
     }
+ /**
+     * Endpoint para buscar a lista de tarefas pendentes de avaliação por um aluno específico.
+     * <p>
+     * Retorna tarefas de outros membros do grupo que estão com o status 'REVIEW'
+     * e para as quais o aluno ainda não deu feedback.
+     * </p>
+     *
+     * @param alunoId O ID do aluno que fará a avaliação, fornecido como uma variável de caminho.
+     * @return Um {@link ResponseEntity} com a lista de {@link TarefaResponseDTO} e status 200 OK.
+     * Em caso de erro, retorna um status 500 Internal Server Error com a mensagem da exceção.
+     */
 @GetMapping("/get/avalia/{alunoId}")
     public ResponseEntity<?> getTarefasAvaliarPorAluno(@PathVariable Long alunoId){
         try{
@@ -121,7 +141,14 @@ public class TarefaController {
         }
 
 }
-
+ /**
+     * Endpoint para buscar os detalhes de uma tarefa específica pelo seu ID.
+     *
+     * @param tarefaId O ID da tarefa a ser buscada, fornecido como uma variável de caminho.
+     * @return Um {@link ResponseEntity} com o {@link CreateTarefaDTO} da tarefa e status 200 OK.
+     * Em caso de erro (ex: tarefa não encontrada), retorna um status 500 Internal Server Error
+     * com a mensagem da exceção.
+     */
 @GetMapping("/get/{tarefaId}")
 public ResponseEntity<?> getTarefa(@PathVariable Long tarefaId){
     try{

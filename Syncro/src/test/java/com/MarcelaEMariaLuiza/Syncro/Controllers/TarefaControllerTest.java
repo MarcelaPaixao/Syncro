@@ -1,8 +1,21 @@
 package com.MarcelaEMariaLuiza.Syncro.Controllers;
 
-import org.junit.jupiter.api.Test;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.List;
+
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,17 +31,6 @@ import com.MarcelaEMariaLuiza.Syncro.Errors.GrupoInexistenteException;
 import com.MarcelaEMariaLuiza.Syncro.Services.AlunoService;
 import com.MarcelaEMariaLuiza.Syncro.Services.TarefaService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.util.List;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -58,6 +60,8 @@ public class TarefaControllerTest {
         when(tarefaService.createTarefa(any(CreateTarefaDTO.class))).thenReturn(new Tarefa());
 
         mockMvc.perform(post("/api/tarefa/create") 
+                .with(user("fulano@email.com").roles("USER")) 
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON) 
                 .content(objectMapper.writeValueAsString(dto))) 
                 .andExpect(status().isOk()) 
@@ -73,6 +77,8 @@ public class TarefaControllerTest {
             .thenThrow(new CampoNaoPreenchidoException(mensagemDeErro));
 
         mockMvc.perform(post("/api/tarefa/create")
+                .with(user("fulano@email.com").roles("USER")) 
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isConflict()) 
@@ -88,6 +94,8 @@ public class TarefaControllerTest {
             .thenThrow(new GrupoInexistenteException(mensagemDeErro));
 
         mockMvc.perform(post("/api/tarefa/create")
+                .with(user("fulano@email.com").roles("USER")) 
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isConflict()) 
@@ -107,7 +115,9 @@ public class TarefaControllerTest {
         
         when(tarefaService.getTarefasPorGrupo(grupoId)).thenReturn(listaDeTarefas);
 
-        mockMvc.perform(get("/api/tarefa/get/grupo/{grupoId}", grupoId)) 
+        mockMvc.perform(get("/api/tarefa/get/grupo/{grupoId}", grupoId)
+                .with(user("fulano@email.com").roles("USER")) 
+                .with(csrf()))
                 .andExpect(status().isOk()) 
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].titulo", is("Tarefa 1"))); 
@@ -118,7 +128,9 @@ public class TarefaControllerTest {
         Long grupoId = 99L;
         when(tarefaService.getTarefasPorGrupo(grupoId)).thenThrow(new RuntimeException("Erro de banco de dados"));
 
-        mockMvc.perform(get("/api/tarefa/get/grupo/{grupoId}", grupoId))
+        mockMvc.perform(get("/api/tarefa/get/grupo/{grupoId}", grupoId)
+                .with(user("fulano@email.com").roles("USER")) 
+                .with(csrf()))
                 .andExpect(status().isOk()) 
                 .andExpect(content().string("")); 
     }
@@ -130,7 +142,9 @@ public class TarefaControllerTest {
         
         when(tarefaService.getTarefasPorAluno(alunoId)).thenReturn(listaDeTarefas);
 
-        mockMvc.perform(get("/api/tarefa/get/aluno/{alunoId}", alunoId))
+        mockMvc.perform(get("/api/tarefa/get/aluno/{alunoId}", alunoId)
+                .with(user("fulano@email.com").roles("USER")) 
+                .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)));
     }
@@ -142,7 +156,9 @@ public class TarefaControllerTest {
         
         when(tarefaService.getTarefasPorAluno(alunoId)).thenThrow(new RuntimeException(mensagemErro));
 
-        mockMvc.perform(get("/api/tarefa/get/aluno/{alunoId}", alunoId))
+        mockMvc.perform(get("/api/tarefa/get/aluno/{alunoId}", alunoId)
+            .with(user("fulano@email.com").roles("USER")) 
+            .with(csrf()))
             .andExpect(status().isInternalServerError())
             .andExpect(content().string(mensagemErro));
     }
@@ -155,7 +171,9 @@ public class TarefaControllerTest {
 
         when(tarefaService.EditaTarefa(any(CreateTarefaDTO.class))).thenReturn(new Tarefa());
 
-        mockMvc.perform(put("/api/tarefa/edita") 
+        mockMvc.perform(put("/api/tarefa/edita")
+            .with(user("fulano@email.com").roles("USER")) 
+            .with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(dto)))
             .andExpect(status().isOk())
@@ -172,6 +190,8 @@ public class TarefaControllerTest {
             .thenThrow(new RuntimeException(mensagemErro));
 
         mockMvc.perform(put("/api/tarefa/edita")
+                .with(user("fulano@email.com").roles("USER")) 
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isInternalServerError())
@@ -187,7 +207,9 @@ public class TarefaControllerTest {
         
         when(tarefaService.getTarefa(tarefaId)).thenReturn(tarefaDTO);
 
-       mockMvc.perform(get("/api/tarefa/get/{tarefaId}", tarefaId))
+       mockMvc.perform(get("/api/tarefa/get/{tarefaId}", tarefaId)
+                .with(user("fulano@email.com").roles("USER")) 
+                .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.titulo", is("Tarefa 1")));
@@ -200,7 +222,9 @@ public class TarefaControllerTest {
         
         when(tarefaService.getTarefa(tarefaId)).thenThrow(new RuntimeException(mensagemErro));
 
-        mockMvc.perform(get("/api/tarefa/get/{tarefaId}", tarefaId))
+        mockMvc.perform(get("/api/tarefa/get/{tarefaId}", tarefaId)
+            .with(user("fulano@email.com").roles("USER")) 
+            .with(csrf()))
             .andExpect(status().isInternalServerError())
             .andExpect(content().string(mensagemErro));
     }
@@ -218,7 +242,9 @@ public class TarefaControllerTest {
         
         when(tarefaService.getTarefasParaAvaliar(alunoId)).thenReturn(lista);
 
-        mockMvc.perform(get("/api/tarefa/get/avalia/{alunoId}", alunoId))
+        mockMvc.perform(get("/api/tarefa/get/avalia/{alunoId}", alunoId)
+                .with(user("fulano@email.com").roles("USER")) 
+                .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].titulo", is("Tarefa para Avaliar 1")));
@@ -231,7 +257,9 @@ public class TarefaControllerTest {
         
         when(tarefaService.getTarefasParaAvaliar(alunoId)).thenThrow(new RuntimeException(mensagemErro));
 
-        mockMvc.perform(get("/api/tarefa/get/avalia/{alunoId}", alunoId))
+        mockMvc.perform(get("/api/tarefa/get/avalia/{alunoId}", alunoId)
+            .with(user("fulano@email.com").roles("USER")) 
+            .with(csrf()))
             .andExpect(status().isInternalServerError())
             .andExpect(content().string(mensagemErro));
     }

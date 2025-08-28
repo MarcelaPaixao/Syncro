@@ -128,7 +128,13 @@ public class AlunoService implements UserDetailsService{
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
-
+     /**
+     * Busca todos os alunos que pertencem a um grupo específico.
+     *
+     * @param GrupoId O ID do grupo cujos alunos serão listados.
+     * @return Uma lista de {@link AlunosResponseDTO} representando os membros do grupo.
+     * @throws GrupoInexistenteException se o ID do grupo fornecido não corresponder a um grupo existente.
+     */
     public List<AlunosResponseDTO> getAlunosGrupo(Long GrupoId){
         
         Optional<Grupo> g  = grupoRepository.findById(GrupoId);
@@ -148,6 +154,17 @@ public class AlunoService implements UserDetailsService{
         return alunosFormatados;
 
     }
+      /**
+     * Converte uma entidade {@link Aluno} em um {@link AlunosResponseDTO}.
+     * <p>
+     * Este é um método utilitário para mapear os campos da entidade de domínio
+     * para um objeto de transferência de dados, garantindo que apenas as informações
+     * necessárias sejam expostas.
+     * </p>
+     *
+     * @param a A entidade {@link Aluno} a ser convertida.
+     * @return Um objeto {@link AlunosResponseDTO} com os dados do aluno.
+     */
     public AlunosResponseDTO getAluno(Aluno a){ 
     
         AlunosResponseDTO alunoResponse = new AlunosResponseDTO();

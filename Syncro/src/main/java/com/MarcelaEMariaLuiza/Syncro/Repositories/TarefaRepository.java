@@ -34,9 +34,23 @@ public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
      */
     public List<Tarefa> findByAluno_id(Long alunoId);
 
+    /**
+     * Calcula a quantidade total de tarefas associadas a um grupo específico.
+     *
+     * @param grupoId O ID do grupo cujas tarefas serão contadas.
+     * @return Um {@code int} representando o número total de tarefas no grupo,
+     * independentemente do status.
+     */
+
     @Query("SELECT COUNT (t) FROM Tarefa t where t.grupo.id = :grupoId")
     public int qtdTarefasTotal(@Param("grupoId") Long grupoId);
-
+    
+    /**
+     * Calcula a quantidade de tarefas com o status 'DONE' (concluídas) em um grupo específico.
+     *
+     * @param grupoId O ID do grupo a ser verificado.
+     * @return Um {@code int} representando o número de tarefas concluídas no grupo.
+     */
     @Query("SELECT COUNT (t) FROM Tarefa t WHERE t.grupo.id = :grupoId AND t.status = DONE")
     public int qtdTarefasDone(@Param("grupoId") Long grupoId);
 }

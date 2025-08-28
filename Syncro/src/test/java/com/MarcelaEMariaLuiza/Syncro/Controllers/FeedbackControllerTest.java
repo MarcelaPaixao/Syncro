@@ -4,6 +4,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -52,6 +54,8 @@ public class FeedbackControllerTest {
         when(feedbackService.createFeedback(any(CreateFeedbackDTO.class))).thenReturn(new CreateFeedbackDTO());
 
         mockMvc.perform(post("/api/feedback/create")
+                .with(user("fulano@email.com").roles("USER")) 
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(dtoEnviado)))
                 .andExpect(status().isOk())
@@ -65,6 +69,8 @@ public class FeedbackControllerTest {
         when(feedbackService.createFeedback(any(CreateFeedbackDTO.class))).thenReturn(null);
 
         mockMvc.perform(post("/api/feedback/create")
+                .with(user("fulano@email.com").roles("USER")) 
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isBadRequest())
@@ -79,6 +85,8 @@ public class FeedbackControllerTest {
             .thenThrow(new CampoNaoPreenchidoException(mensagemErro));
 
         mockMvc.perform(post("/api/feedback/create")
+                .with(user("fulano@email.com").roles("USER")) 
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isConflict())
@@ -94,6 +102,8 @@ public class FeedbackControllerTest {
         doNothing().when(feedbackService).EditaFeedback(any(EditFeedbackDTO.class));
 
         mockMvc.perform(put("/api/feedback/edita")
+                .with(user("fulano@email.com").roles("USER")) 
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
@@ -109,6 +119,8 @@ public class FeedbackControllerTest {
             .when(feedbackService).EditaFeedback(any(EditFeedbackDTO.class));
             
         mockMvc.perform(put("/api/feedback/edita")
+                .with(user("fulano@email.com").roles("USER")) 
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isInternalServerError())
@@ -126,7 +138,9 @@ public class FeedbackControllerTest {
 
         when(feedbackService.getFeedbacksTarefa(tarefaId)).thenReturn(lista);
 
-        mockMvc.perform(get("/api/feedback/get/{tarefaId}", tarefaId))
+        mockMvc.perform(get("/api/feedback/get/{tarefaId}", tarefaId)
+                .with(user("fulano@email.com").roles("USER")) 
+                .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].comentario", is("Feedback 1")));
@@ -138,7 +152,9 @@ public class FeedbackControllerTest {
         String mensagemErro = "Tarefa não encontrada";
         when(feedbackService.getFeedbacksTarefa(tarefaId)).thenThrow(new RuntimeException(mensagemErro));
 
-        mockMvc.perform(get("/api/feedback/get/{tarefaId}", tarefaId))
+        mockMvc.perform(get("/api/feedback/get/{tarefaId}", tarefaId)
+                .with(user("fulano@email.com").roles("USER")) 
+                .with(csrf()))
                 .andExpect(status().isInternalServerError())
                 .andExpect(content().string(mensagemErro));
     }

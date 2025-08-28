@@ -59,6 +59,7 @@ const routes = [
     path: "/visualizar-tarefa",
     name: "visualizar-tarefa",
     component: VisualizarTarefaView,
+    meta: { requiresAuth: true },
   },
   {
     path: "/dashboard-grupo",
@@ -80,9 +81,9 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
 });
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
-  const isAuthenticated = !!getAccessToken();
+  const isAuthenticated = await getAccessToken();
   console.log(requiresAuth);
   console.log(isAuthenticated);
   if (requiresAuth && !isAuthenticated) {

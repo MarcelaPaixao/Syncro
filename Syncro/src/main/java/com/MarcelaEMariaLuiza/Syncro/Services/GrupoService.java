@@ -115,6 +115,18 @@ public class GrupoService {
        }
      return grupos;
     }
+     /**
+     * Calcula o progresso de um grupo com base na porcentagem de tarefas concluídas.
+     * <p>
+     * O progresso é definido como (tarefas concluídas / tarefas totais) * 100 e o
+     * resultado é arredondado para o número inteiro mais próximo.
+     * </p>
+     *
+     * @param grupoId O ID do grupo para o qual o progresso será calculado.
+     * @return Um {@code float} representando a porcentagem de progresso, arredondada.
+     * Retorna {@code NaN} (Not a Number) se o grupo não tiver tarefas.
+     * @throws GrupoInexistenteException se o ID do grupo fornecido não for encontrado.
+     */
     @Transactional
     public float getProgressoGrupo(Long grupoId){
         
@@ -131,7 +143,14 @@ public class GrupoService {
         return progressoRetorno;
         
     }
-
+     /**
+     * Busca as informações detalhadas de um grupo específico.
+     *
+     * @param grupoId O ID do grupo a ser buscado.
+     * @return Um {@link CreateGrupoDTO} contendo os detalhes do grupo, incluindo uma
+     * lista com os e-mails dos membros.
+     * @throws RuntimeException se o grupo com o ID fornecido não for encontrado.
+     */
     @Transactional
     public CreateGrupoDTO getGrupo(Long grupoId){
         Optional <Grupo> g = grupoRepository.findById(grupoId);

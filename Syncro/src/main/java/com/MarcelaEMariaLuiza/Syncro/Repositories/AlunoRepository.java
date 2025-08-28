@@ -36,10 +36,26 @@ public interface AlunoRepository extends JpaRepository<Aluno, Long> {
      */
     @Query("SELECT a FROM Aluno a JOIN a.grupos g WHERE g.id = :idDoGrupo")
     List<Aluno> FindByGrupos(@Param("idDoGrupo") Long idDoGrupo);
-
+     /**
+     * Conta o número total de alunos em um grupo específico.
+     *
+     * @param grupoId O ID do grupo para o qual o número de membros será contado.
+     * @return Um {@code int} representando o número total de membros. Retorna 0 se o
+     * grupo não existir ou não tiver membros.
+     */
     @Query("SELECT COUNT (a) FROM Aluno a JOIN a.grupos g WHERE g.id = :grupoId")
     int countGrupoMembers(@Param("grupoId") Long grupoId);
-
+    /**
+     * Verifica se um aluno específico é membro de um grupo específico.
+     * <p>
+     * Este método é útil para validar se um relacionamento entre um aluno e um grupo existe.
+     * </p>
+     *
+     * @param grupoId O ID do grupo a ser verificado.
+     * @param id O ID do aluno a ser verificado.
+     * @return Um {@link Optional}&lt;{@link Aluno}&gt; contendo o aluno se ele pertencer ao grupo,
+     * ou um {@code Optional} vazio caso contrário.
+     */
     @Query("SELECT a FROM Aluno a JOIN a.grupos g WHERE g.id = :grupoId AND a.id = :alunoId")
     Optional<Aluno> estaNoGrupoAluno(@Param("grupoId") Long grupoId, @Param("alunoId")Long id);
 

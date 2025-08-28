@@ -153,7 +153,20 @@ public class TarefaService{
         }
        return tarefasFiltradas;
      }
-
+    /**
+     * Atualiza os dados de uma tarefa existente.
+     * <p>
+     * Valida os dados de entrada e atualiza os campos da tarefa.
+     * Se o status for alterado para 'DONE', verifica se a tarefa recebeu
+     * feedbacks positivos suficientes (mais de 70%) dos outros membros do grupo
+     * antes de confirmar a alteração do status.
+     * </p>
+     *
+     * @param createTarefaDTO DTO com os dados atualizados da tarefa.
+     * @return Retorna null após salvar a tarefa. (Nota: O comportamento de retorno pode ser revisto).
+     * @throws IllegalArgumentException Se dados essenciais como ID, título ou status não forem fornecidos.
+     * @throws RuntimeException Se a tarefa com o ID fornecido não for encontrada.
+     */
     public Tarefa EditaTarefa(CreateTarefaDTO createTarefaDTO){
         
        
@@ -191,7 +204,17 @@ public class TarefaService{
         tarefaRepository.save(tarefa);
         return null;
     }
-
+    /**
+     * Retorna uma lista de tarefas que um determinado aluno precisa avaliar.
+     * <p>
+     * A lista inclui tarefas de outros membros dos mesmos grupos que o aluno,
+     * desde que a tarefa esteja com o status 'REVIEW' e o aluno ainda não tenha
+     * fornecido um feedback para ela.
+     * </p>
+     *
+     * @param alunoId O ID do aluno que fará a avaliação.
+     * @return Uma lista de {@link TarefaResponseDTO} contendo as tarefas pendentes de avaliação.
+     */
     public List<TarefaResponseDTO> getTarefasParaAvaliar(Long alunoId){
         List<Grupo> grupo = grupoRepository.findByAlunoId(alunoId);
         List <Tarefa> tarefasGrupo = new ArrayList<>();
@@ -213,7 +236,13 @@ public class TarefaService{
         }
         return tarefasParaAvaliacao;
     }
-
+     /**
+     * Busca e retorna uma tarefa específica pelo seu ID.
+     *
+     * @param tarefaId O ID da tarefa a ser buscada.
+     * @return Um {@link CreateTarefaDTO} com os dados da tarefa encontrada.
+     * @throws RuntimeException se a tarefa com o ID fornecido não existir.
+     */
     public CreateTarefaDTO getTarefa(Long tarefaId) {
         Optional<Tarefa> tarefa = tarefaRepository.findById(tarefaId);
         if(!tarefa.isPresent()) throw new RuntimeException("Tarefa inexistente");
