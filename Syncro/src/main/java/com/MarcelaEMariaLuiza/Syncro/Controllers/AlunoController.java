@@ -101,6 +101,15 @@ public class AlunoController {
         }
        
     }
+
+    /**
+     * Endpoint para buscar todos os alunos de um grupo específico.
+     *
+     * @param grupoId O ID do grupo, fornecido como uma variável de caminho (path variable).
+     * @return Um {@link ResponseEntity} contendo a lista de {@link AlunosResponseDTO} e status 200 OK em caso de sucesso.
+     * <p><b>Atenção:</b> Em caso de grupo não encontrado, o método atualmente retorna {@code null},
+     * o que pode causar um erro HTTP 500. O ideal seria retornar um status 404 Not Found.</p>
+     */
     @GetMapping("/get/{grupoId}")
     public ResponseEntity<?> getAlunosGrupo(@PathVariable Long grupoId){
         try{
@@ -110,6 +119,16 @@ public class AlunoController {
             return null;
         }
     }
+    /**
+     * Endpoint para obter os dados do aluno atualmente autenticado na sessão.
+     *
+     * @param authentication O objeto de autenticação injetado pelo Spring Security,
+     * contendo as informações do usuário logado (principal).
+     * @return Um {@link ResponseEntity} contendo o {@link AlunosResponseDTO} do usuário
+     * autenticado com status 200 OK.
+     * <p><b>Atenção:</b> Em caso de erro, o método atualmente retorna {@code null},
+     * o que pode causar um erro HTTP 500. O ideal seria retornar um status 400 ou 401.</p>
+     */
     @GetMapping("/get/UserId")
     public ResponseEntity<?> getUserId(Authentication authentication){
         try{

@@ -77,13 +77,26 @@ public class FeedbackService {
         Tarefa tarefa= novaTarefa.get();
         feedback.setTarefa(tarefa);
         Optional<Aluno> novoAluno = alunoRepository.findById(createFeedbackDTO.getAlunoId());
-        if(!novoAluno.isPresent()) throw new GrupoInexistenteException("Tarefa inválida");
+        if(!novoAluno.isPresent()) throw new GrupoInexistenteException("Aluno inválido");
         Aluno aluno = novoAluno.get();
         feedback.setAluno(aluno);
         feedbackRepository.save(feedback);
         createFeedbackDTO.setAlunoNome(aluno.getNome());
         return createFeedbackDTO;
     }
+      /**
+     * Edita um feedback existente.
+     * <p>
+     * Este método permite a alteração do comentário e do status de aprovação de um feedback.
+     * Uma regra de negócio importante é que um feedback já marcado como "aprovado"
+     * não pode ser modificado.
+     * </p>
+     *
+     * @param editFeedbackDTO DTO contendo o ID do feedback e os novos dados a serem atualizados.
+     * @throws CampoNaoPreenchidoException Se campos essenciais no DTO estiverem nulos ou vazios.
+     * @throws FeedbackInvalidoException Se o feedback com o ID fornecido não for encontrado.
+     * @throws FeedbackJaAprovado Se for feita uma tentativa de editar um feedback que já foi aprovado.
+     */
     public void EditaFeedback(EditFeedbackDTO editFeedbackDTO){
         if(editFeedbackDTO.getComentario().isEmpty() || editFeedbackDTO.getComentario() == null ||
        editFeedbackDTO.getAprovado() == null || editFeedbackDTO.getId() == null){
@@ -101,7 +114,13 @@ public class FeedbackService {
             throw new FeedbackJaAprovado("Não é possível mudar o feedback após aprovado.");}
         
     }
-
+/**
+     * Busca todos os feedbacks associados a uma tarefa específica.
+     *
+     * @param tarefaId O ID da tarefa para a qual os feedbacks serão buscados.
+     * @return Uma lista de DTOs ({@link CreateFeedbackDTO}) representando os feedbacks encontrados.
+     * Retorna uma lista vazia se a tarefa não tiver feedbacks.
+     */
 public List<CreateFeedbackDTO> getFeedbacksTarefa(Long tarefaId){
     List <Feedback> feedbacks = feedbackRepository.findByTarefa_id(tarefaId);
     List <CreateFeedbackDTO> feedbackDTO = new ArrayList<>();
